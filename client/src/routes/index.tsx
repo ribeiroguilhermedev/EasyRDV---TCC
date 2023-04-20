@@ -1,5 +1,3 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
   Route,
@@ -7,15 +5,19 @@ import {
 } from 'react-router-dom'
 import Login from '../pages/login'
 import Home from '../pages/home'
+import PrivateRoute from './privateRoute'
+
 
 
 const router = createBrowserRouter(createRoutesFromElements(
-        <Route>
-          <Route index element={<Login/>} />
-          <Route path='/teste' element={'Teste'} />
-          {/* <Route path="/home" element={<Private Item={Home} />} /> */}
-          <Route path='*' element={<Login/>} />
-        </Route>
+  <Route>
+    <Route index element={<Login />} />
+    <Route path='/home' element={
+      <PrivateRoute>
+        <Home />
+      </PrivateRoute>
+    } />
+  </Route>
 ))
 
 export default router
