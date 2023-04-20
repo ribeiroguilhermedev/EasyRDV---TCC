@@ -50,7 +50,7 @@ const Login = () => {
                         <p className="flex items-center"><input type="checkbox" className="mr-2" /> Lembrar</p>
                         <p>Esqueci minha senha</p>
                     </div>
-                    <button className="w-full my-5 py-2 text-blue-post bg-dark-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 text-white font-semibold rounded-lg">
+                    <button className="w-full my-5 py-2 text-blue-post bg-dark-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 font-semibold rounded-lg">
                         Login
                     </button>
                 </form>
