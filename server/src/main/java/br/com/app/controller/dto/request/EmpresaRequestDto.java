@@ -2,7 +2,6 @@ package br.com.app.controller.dto.request;
 
 import br.com.app.modelo.Empresa;
 import br.com.app.repository.EmpresaRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -19,10 +18,13 @@ public class EmpresaRequestDto {
     public void setNome(String nome) {this.nome = nome;}
     public void setCnpj(String cnpj) {this.cnpj = cnpj;}
     public void setRazao_social(String razao_social) {this.razao_social = razao_social;}
+    public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
+    public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
     public void setLogo(String logo) {this.logo = logo;}
     public void setGuid(String guid) {this.guid = guid;}
 
     public Empresa converter(EmpresaRepository repository){
-        return new Empresa(nome, cnpj, razao_social, flag_ativo, data_criacao, logo, guid);
+        return new Empresa(nome, cnpj, razao_social, flag_ativo,
+                data_criacao, logo, guid);
     }
 }

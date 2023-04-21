@@ -3,11 +3,8 @@ package br.com.app.controller.dto.request;
 import br.com.app.modelo.Empresa;
 import br.com.app.modelo.Usuario;
 import br.com.app.repository.UsuarioRepository;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,7 +21,7 @@ public class UsuarioRequestDto {
     private LocalDateTime data_criacao;
     private String observacao;
     private String guid;
-    private Empresa empresa;
+    private Long empresa_id;
 
     public void setNome(String nome) {this.nome = nome;}
     public void setCpf(String cpf) {this.cpf = cpf;}
@@ -37,11 +34,12 @@ public class UsuarioRequestDto {
     public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
     public void setObservacao(String observacao) {this.observacao = observacao;}
     public void setGuid(String guid) {this.guid = guid;}
-    public void setEmpresa(Empresa empresa) {this.empresa = empresa;}
+    public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
+    public Long getEmpresa_id() {return empresa_id;}
 
     public Usuario converter(UsuarioRepository repository){
         return new Usuario(nome, cpf, rg, data_nascimento,
                 foto, email, new BCryptPasswordEncoder().encode(senha), flag_ativo,
-                data_criacao, observacao, guid, empresa);
+                data_criacao, observacao, guid, empresa_id);
     }
 }

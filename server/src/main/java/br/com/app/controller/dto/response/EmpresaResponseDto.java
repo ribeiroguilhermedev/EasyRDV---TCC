@@ -1,12 +1,11 @@
 package br.com.app.controller.dto.response;
 
 import br.com.app.modelo.Empresa;
-import br.com.app.modelo.Usuario;
+import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
+@Data
 public class EmpresaResponseDto {
 
     private Long id;
@@ -17,7 +16,6 @@ public class EmpresaResponseDto {
     private LocalDateTime data_criacao;
     private String logo;
     private String guid;
-//    private List<Usuario> usuarios;
 
     public EmpresaResponseDto(Empresa empresa){
         this.id = empresa.getId();
@@ -28,10 +26,5 @@ public class EmpresaResponseDto {
         this.data_criacao = empresa.getData_criacao();
         this.logo = empresa.getLogo();
         this.guid = empresa.getGuid();
-//        this.usuarios = empresa.getUsuarios();
-    }
-
-    public static List<EmpresaResponseDto> converter(List<Empresa> empresa) {
-        return empresa.stream().map(EmpresaResponseDto::new).collect(Collectors.toList());
     }
 }
