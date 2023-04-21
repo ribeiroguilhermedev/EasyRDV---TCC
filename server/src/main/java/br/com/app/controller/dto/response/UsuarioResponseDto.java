@@ -3,7 +3,6 @@ package br.com.app.controller.dto.response;
 import br.com.app.modelo.Empresa;
 import br.com.app.modelo.Usuario;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Date;

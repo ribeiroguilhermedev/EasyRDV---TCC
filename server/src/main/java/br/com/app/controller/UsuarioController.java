@@ -26,6 +26,7 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity<UsuarioResponseDto> cadastrar(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) {
         Usuario usuario = form.converter(repository);
+        usuario.setEmpresaId(form.getEmpresa_id());
         repository.save(usuario);
 
         URI uri = uriBuilder.path("/cadastro/{id}").buildAndExpand(usuario.getId()).toUri();

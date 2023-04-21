@@ -1,7 +1,6 @@
 package br.com.app.modelo;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,7 +11,6 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -43,13 +41,30 @@ public class Usuario implements UserDetails {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Empresa empresa;
 
-	//empresa_id: fk (pesquisar como fazer relacionamento) NOT NULL
-
+	@Transient
+	private Long empresa_id;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Perfil> perfis = new ArrayList<>();
 
 	public Usuario() {
+	}
+
+	public Usuario(String nome, String cpf, String rg, Date data_nascimento,
+				   String foto, String email, String senha, Boolean flag_ativo,
+				   LocalDateTime data_criacao, String observacao, String guid, Long empresa_id) {
+		this.nome = nome;
+		this.cpf = cpf;
+		this.rg = rg;
+		this.data_nascimento = data_nascimento;
+		this.foto = foto;
+		this.email = email;
+		this.senha = senha;
+		this.flag_ativo = true;
+		this.data_criacao = LocalDateTime.now();
+		this.observacao = observacao;
+		this.guid = guid;
+		this.empresa_id = empresa_id;
 	}
 
 	public Usuario(String nome, String cpf, String rg, Date data_nascimento,
@@ -67,6 +82,24 @@ public class Usuario implements UserDetails {
 		this.observacao = observacao;
 		this.guid = guid;
 		this.empresa = empresa;
+	}
+
+	@PostLoad
+	private void postLoad() {
+		if (empresa == null){
+			return;
+		}
+		this.empresa_id = empresa.getId();
+	}
+
+	public void setEmpresaId(Long empresa_id) {
+		if (empresa_id != null) {
+			this.empresa = new Empresa();
+			this.empresa.setId(empresa_id);
+		} else {
+			this.empresa = null;
+		}
+		this.empresa_id = empresa_id;
 	}
 
 	public Long getId() {return id;}
