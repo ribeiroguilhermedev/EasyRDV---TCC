@@ -1,8 +1,11 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import businessTravel from '../../assets/business_travel.avif'
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../auth/authContext";
 import { AuthenticatedUser } from "../../types/types";
+import {useQuery} from 'react-query'
+import axios from "axios";
+import apiClient from "../../services/api";
 
 const Login = () => {
     const { login } = useAuth();
@@ -11,9 +14,20 @@ const Login = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState('');
 
+  
+    const {data, isFetching} = useQuery('repos', async() => {
+        const response = await apiClient.get('repos')
+        
+        return response.data;
+    })
+    
+   
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
+        data.map((e: any)=>{
+            console.log(e.full_name);
+            
+        })
         try {
             const added_time = 5 * 1000
             // const { user, token } = await signIn(email, password);
@@ -25,7 +39,6 @@ const Login = () => {
                 expires: Date.now() + added_time
             }
 
-            console.log(userTeste.expires);
             
 
             login(userTeste);
@@ -34,6 +47,7 @@ const Login = () => {
             console.error('Error during authentication:', error);
         }
     };
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
             <div className="hidden sm:block">
