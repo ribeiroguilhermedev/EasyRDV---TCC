@@ -15,8 +15,8 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
   
-    const {data, isFetching} = useQuery('repos', async() => {
-        const response = await apiClient.get('repos')
+    const {data, isFetching} = useQuery('id', async() => {
+        const response = await apiClient.get('1')
         
         return response.data;
     })
@@ -24,10 +24,7 @@ const Login = () => {
    
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        data.map((e: any)=>{
-            console.log(e.full_name);
-            
-        })
+       console.log(data)
         try {
             const added_time = 5 * 1000
             // const { user, token } = await signIn(email, password);
