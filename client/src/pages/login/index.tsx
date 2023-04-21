@@ -5,6 +5,7 @@ import { useAuth } from "../../auth/authContext";
 import { AuthenticatedUser } from "../../types/types";
 import {useQuery} from 'react-query'
 import axios from "axios";
+import apiClient from "../../services/api";
 
 const Login = () => {
     const { login } = useAuth();
@@ -15,16 +16,11 @@ const Login = () => {
 
   
     const {data, isFetching} = useQuery('repos', async() => {
-        const response = await axios.get('https://api.github.com/users/FelipeVidalG/repos')
+        const response = await apiClient.get('repos')
         
         return response.data;
     })
     
-
-  
-
- 
-
    
     const handleSubmit = async (e: any) => {
         e.preventDefault();
