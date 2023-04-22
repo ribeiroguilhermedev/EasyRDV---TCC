@@ -12,9 +12,9 @@ const Login = () => {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    // const [id, setId] = useState<number | null>(null);
-    // const [name_user, setNameUser] = useState<string | null>(null);
-    // const [token, setToken] = useState<string | null>(null);
+    const [id, setId] = useState<number | null>(null);
+    const [name_user, setNameUser] = useState<string | null>(null);
+    const [token, setToken] = useState<string | null>(null);
 
   
     // const {data, isFetching} = useQuery('id', async() => {
@@ -23,38 +23,41 @@ const Login = () => {
     //     return response.data;
     // })
 
-    const mutation = useMutation((auth: {email: String, senha:String}) => {
-        return apiClient.post('/auth', auth)
+    const mutation = useMutation(async(auth: {email: String, senha:String })  => {
+        return await apiClient.post('/auth', auth)
         .then(response => {
-            console.log(response.data?.usuario?.id)
-            console.log(response.data?.usuario?.nome)
-            console.log(response.data?.token)
+            const data = {
+                id: response.data?.usuario?.id,
+                nameUser: response.data?.usuario?.nome,
+                token: response.data?.token
+            };
+            setId(response.data?.usuario?.id)
+            setNameUser(response.data?.usuario?.nome)
+            setToken(response.data?.token)
+            return data
         })
         .catch(error => {
             console.error(error)
         })
-      })
+        
+    })
     
-      
-      const handleSubmit = async (e: any) => {
-          e.preventDefault();
-          
-          mutation.mutate({ email:email, senha: password })
-      
-
+    
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        
+        const result = await mutation.mutateAsync({ email: email, senha: password })
+    
 
         try {
             const added_time = 5 * 1000
             // const { user, token } = await signIn(email, password);
 
-
-
-
             var userTeste: AuthenticatedUser = {
-                email: "bil@email.com",
-                id: 1,
-                name: 'teste',
-                token: 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkiLCJzdWIiOiIyIiwiaWF0IjoxNjgyMTE1OTcwLCJleHAiOjE2ODIyMDIzNzB9.8B0U5spBdEfICQhp0i7UFmn0J514-25HmAe3v9_smqk',
+                email,
+                id: result?.id,
+                name: result?.nameUser,
+                token: result?.token,
                 expires: Date.now() + added_time
             }
 
