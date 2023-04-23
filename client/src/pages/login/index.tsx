@@ -5,6 +5,7 @@ import { useAuth } from "../../auth/authContext";
 import { AuthenticatedUser } from "../../types/types";
 import apiClient from "../../services/api";
 import {useMutation} from 'react-query'
+import { number } from "prop-types";
 
 const Login = () => {
     const { login } = useAuth();
@@ -15,6 +16,7 @@ const Login = () => {
     const [id, setId] = useState<number | null>(null);
     const [name_user, setNameUser] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [userTeste, setUserTeste] = useState<AuthenticatedUser | null>(null);
 
   
     // const {data, isFetching} = useQuery('id', async() => {
@@ -34,21 +36,21 @@ const Login = () => {
             setId(response.data?.usuario?.id)
             setNameUser(response.data?.usuario?.nome)
             setToken(response.data?.token)
+            setEmail(response.data?.email)
             return data
         })
         .catch(error => {
             console.error(error)
         })
-        
-    })
+    });
     
     
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         
+        
         const result = await mutation.mutateAsync({ email: email, senha: password })
-    
-
+        
         try {
             const added_time = 5 * 1000
             // const { user, token } = await signIn(email, password);
@@ -61,14 +63,28 @@ const Login = () => {
                 expires: Date.now() + added_time
             }
 
+            setUserTeste(
+                {email,
+                id: result?.id,
+                name: result?.nameUser,
+                token: result?.token,
+                expires: Date.now() + added_time}
+                )
+            
             console.log(userTeste)
 
             login(userTeste);
-            navigate('/home');
         } catch (error) {
             console.error('Error during authentication:', error);
         }
     };
+
+    useEffect(() => {
+        if (userTeste != null) {
+            
+          navigate('/home', { state: { userTeste } });
+        }
+      }, [userTeste]);
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
