@@ -6,9 +6,6 @@ const Home = () => {
     const auth = useAuth()
     const location = useLocation();
 
-    console.log(location.state.name);
-    
-
     return (
         <>
         <div>

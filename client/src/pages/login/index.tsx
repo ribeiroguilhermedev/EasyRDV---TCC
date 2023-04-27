@@ -33,14 +33,40 @@ const Login = () => {
                 nameUser: response.data?.usuario?.nome,
                 token: response.data?.token
             };
-            setId(response.data?.usuario?.id)
-            setNameUser(response.data?.usuario?.nome)
-            setToken(response.data?.token)
-            setEmail(response.data?.email)
+            // setId(response.data?.usuario?.id)
+            // setNameUser(response.data?.usuario?.nome)
+            // setToken(response.data?.token)
+            // setEmail(response.data?.email)
+
+            const added_time = 10 * 1000
+
+            setUserTeste(
+                {email,
+                id: response.data?.usuario?.id,
+                name: response.data?.usuario?.nome,
+                token: response.data?.token,
+                expires: Date.now() + added_time}
+                )
+
+            
+            var userTeste: AuthenticatedUser = {
+                email,
+                id: response.data?.usuario?.id,
+                name: response.data?.usuario?.nome,
+                token: response.data?.token,
+                expires: Date.now() + added_time
+            }
+
+
+            console.log(userTeste)
+
+            login(userTeste);  
+
             return data
         })
         .catch(error => {
             console.error(error)
+            alert('E-mail ou senha incorretos')
         })
     });
     
@@ -48,35 +74,8 @@ const Login = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         
-        
-        const result = await mutation.mutateAsync({ email: email, senha: password })
-        
-        try {
-            const added_time = 5 * 1000
-            // const { user, token } = await signIn(email, password);
-
-            var userTeste: AuthenticatedUser = {
-                email,
-                id: result?.id,
-                name: result?.nameUser,
-                token: result?.token,
-                expires: Date.now() + added_time
-            }
-
-            setUserTeste(
-                {email,
-                id: result?.id,
-                name: result?.nameUser,
-                token: result?.token,
-                expires: Date.now() + added_time}
-                )
-            
-            console.log(userTeste)
-
-            login(userTeste);
-        } catch (error) {
-            console.error('Error during authentication:', error);
-        }
+        await mutation.mutateAsync({ email: email, senha: password })
+    
     };
 
     useEffect(() => {
