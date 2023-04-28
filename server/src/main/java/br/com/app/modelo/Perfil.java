@@ -17,6 +17,11 @@ public class Perfil implements GrantedAuthority {
 
     private String nome;
 
+    @Override
+    public String getAuthority() {
+        return nome;
+    }
+
     public Long getId() {
         return id;
     }
@@ -31,11 +36,6 @@ public class Perfil implements GrantedAuthority {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    @Override
-    public String getAuthority() {
-        return nome;
     }
 
 }
