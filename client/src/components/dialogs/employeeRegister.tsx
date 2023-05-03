@@ -7,6 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAuth } from "../../auth/authContext";
 import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
 
 interface EmployeeRegisterProps {
     open: boolean;
@@ -99,8 +100,8 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={handleClose}>Confirmar</Button>
+                    <Button color='error' onClick={handleClose}>Cancelar</Button>
+                    <Button onClick={handleClose} startIcon={<AddIcon />} variant='outlined'>Adicionar</Button>
                 </DialogActions>
             </Dialog>
         </div>
