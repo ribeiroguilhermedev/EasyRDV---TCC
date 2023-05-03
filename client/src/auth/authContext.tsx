@@ -36,7 +36,7 @@ const getUserLocalStorage: () => AuthenticatedUser | null = () => {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const addExpirationTime = (user: AuthenticatedUser) => {
-    const added_time = 10 * 10000
+    const added_time = 10 * 1000000
     user.expires = Date.now() + added_time
     return user
   }

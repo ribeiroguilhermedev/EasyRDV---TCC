@@ -14,7 +14,7 @@ const createColor = (mainColor: any) => augmentColor({ color: { main: mainColor 
 const theme = createTheme({
   palette: {
     secondary: createColor("#1d4d6c"),
-    mode: 'light',
+    mode: 'dark',
   },
 });
 
