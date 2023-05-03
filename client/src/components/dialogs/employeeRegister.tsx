@@ -30,7 +30,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Cadastro de funcionário</DialogTitle>
-                <DialogContent className='flex flex-row gap-2' style={{padding: "0px 24px"}}>
+                <DialogContent className='flex flex-row gap-3' style={{padding: "0px 24px"}}>
                     <TextField className='basis-1/2'
                         autoFocus
                         margin="dense"
@@ -59,7 +59,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         variant="outlined"
                     />
                 </DialogContent>
-                <DialogContent className='flex flex-row gap-2' style={{padding: "0px 24px"}}>
+                <DialogContent className='flex flex-row gap-3' style={{padding: "0px 24px"}}>
                     <TextField className='basis-1/3'
                         autoFocus
                         margin="dense"
