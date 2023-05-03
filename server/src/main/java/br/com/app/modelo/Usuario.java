@@ -131,6 +131,8 @@ public class Usuario implements UserDetails {
 	public Empresa getEmpresa() {return empresa;}
 
 
+	public void addRole(Perfil perfil) {this.perfis.add(perfil);}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.perfis;

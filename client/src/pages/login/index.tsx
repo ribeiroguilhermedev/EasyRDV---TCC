@@ -36,8 +36,6 @@ const Login = () => {
                 expires: Date.now() + added_time
             }
 
-            
-
             login(userTeste);
             navigate('/home');
         } catch (error) {
