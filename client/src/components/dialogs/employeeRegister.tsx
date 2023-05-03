@@ -29,25 +29,78 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
                 <DialogTitle>Cadastro de funcionário</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We
-                        will send updates occasionally.
-                    </DialogContentText>
-                    <TextField
-                        error
+                <DialogContent className='flex flex-row gap-2' style={{padding: "0px 24px"}}>
+                    <TextField className='basis-1/2'
                         autoFocus
                         margin="dense"
                         id="name"
-                        label="Email Address"
+                        label="Nome*"
+                        type="text"
+                        variant="outlined"
+                    />
+                    <TextField className='basis-1/2'
+                        autoFocus
+                        margin="dense"
+                        id="last_name"
+                        label="Sobrenome*"
+                        type="text"
+                        variant="outlined"
+                    />
+                </DialogContent>
+                <DialogContent style={{padding: "0px 24px"}}>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="email"
+                        label="Email Address*"
                         type="email"
                         fullWidth
                         variant="outlined"
                     />
                 </DialogContent>
+                <DialogContent className='flex flex-row gap-2' style={{padding: "0px 24px"}}>
+                    <TextField className='basis-1/3'
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Data de nascimento*"
+                        type="date"
+                        variant="outlined"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                    <TextField className='basis-1/3'
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="RG*"
+                        type="text"
+                        variant="outlined"
+                    />
+                    <TextField className='basis-1/3'
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="CPF*"
+                        type="text"
+                        variant="outlined"
+                    />
+                </DialogContent>
+                <DialogContent style={{padding: "0px 24px"}}>
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Observação"
+                        margin='dense'
+                        multiline
+                        fullWidth
+                        rows={4}
+                        placeholder="Digite uma observação sobre o funcionário se necessário."
+                    />
+                </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Subscribe</Button>
+                    <Button onClick={handleClose}>Cancelar</Button>
+                    <Button onClick={handleClose}>Confirmar</Button>
                 </DialogActions>
             </Dialog>
         </div>
