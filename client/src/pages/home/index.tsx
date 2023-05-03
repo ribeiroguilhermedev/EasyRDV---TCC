@@ -18,7 +18,7 @@ const Home = () => {
         auth.logout()
       }}>logout</button>
 
-      <EmployeeRegister open />
+      <EmployeeRegister open={true} />
     </>
   )
 }

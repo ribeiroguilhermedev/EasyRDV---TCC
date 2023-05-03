@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useAuth } from "../../auth/authContext";
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import  { useForm } from 'react-hook-form'
 
 interface EmployeeRegisterProps {
     open: boolean;
@@ -26,6 +27,14 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
         setOpen(false);
     };
 
+    const {register, handleSubmit, formState: {errors}} = useForm();
+
+    console.log(errors);
+    
+
+
+
+
     return (
         <div>
             <Dialog open={isOpen} onClose={handleClose}>
@@ -38,6 +47,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         label="Nome*"
                         type="text"
                         variant="outlined"
+                        {...register("name", {required: 'Preencha o campo obrigatório'})}
                     />
                     <TextField className='basis-1/2'
                         autoFocus
@@ -46,6 +56,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         label="Sobrenome*"
                         type="text"
                         variant="outlined"
+                        {...register("last_name", {required: 'Preencha o campo obrigatório'})}
                     />
                 </DialogContent>
                 <DialogContent style={{padding: "0px 24px"}}>
@@ -57,6 +68,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         type="email"
                         fullWidth
                         variant="outlined"
+                        {...register("email", {required: 'Preencha o campo obrigatório'})}
                     />
                 </DialogContent>
                 <DialogContent className='flex flex-row gap-3' style={{padding: "0px 24px"}}>
@@ -70,6 +82,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        {...register("date", {required: 'Preencha o campo obrigatório'})}
                     />
                     <TextField className='basis-1/3'
                         autoFocus
@@ -78,6 +91,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         label="RG*"
                         type="text"
                         variant="outlined"
+                        {...register("rg", {required: 'Preencha o campo obrigatório'})}
                     />
                     <TextField className='basis-1/3'
                         autoFocus
@@ -86,6 +100,7 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         label="CPF*"
                         type="text"
                         variant="outlined"
+                        {...register("cpf", {required: 'Preencha o campo obrigatório'})}
                     />
                 </DialogContent>
                 <DialogContent style={{padding: "0px 24px"}}>
@@ -97,11 +112,17 @@ const EmployeeRegister = ({ open }: EmployeeRegisterProps) => {
                         fullWidth
                         rows={4}
                         placeholder="Digite uma observação sobre o funcionário se necessário."
+                        {...register("obs")}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button color='error' onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={handleClose} startIcon={<AddIcon />} variant='outlined'>Adicionar</Button>
+                    <Button onClick={handleSubmit((data) => 
+                        {  
+                        console.log(data) 
+                        setOpen(false); 
+                        })} 
+                        startIcon={<AddIcon />} variant='outlined'>Adicionar</Button>
                 </DialogActions>
             </Dialog>
         </div>
