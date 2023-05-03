@@ -22,6 +22,7 @@ public class Usuario implements UserDetails {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	private String sobrenome;
 	private String cpf;
 	private String rg;
 
@@ -35,6 +36,9 @@ public class Usuario implements UserDetails {
 	private LocalDateTime data_criacao;
 	private String observacao;
 	private String guid;
+
+	@Enumerated(EnumType.STRING)
+	private Etapa etapa;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "empresa_id", nullable = false)
@@ -50,10 +54,11 @@ public class Usuario implements UserDetails {
 	public Usuario() {
 	}
 
-	public Usuario(String nome, String cpf, String rg, Date data_nascimento,
+	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
 				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Long empresa_id) {
+				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa, Long empresa_id) {
 		this.nome = nome;
+		this.sobrenome = sobrenome;
 		this.cpf = cpf;
 		this.rg = rg;
 		this.data_nascimento = data_nascimento;
@@ -64,13 +69,16 @@ public class Usuario implements UserDetails {
 		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
 		this.guid = guid;
+		this.etapa = Etapa.CRIADO;
 		this.empresa_id = empresa_id;
 	}
 
-	public Usuario(String nome, String cpf, String rg, Date data_nascimento,
+	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
 				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Empresa empresa) {
+				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa,
+				   Empresa empresa) {
 		this.nome = nome;
+		this.sobrenome = sobrenome;
 		this.cpf = cpf;
 		this.rg = rg;
 		this.data_nascimento = data_nascimento;
@@ -81,6 +89,7 @@ public class Usuario implements UserDetails {
 		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
 		this.guid = guid;
+		this.etapa = Etapa.CRIADO;
 		this.empresa = empresa;
 	}
 
@@ -103,56 +112,26 @@ public class Usuario implements UserDetails {
 	}
 
 	public Long getId() {return id;}
-
-	public void setId(Long id) {this.id = id;}
-
 	public String getNome() {return nome;}
-
 	public void setNome(String nome) {this.nome = nome;}
-
+	public String getSobrenome() {return sobrenome;}
+	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
 	public String getCpf() {return cpf;}
-
 	public void setCpf(String cpf) {this.cpf = cpf;}
-
 	public String getRg() {return rg;}
-
-	public void setRg(String rg) {this.rg = rg;}
-
 	public Date getData_nascimento() {return data_nascimento;}
-
-	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
-
 	public String getFoto() {return foto;}
-
-	public void setFoto(String foto) {this.foto = foto;}
-
 	public String getEmail() {return email;}
-
-	public void setEmail(String email) {this.email = email;}
-
 	public String getSenha() {return senha;}
-
-	public void setSenha(String senha) {this.senha = senha;}
-
 	public Boolean getFlag_ativo() {return flag_ativo;}
-
-	public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
-
 	public LocalDateTime getData_criacao() {return data_criacao;}
-
-	public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
-
 	public String getObservacao() {return observacao;}
-
-	public void setObservacao(String observacao) {this.observacao = observacao;}
-
 	public String getGuid() {return guid;}
-
-	public void setGuid(String guid) {this.guid = guid;}
-
+	public Etapa getEtapa() {return etapa;}
 	public Empresa getEmpresa() {return empresa;}
 
-	public void setEmpresa(Empresa empresa) {this.empresa = empresa;}
+
+	public void addRole(Perfil perfil) {this.perfis.add(perfil);}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
