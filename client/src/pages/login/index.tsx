@@ -22,7 +22,17 @@ const Login = () => {
                         email,
                         id: response.data?.usuario?.id,
                         name: response.data?.usuario?.nome,
+                        sobrenome: response.data?.usuario?.sobrenome,
+                        cpf: response.data?.usuario?.cpf,
+                        rg: response.data?.usuario?.rg,
+                        data_nascimento: response.data?.usuario?.data_nascimento,
                         token: response.data?.token,
+                        empresa_id: response.data?.empresa_id,
+                        guid: response.data?.guid,
+                        observacao: response.data?.observacao,
+                        data_criacao: response.data?.data_criacao,
+                        flag_ativo: response.data?.flag_ativo,
+                        foto: response.data?.foto,
                     }
                     setCurrentUser(user)
                     login(user);
