@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 public class UsuarioRequestDto {
 
@@ -18,12 +19,7 @@ public class UsuarioRequestDto {
     private Date data_nascimento;
     private String foto;
     private String email;
-    private String senha;
-    private Boolean flag_ativo;
-    private LocalDateTime data_criacao;
     private String observacao;
-    private String guid;
-    private Etapa etapa;
     private Long empresa_id;
 
     public void setNome(String nome) {this.nome = nome;}
@@ -34,18 +30,17 @@ public class UsuarioRequestDto {
     public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
     public void setFoto(String foto) {this.foto = foto;}
     public void setEmail(String email) {this.email = email;}
-    public void setSenha(String senha) {this.senha = senha;}
-    public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
-    public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
+//    public void setSenha(String senha) {this.senha = senha;}
+//    public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
+//    public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
     public void setObservacao(String observacao) {this.observacao = observacao;}
-    public void setGuid(String guid) {this.guid = guid;}
-    public void setEtapa(Etapa etapa) {this.etapa = etapa;}
+//    public void setGuid(String guid) {this.guid = guid;}
+//    public void setEtapa(Etapa etapa) {this.etapa = etapa;}
     public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
     public Long getEmpresa_id() {return empresa_id;}
 
     public Usuario converter(UsuarioRepository repository){
         return new Usuario(nome, sobrenome, cpf, rg, data_nascimento,
-                foto, email, new BCryptPasswordEncoder().encode(senha), flag_ativo,
-                data_criacao, observacao, guid, etapa, empresa_id);
+                foto, email, observacao, empresa_id);
     }
 }

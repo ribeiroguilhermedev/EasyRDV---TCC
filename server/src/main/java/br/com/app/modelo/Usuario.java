@@ -1,10 +1,7 @@
 package br.com.app.modelo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class Usuario implements UserDetails {
@@ -35,6 +33,7 @@ public class Usuario implements UserDetails {
 	private Boolean flag_ativo;
 	private LocalDateTime data_criacao;
 	private String observacao;
+
 	private String guid;
 
 	@Enumerated(EnumType.STRING)
@@ -55,8 +54,7 @@ public class Usuario implements UserDetails {
 	}
 
 	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
-				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa, Long empresa_id) {
+				   String foto, String email, String observacao, Long empresa_id) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
@@ -64,19 +62,17 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		this.senha = senha;
+		new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
 		this.flag_ativo = true;
 		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = guid;
+		this.guid = String.valueOf(UUID.randomUUID());
 		this.etapa = Etapa.CRIADO;
 		this.empresa_id = empresa_id;
 	}
 
 	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
-				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa,
-				   Empresa empresa) {
+				   String foto, String email,String observacao, Empresa empresa) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
@@ -84,11 +80,11 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		this.senha = senha;
+		new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
 		this.flag_ativo = true;
 		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = guid;
+		this.guid = String.valueOf(UUID.randomUUID());
 		this.etapa = Etapa.CRIADO;
 		this.empresa = empresa;
 	}
@@ -168,4 +164,21 @@ public class Usuario implements UserDetails {
 		return true;
 	}
 
+}
+
+class PasswordGenerator {
+
+	private static final String CHARACTERS =
+			"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	private static final int PASSWORD_LENGTH = 6;
+
+	public static String generate() {
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < PASSWORD_LENGTH; i++) {
+			int index = random.nextInt(CHARACTERS.length());
+			sb.append(CHARACTERS.charAt(index));
+		}
+		return sb.toString();
+	}
 }
