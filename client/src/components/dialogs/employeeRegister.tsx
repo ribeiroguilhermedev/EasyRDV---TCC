@@ -2,6 +2,8 @@ import { useAuth } from "../../auth/authContext";
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { User, EmployeeRegisterProps } from "../../types/types";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +14,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import apiClient from "../../services/api";
-import { User, EmployeeRegisterProps } from "../../types/types";
+import * as yup from "yup";
+
 
 const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
@@ -35,9 +38,19 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
         }
     );
 
+    const schema = yup.object({
+        name: yup.string().required(),
+        sobrenome: yup.string().required(),
+        cpf:  yup.string().required(),
+        rg:  yup.string().required(),
+        data_nascimento:  yup.date().max(new Date(), 'Não é possível incluir uma data futura').required(),
+        email: yup.string().email('Precisa ser um email válido').required(),
+      }).required();
+
     const handleSubmitInternal = async (data: Object) => {
         setLoading(true)
-
+        console.log(data);
+        
         const user = data as User
         user.senha = '123'
         user.empresa_id = 1
@@ -47,7 +60,9 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
         setOpen(false)
     }
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm<User>({
+        resolver: yupResolver(schema)
+    });
 
     return (
         <div>
@@ -65,7 +80,7 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
                         type="text"
                         variant="outlined"
                         error={!!errors['name']}
-                        {...register("nome", { required: true })}
+                        {...register("name", { required: true })}
                     />
                     <TextField className='basis-1/2'
                         autoFocus
@@ -74,7 +89,7 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
                         label="Sobrenome*"
                         type="text"
                         variant="outlined"
-                        error={!!errors['last_name']}
+                        error={!!errors['sobrenome']}
                         {...register("sobrenome", { required: true })}
                     />
                 </DialogContent>
@@ -95,14 +110,14 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
                     <TextField className='basis-1/3'
                         autoFocus
                         margin="dense"
-                        id="birth_date"
+                        id="data_nascimento"
                         label="Data de nascimento*"
                         type="date"
                         variant="outlined"
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        error={!!errors['date']}
+                        error={!!errors['data_nascimento']}
                         {...register("data_nascimento", { required: true })}
                     />
                     <TextField className='basis-1/3'
@@ -128,7 +143,7 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
                 </DialogContent>
                 <DialogContent style={{ padding: "0px 24px" }}>
                     <TextField
-                        id="observation"
+                        id="observacao"
                         label="Observação"
                         margin='dense'
                         multiline
