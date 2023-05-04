@@ -12,12 +12,14 @@ public class UsuarioInfoResponseDto {
 
     private Long id;
     private String nome;
+    private String sobrenome;
     private String email;
     private List<Perfil> perfis = new ArrayList<>();
 
     public UsuarioInfoResponseDto(Usuario usuario){
         this.id = usuario.getId();
         this.nome = usuario.getNome();
+        this.sobrenome = usuario.getSobrenome();
         this.email = usuario.getEmail();
         this.perfis = (List<Perfil>) usuario.getAuthorities();
     }

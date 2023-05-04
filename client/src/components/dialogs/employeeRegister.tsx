@@ -1,5 +1,5 @@
 import { useAuth } from "../../auth/authContext";
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,18 +10,25 @@ import Dialog from '@mui/material/Dialog';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import apiClient from "../../services/api";
 import * as yup from "yup";
+import InputMask from 'react-input-mask';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
-
-const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
+const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
-
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const [cpfValidationFailed, setCpfValidationFailed] = useState(false);
+    const [rgValidationFailed, setRGValidationFailed] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const cpfRef = useRef<HTMLInputElement>(null);
+    const rgRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setOpen(open);
@@ -41,35 +48,68 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
     const schema = yup.object({
         name: yup.string().required(),
         sobrenome: yup.string().required(),
-        cpf:  yup.string().required(),
-        rg:  yup.string().required(),
-        data_nascimento:  yup.date().max(new Date(), 'Não é possível incluir uma data futura').required(),
+        cpf: yup.string(),
+        rg: yup.string(),
+        data_nascimento: yup.date().max(new Date(), 'Não é possível incluir uma data futura').required(),
         email: yup.string().email('Precisa ser um email válido').required(),
-      }).required();
+    }).required();
+
+    const ValidateCPF_RG: () => boolean = () => {
+        const cpf = cpfRef.current?.value.replace(/\D/g, "")
+
+        let valid = true;
+
+        if (cpf?.length !== 11) {
+            setCpfValidationFailed(true)
+            valid = false
+        }
+
+        const rg = rgRef.current?.value.replace(/\D/g, "")
+        if (rg?.length !== 9) {
+            setRGValidationFailed(true)
+            valid = false
+        }
+        return valid;
+    };
 
     const handleSubmitInternal = async (data: Object) => {
+        if (!ValidateCPF_RG()) return
+
         setLoading(true)
-        console.log(data);
-        
+
         const user = data as User
         user.senha = '123'
         user.empresa_id = 1
 
         await mutation.mutateAsync(user)
 
+        onClose()
         setOpen(false)
+        setLoading(false)
+
+        reset({
+            name: '',
+            sobrenome: '',
+            email: '',
+            data_nascimento: null,
+            observacao: '',
+        })
     }
 
-    const { register, handleSubmit, formState: { errors } } = useForm<User>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<User>({
         resolver: yupResolver(schema)
     });
 
+    const hasInputError = Object.keys(errors).length > 0
+    const hasRGOrCpfError = cpfValidationFailed || rgValidationFailed
+
     return (
         <div>
-            <Dialog open={isOpen} onClose={handleClose}>
+            <Dialog open={isOpen} onClose={handleClose} fullScreen={fullScreen}>
                 <div className='flex justify-between items-center'>
                     <DialogTitle>Cadastro de funcionário</DialogTitle>
-                    {Object.keys(errors).length > 0 && <p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
+                    {hasInputError && !cpfValidationFailed &&<p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
+                    {hasRGOrCpfError && !hasInputError && <p className='pr-6 text-error'>Preencha corretamente os campos</p>}
                 </div>
                 <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
                     <TextField className='basis-1/2'
@@ -120,26 +160,40 @@ const EmployeeRegister = ({ open , onClose}: EmployeeRegisterProps) => {
                         error={!!errors['data_nascimento']}
                         {...register("data_nascimento", { required: true })}
                     />
-                    <TextField className='basis-1/3'
+                    <InputMask
+                        mask="99.999.999-9"
+                        disabled={false}
+                        className='basis-1/3'
                         autoFocus
-                        margin="dense"
                         id="rg"
-                        label="RG*"
                         type="text"
-                        variant="outlined"
-                        error={!!errors['rg']}
-                        {...register("rg", { required: true })}
-                    />
-                    <TextField className='basis-1/3'
+                        inputRef={rgRef}
+                        onChange={() => setRGValidationFailed(false)}
+                    >
+                        <TextField
+                            margin="dense"
+                            label="RG*"
+                            variant="outlined"
+                            error={rgValidationFailed}
+                        />
+                    </InputMask>
+                    <InputMask
+                        mask="999.999.999-99"
+                        disabled={false}
+                        className='basis-1/3'
                         autoFocus
-                        margin="dense"
                         id="cpf"
-                        label="CPF*"
                         type="text"
-                        variant="outlined"
-                        error={!!errors['cpf']}
-                        {...register("cpf", { required: true })}
-                    />
+                        inputRef={cpfRef}
+                        onChange={() => setCpfValidationFailed(false)}
+                    >
+                        <TextField
+                            margin="dense"
+                            label="CPF*"
+                            variant="outlined"
+                            error={cpfValidationFailed}
+                        />
+                    </InputMask>
                 </DialogContent>
                 <DialogContent style={{ padding: "0px 24px" }}>
                     <TextField
