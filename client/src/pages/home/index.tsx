@@ -3,11 +3,6 @@ import { useAuth } from "../../auth/authContext"
 import { useLocation } from 'react-router-dom';
 import EmployeeRegister from "../../components/dialogs/employeeRegister";
 import AppBar from '@mui/material/AppBar';
-// import Toolbar from '@mui/material/Toolbar';
-// import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-// import Avatar from '@mui/material/Avatar';
-// import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -19,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 
 
@@ -60,7 +55,7 @@ const Home = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <CardTravelIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -115,7 +110,7 @@ const Home = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <CardTravelIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -132,7 +127,7 @@ const Home = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            EasyRDV
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
