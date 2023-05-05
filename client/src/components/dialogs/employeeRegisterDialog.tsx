@@ -18,7 +18,7 @@ import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
+const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -228,4 +228,4 @@ const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
     )
 }
 
-export default EmployeeRegister
+export default EmployeeRegisterDialog

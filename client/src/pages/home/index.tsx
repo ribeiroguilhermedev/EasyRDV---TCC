@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Header from "../../components/header/header";
-import EmployeeRegister from "../../components/dialogs/employeeRegister";
+import EmployeeRegisterDialog from "../../components/dialogs/employeeRegisterDialog";
 import Aside from "../../components/aside/aside";
 import EmployeeControl from "../../components/modules/employeeControl";
 
@@ -23,7 +23,7 @@ const Home = () => {
     <main>
      {employeeControlOpen && <EmployeeControl employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen}/>} 
     </main>
-      <EmployeeRegister open={isOpen} onClose={() => setOpen(false)} />
+      <EmployeeRegisterDialog open={isOpen} onClose={() => setOpen(false)} />
     </>
   )
 }
