@@ -46,7 +46,7 @@ const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
     );
 
     const schema = yup.object({
-        name: yup.string().required(),
+        nome: yup.string().required(),
         sobrenome: yup.string().required(),
         cpf: yup.string(),
         rg: yup.string(),
@@ -88,7 +88,7 @@ const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
         setLoading(false)
 
         reset({
-            name: '',
+            nome: '',
             sobrenome: '',
             email: '',
             data_nascimento: null,
@@ -115,12 +115,12 @@ const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
                     <TextField className='basis-1/2'
                         autoFocus
                         margin="dense"
-                        id="name"
+                        id="nome"
                         label="Nome*"
                         type="text"
                         variant="outlined"
-                        error={!!errors['name']}
-                        {...register("name", { required: true })}
+                        error={!!errors['nome']}
+                        {...register("nome", { required: true })}
                     />
                     <TextField className='basis-1/2'
                         autoFocus

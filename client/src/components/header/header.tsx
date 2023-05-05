@@ -16,11 +16,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 
-const Home = () => {
+
+
+const Header = () => {
   const auth = useAuth()
   const location = useLocation();
-
-  const [isOpen, setOpen] = useState(false);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -34,7 +34,6 @@ const Home = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    setOpen(true)
   };
 
   const handleCloseUserMenu = () => {
@@ -178,9 +177,8 @@ const Home = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <EmployeeRegister open={isOpen} onClose={() => setOpen(false)} />
     </>
   )
 }
 
-export default Home
+export default Header
