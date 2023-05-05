@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useAuth } from "../../auth/authContext"
 import { useLocation } from 'react-router-dom';
-import EmployeeRegister from "../../components/dialogs/employeeRegister";
+import EmployeeRegister from "../dialogs/employeeRegisterDialog";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
