@@ -62,7 +62,7 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
+		this.senha = new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
 		this.flag_ativo = true;
 		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
@@ -109,16 +109,17 @@ public class Usuario implements UserDetails {
 
 	public Long getId() {return id;}
 	public String getNome() {return nome;}
-	public void setNome(String nome) {this.nome = nome;}
 	public String getSobrenome() {return sobrenome;}
-	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {this.cpf = cpf;}
 	public String getRg() {return rg;}
 	public Date getData_nascimento() {return data_nascimento;}
 	public String getFoto() {return foto;}
+	public void setFoto(String foto) {this.foto = foto;}
 	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
 	public String getSenha() {return senha;}
+	public void setSenha(String senha) {this.senha = senha;}
 	public Boolean getFlag_ativo() {return flag_ativo;}
 	public LocalDateTime getData_criacao() {return data_criacao;}
 	public String getObservacao() {return observacao;}
