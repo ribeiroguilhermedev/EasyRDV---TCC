@@ -1,24 +1,14 @@
-import React, { useState } from "react"
+import React, {useState} from "react"
 import { useAuth } from "../../auth/authContext"
 import { useLocation } from 'react-router-dom';
-import EmployeeRegister from "../../components/dialogs/employeeRegister";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
+import { HeaderProps } from "../../types/types";
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 
 
-const Header = () => {
+const Header = ({ isOpen, setOpen }: HeaderProps) => {
   const auth = useAuth()
   const location = useLocation();
 
@@ -34,6 +24,7 @@ const Header = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    setOpen(true)
   };
 
   const handleCloseUserMenu = () => {
@@ -56,7 +47,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <CardTravelIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

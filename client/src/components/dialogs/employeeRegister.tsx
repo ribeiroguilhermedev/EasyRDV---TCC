@@ -80,6 +80,8 @@ const EmployeeRegister = ({ open, onClose }: EmployeeRegisterProps) => {
         const user = data as User
         user.senha = '123'
         user.empresa_id = 1
+        user.cpf =  cpfRef.current?.value
+        user.rg =  rgRef.current?.value
 
         await mutation.mutateAsync(user)
 
