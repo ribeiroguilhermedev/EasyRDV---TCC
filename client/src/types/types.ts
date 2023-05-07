@@ -26,10 +26,6 @@ export interface EmployeeRegisterProps {
   onClose: Function;
 }
 
-export interface HeaderProps {
-  isOpen: boolean;
-  setOpen: Function;
-}
 export interface EmployeeProps {
   employeeControlOpen: boolean;
   setEmployeeControlOpen: Function;

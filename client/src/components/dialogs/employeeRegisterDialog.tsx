@@ -1,5 +1,5 @@
 import { useAuth } from "../../auth/authContext";
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -17,12 +17,16 @@ import * as yup from "yup";
 import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { ErrorButton } from "../../styles/Buttons";
+import { DatePicker } from "@mui/x-date-pickers";
+import Box from "@mui/material/Box";
 
 const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const [cpfValidationFailed, setCpfValidationFailed] = useState(false);
+    const [dateValue, setDateValue] = useState<Date | undefined>(undefined);
     const [rgValidationFailed, setRGValidationFailed] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -37,6 +41,11 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const handleClose = () => {
         onClose()
         setOpen(false);
+    };
+
+    const handleChangeDate = (value: any) => {
+        console.log(value.$d);
+        console.log(value.$d);
     };
 
     const mutation = useMutation(
@@ -80,8 +89,8 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
         const user = data as User
         user.senha = '123'
         user.empresa_id = 1
-        user.cpf =  cpfRef.current?.value
-        user.rg =  rgRef.current?.value
+        user.cpf = cpfRef.current?.value
+        user.rg = rgRef.current?.value
 
         await mutation.mutateAsync(user)
 
@@ -110,7 +119,7 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
             <Dialog open={isOpen} onClose={handleClose} fullScreen={fullScreen}>
                 <div className='flex justify-between items-center'>
                     <DialogTitle>Cadastro de funcionário</DialogTitle>
-                    {hasInputError && !cpfValidationFailed &&<p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
+                    {hasInputError && !cpfValidationFailed && <p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
                     {hasRGOrCpfError && !hasInputError && <p className='pr-6 text-error'>Preencha corretamente os campos</p>}
                 </div>
                 <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
@@ -150,18 +159,17 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
                 </DialogContent>
                 <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
                     <TextField className='basis-1/3'
-                        autoFocus
-                        margin="dense"
                         id="data_nascimento"
-                        label="Data de nascimento*"
-                        type="date"
-                        variant="outlined"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        value={dateValue}
                         error={!!errors['data_nascimento']}
                         {...register("data_nascimento", { required: true })}
                     />
+                    <Box>
+                        <DatePicker
+                            label="Data de nascimento*"
+                            onChange={handleChangeDate}
+                        />
+                    </Box>
                     <InputMask
                         mask="99.999.999-9"
                         disabled={false}
@@ -210,7 +218,7 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
                     />
                 </DialogContent>
                 <DialogActions className='mr-4'>
-                    <Button color='error' onClick={handleClose}>Cancelar</Button>
+                    <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
                     <LoadingButton
                         onClick={
                             handleSubmit(handleSubmitInternal)

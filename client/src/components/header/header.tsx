@@ -2,13 +2,12 @@ import React, {useState} from "react"
 import { useAuth } from "../../auth/authContext"
 import { useLocation } from 'react-router-dom';
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
-import { HeaderProps } from "../../types/types";
 import MenuIcon from '@mui/icons-material/Menu';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 
 
 
-const Header = ({ isOpen, setOpen }: HeaderProps) => {
+const Header = () => {
   const auth = useAuth()
   const location = useLocation();
 
@@ -24,7 +23,6 @@ const Header = ({ isOpen, setOpen }: HeaderProps) => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-    setOpen(true)
   };
 
   const handleCloseUserMenu = () => {
@@ -42,12 +40,12 @@ const Header = ({ isOpen, setOpen }: HeaderProps) => {
     };
   }
 
-  const pages = [{ nome: 'Cadastrar', fClick: handleCloseNavMenu }];
+  const pages = [{}];
   const settings = [{ nome: 'Perfil', fClick: handleCloseUserMenu }, { nome: 'Logout', fClick: logout }]
 
   return (
     <>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <AppBar style={{position: 'unset'}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <CardTravelIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -98,11 +96,11 @@ const Header = ({ isOpen, setOpen }: HeaderProps) => {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {pages.map((page) => (
+                {/* {pages.map((page) => (
                   <MenuItem key={page.nome} onClick={page.fClick}>
                     <Typography textAlign="center">{page.nome}</Typography>
                   </MenuItem>
-                ))}
+                ))} */}
               </Menu>
             </Box>
             <CardTravelIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -125,7 +123,7 @@ const Header = ({ isOpen, setOpen }: HeaderProps) => {
               EasyRDV
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
+              {/* {pages.map((page) => (
                 <Button
                   key={page.nome}
                   onClick={page.fClick}
@@ -133,7 +131,7 @@ const Header = ({ isOpen, setOpen }: HeaderProps) => {
                 >
                   {page.nome}
                 </Button>
-              ))}
+              ))} */}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>

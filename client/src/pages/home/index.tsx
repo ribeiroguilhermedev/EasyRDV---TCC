@@ -1,29 +1,23 @@
 import { useState } from "react"
 import Header from "../../components/header/header";
-import EmployeeRegisterDialog from "../../components/dialogs/employeeRegisterDialog";
 import Aside from "../../components/aside/aside";
 import EmployeeControl from "../../components/modules/employeeControl";
+import Paper from "@mui/material/Paper";
 
 const Home = () => {
-
-
-  const [isOpen, setOpen] = useState(false);
   const [employeeControlOpen, setEmployeeControlOpen] = useState(false)
-
-
 
   return (
     <>
-    <header>
-      <Header isOpen={isOpen} setOpen={setOpen}/>
-    </header>
-    <aside>
-      <Aside employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen}/>
-    </aside>
-    <main>
-     {employeeControlOpen && <EmployeeControl employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen}/>} 
-    </main>
-      <EmployeeRegisterDialog open={isOpen} onClose={() => setOpen(false)} />
+      <div className="flex flex-col h-screen">
+        <Header />
+        <div className="flex h-full">
+          <Aside employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />
+          <Paper className="w-full pt-5 rounded-none" square={true}>
+            {employeeControlOpen && <EmployeeControl employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />}
+          </Paper>
+        </div>
+      </div>
     </>
   )
 }

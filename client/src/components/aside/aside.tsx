@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import BadgeIcon from '@mui/icons-material/Badge';
 import { EmployeeProps } from '../../types/types';
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 export default function Aside({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) {
 
@@ -23,7 +23,6 @@ export default function Aside({ employeeControlOpen, setEmployeeControlOpen }: E
     }, [employeeControlOpen]);
 
     function openEmployeeControl() {
-        console.log('teste');
         setEmployeeControlOpen(true)
     }
 
@@ -35,16 +34,15 @@ export default function Aside({ employeeControlOpen, setEmployeeControlOpen }: E
             sx={{
                 width: drawerWidth,
                 flexShrink: 0,
-                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position: 'unset' },
             }}>
 
-            <Toolbar />
             <Box sx={{ overflow: 'auto' }}>
                 <List>
                     {items.map((item) => (
                         <ListItem key={item.nome} onClick={item.fClick} disablePadding>
                             <ListItemButton>
-                                <ListItemIcon>
+                                <ListItemIcon style={{ minWidth: '40px' }}>
                                     {/* {index % 2 === 0 ? <BadgeIcon /> : <BadgeIcon />} */}
                                     <BadgeIcon />
                                 </ListItemIcon>
@@ -55,7 +53,6 @@ export default function Aside({ employeeControlOpen, setEmployeeControlOpen }: E
                 </List>
                 <Divider />
             </Box>
-
         </Drawer>
 
     );
