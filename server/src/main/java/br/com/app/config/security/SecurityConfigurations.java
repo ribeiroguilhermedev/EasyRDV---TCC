@@ -43,10 +43,10 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	//Configuracoes de autorizacao
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeHttpRequests()
 				.antMatchers(HttpMethod.POST, "/auth").permitAll()
 				.antMatchers(HttpMethod.POST, "/usuario/**").permitAll()
-				.antMatchers(HttpMethod.DELETE, "/usuario/*").hasRole("ADMIN")
+				.antMatchers(HttpMethod.DELETE, "/usuario/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/empresa/*").permitAll()
 				.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "**/swagger-resources/**",

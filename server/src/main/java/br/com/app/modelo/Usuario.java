@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
@@ -19,6 +21,7 @@ public class Usuario implements UserDetails {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message = "{nome.obrigatorio}")
 	private String nome;
 	private String sobrenome;
 	private String cpf;
@@ -62,12 +65,7 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
-		this.flag_ativo = true;
-		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = String.valueOf(UUID.randomUUID());
-		this.etapa = Etapa.CRIADO;
 		this.empresa_id = empresa_id;
 	}
 
@@ -80,12 +78,7 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		new BCryptPasswordEncoder().encode(this.senha = PasswordGenerator.generate());
-		this.flag_ativo = true;
-		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = String.valueOf(UUID.randomUUID());
-		this.etapa = Etapa.CRIADO;
 		this.empresa = empresa;
 	}
 
@@ -109,23 +102,27 @@ public class Usuario implements UserDetails {
 
 	public Long getId() {return id;}
 	public String getNome() {return nome;}
-	public void setNome(String nome) {this.nome = nome;}
 	public String getSobrenome() {return sobrenome;}
-	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {this.cpf = cpf;}
 	public String getRg() {return rg;}
 	public Date getData_nascimento() {return data_nascimento;}
 	public String getFoto() {return foto;}
+	public void setFoto(String foto) {this.foto = foto;}
 	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
 	public String getSenha() {return senha;}
+	public void setSenha(String senha) {this.senha = senha;}
 	public Boolean getFlag_ativo() {return flag_ativo;}
 	public LocalDateTime getData_criacao() {return data_criacao;}
+	public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
+	public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
+	public void setGuid(String guid) {this.guid = guid;}
+	public void setEtapa(Etapa etapa) {this.etapa = etapa;}
 	public String getObservacao() {return observacao;}
 	public String getGuid() {return guid;}
 	public Etapa getEtapa() {return etapa;}
 	public Empresa getEmpresa() {return empresa;}
-
 
 	public void addRole(Perfil perfil) {this.perfis.add(perfil);}
 
@@ -164,10 +161,6 @@ public class Usuario implements UserDetails {
 		return true;
 	}
 
-}
-
-class PasswordGenerator {
-
 	private static final String CHARACTERS =
 			"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	private static final int PASSWORD_LENGTH = 6;
@@ -181,4 +174,6 @@ class PasswordGenerator {
 		}
 		return sb.toString();
 	}
+
 }
+
