@@ -22,6 +22,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -100,5 +101,24 @@ public class UsuarioController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping()
+    public List<UsuarioResponseDto> listaTodos(){
+        List<Usuario> usuarios = u_repository.findAll();
+        return UsuarioResponseDto.converter(usuarios);
+    }
+
+    @GetMapping("/nome")
+    public List<UsuarioResponseDto> listaPeloNome(@RequestParam("nome") String nome){
+        List<Usuario> usuarios = u_repository.findByNome(nome);
+        return UsuarioResponseDto.converter(usuarios);
+    }
+
+
+    @GetMapping("/{id}")
+    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable (value = "id") Long empresa_id){
+        List<Usuario> usuarios = u_repository.findAllByEmpresa_id(empresa_id);
+        return UsuarioResponseDto.converter(usuarios);
     }
 }
