@@ -52,7 +52,7 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                     </Button>
                 </Box>
                 <Divider />
-                <div className="flex flex-row flex-wrap gap-2 ">
+                <div className="flex flex-row flex-wrap gap-2 justify-center ">
                     {data.map((employee: User) => (
                         <EmployeeCard key={employee.id} nome={employee.nome} email={employee.email} id={employee.id} data_criacao={employee.data_criacao} sobrenome={employee.sobrenome} empresa_id={employee.empresa_id} guid={employee.guid} flag_ativo={employee.flag_ativo}/>
                     ))}

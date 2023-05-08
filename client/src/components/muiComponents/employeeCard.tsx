@@ -8,9 +8,10 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { User } from '../../types/types';
+import EmployeeDeleteDialog from '../dialogs/employeeDeleteDialog';
 
 
-export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome }: User) {
+export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome, empresa_id, flag_ativo, guid }: User) {
     function stringAvatar(name: string) {
         return {
           children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
@@ -26,8 +27,8 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome 
 
           </Avatar>
         }
-        title={`${nome}`}
-        subheader={"September 14, 2016"}
+        title={`${nome} ${sobrenome}`}
+        subheader={String(data_criacao)}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -38,9 +39,7 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome 
         <IconButton aria-label="edit">
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
+      <EmployeeDeleteDialog nome={nome} email={email} sobrenome={sobrenome} id={id} data_criacao={data_criacao} empresa_id={empresa_id} flag_ativo={flag_ativo} guid={guid}/>
       </CardActions>
     </Card>
   );
