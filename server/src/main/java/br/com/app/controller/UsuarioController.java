@@ -3,20 +3,27 @@ package br.com.app.controller;
 import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.controller.dto.request.UsuarioRequestDto;
+import br.com.app.messages.EmailMessage;
 import br.com.app.modelo.Enumeration.Role;
+import br.com.app.modelo.Etapa;
 import br.com.app.modelo.Perfil;
 import br.com.app.modelo.Usuario;
 import br.com.app.repository.PerfilRepository;
 import br.com.app.repository.UsuarioRepository;
+import br.com.app.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuario/cadastro")
@@ -27,6 +34,8 @@ public class UsuarioController {
     private UsuarioRepository u_repository;
     @Autowired
     private PerfilRepository p_repository;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/empresa")
     @Transactional
@@ -47,9 +56,19 @@ public class UsuarioController {
 
     @PostMapping("/funcionario")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
         Usuario usuario = form.converter(u_repository);
+        usuario.setSenha(Usuario.generate());
+        usuario.setData_criacao(LocalDateTime.now());
+        usuario.setFlag_ativo(true);
+        usuario.setGuid(String.valueOf(UUID.randomUUID()));
+        usuario.setEtapa(Etapa.CRIADO);
         usuario.setEmpresaId(form.getEmpresa_id());
+
+        this.emailService.enviar(usuario.getEmail(), EmailMessage.createTitle(usuario),
+                EmailMessage.messageToNewUser(usuario, usuario.getSenha()));
+
+        usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 
         Optional<Perfil> optPerfil = p_repository.findById(Long.valueOf(Role.ROLE_FUNC.getId()));
         Perfil perfil = optPerfil.orElse(null);
