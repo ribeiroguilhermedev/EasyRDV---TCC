@@ -21,7 +21,7 @@ const Login = () => {
                     var user: AuthenticatedUser = {
                         email,
                         id: response.data?.usuario?.id,
-                        name: response.data?.usuario?.nome,
+                        nome: response.data?.usuario?.nome,
                         sobrenome: response.data?.usuario?.sobrenome,
                         cpf: response.data?.usuario?.cpf,
                         rg: response.data?.usuario?.rg,

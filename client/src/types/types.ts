@@ -1,6 +1,6 @@
 export interface User {
   id: number;
-  name: string;
+  nome: string;
   sobrenome: string;
   email: string;
   cpf?: string | null;
@@ -24,4 +24,9 @@ export interface AuthenticatedUser extends User {
 export interface EmployeeRegisterProps {
   open: boolean;
   onClose: Function;
+}
+
+export interface EmployeeProps {
+  employeeControlOpen: boolean;
+  setEmployeeControlOpen: Function;
 }
