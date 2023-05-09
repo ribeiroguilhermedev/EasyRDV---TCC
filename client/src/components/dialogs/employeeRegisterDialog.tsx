@@ -26,7 +26,6 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const [cpfValidationFailed, setCpfValidationFailed] = useState(false);
-    const [dateValue, setDateValue] = useState<Date | undefined>(undefined);
     const [rgValidationFailed, setRGValidationFailed] = useState(false);
     const [isOpen, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -44,8 +43,13 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     };
 
     const handleChangeDate = (value: any) => {
-        console.log(value.$d);
-        console.log(value.$d);
+        var a = value.$d as Date
+
+        console.log(a.getDate());
+        console.log(a.getUTCDate());
+        console.log(a.getDay());
+        console.log(a.getMonth());
+        console.log(a.getFullYear());
     };
 
     const mutation = useMutation(
@@ -159,17 +163,15 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
                 </DialogContent>
                 <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
                     <TextField className='basis-1/3'
+                        autoFocus
+                        margin="dense"
                         id="data_nascimento"
-                        value={dateValue}
+                        type="date"
+                        label="Data nascimento"
                         error={!!errors['data_nascimento']}
+                        InputLabelProps={{ shrink: true }}
                         {...register("data_nascimento", { required: true })}
                     />
-                    <Box>
-                        <DatePicker
-                            label="Data de nascimento*"
-                            onChange={handleChangeDate}
-                        />
-                    </Box>
                     <InputMask
                         mask="99.999.999-9"
                         disabled={false}

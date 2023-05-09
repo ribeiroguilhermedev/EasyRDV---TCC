@@ -13,31 +13,30 @@ import AddIcon from '@mui/icons-material/Add';
 import Divider from "@mui/material/Divider";
 import apiClient from "../../services/api";
 import EmployeeCard from "../muiComponents/employeeCard";
-
+import Loading from "../muiComponents/loading";
 
 const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) => {
     const [isOpen, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1)
-    const [perPage,setPerPage] = useState(12)
+    const [perPage, setPerPage] = useState(12)
+    const [users, setUsers] = useState<User[]>([])
     const { currentUser } = useAuth();
     const token = currentUser?.token;
 
-    const { isLoading, data } = useQuery(["employees", perPage, currentPage], () => {
+    const { isLoading } = useQuery(["employees", perPage, currentPage], () => {
         const config = {
             headers: { Authorization: `Bearer ${token}` },
         };
         return apiClient.get('http://localhost:8080/usuario/cadastro/1', {
-            params: {limit: perPage, page: currentPage}, ...config
+            params: { limit: perPage, page: currentPage }, ...config
         })
-            .then((response => response.data));
+        .then((response => setUsers( response.data)));
     })
 
 
     if (isLoading) { // Verifica se a lista de funcionários está vazia
-        return <p>Loading...</p>;
+        return <Loading/>;
     }
-
-
 
     return (
         <>
@@ -53,8 +52,8 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                 </Box>
                 <Divider />
                 <div className="flex flex-row flex-wrap gap-2 justify-center ">
-                    {data.map((employee: User) => (
-                        <EmployeeCard key={employee.id} nome={employee.nome} email={employee.email} id={employee.id} data_criacao={employee.data_criacao} sobrenome={employee.sobrenome} empresa_id={employee.empresa_id} guid={employee.guid} flag_ativo={employee.flag_ativo}/>
+                    {users.map((employee: User) => (
+                        <EmployeeCard key={employee.id} nome={employee.nome} email={employee.email} id={employee.id} data_criacao={employee.data_criacao} sobrenome={employee.sobrenome} empresa_id={employee.empresa_id} guid={employee.guid} flag_ativo={employee.flag_ativo} />
                     ))}
                 </div>
             </Container>
@@ -64,7 +63,3 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
 }
 
 export default EmployeeControl
-
-
-
-{/* <button onClick={() => setEmployeeControlOpen(false)}>Fechar</button> */ }
