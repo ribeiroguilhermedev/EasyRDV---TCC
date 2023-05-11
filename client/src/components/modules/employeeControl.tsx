@@ -30,12 +30,12 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
         return apiClient.get('http://localhost:8080/usuario/cadastro/1', {
             params: { limit: perPage, page: currentPage }, ...config
         })
-        .then((response => setUsers( response.data)));
+            .then((response => setUsers(response.data)));
     })
 
 
     if (isLoading) { // Verifica se a lista de funcionários está vazia
-        return <Loading/>;
+        return <Loading />;
     }
 
     return (
@@ -53,11 +53,20 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                 <Divider />
                 <div className="flex flex-row flex-wrap gap-2 justify-center ">
                     {users.map((employee: User) => (
-                        <EmployeeCard key={employee.id} nome={employee.nome} email={employee.email} id={employee.id} data_criacao={employee.data_criacao} sobrenome={employee.sobrenome} empresa_id={employee.empresa_id} guid={employee.guid} flag_ativo={employee.flag_ativo} />
+                        <EmployeeCard
+                            key={employee.id}
+                            nome={employee.nome}
+                            email={employee.email}
+                            id={employee.id}
+                            data_criacao={employee.data_criacao}
+                            sobrenome={employee.sobrenome}
+                            users={users} 
+                            onDeletedUser={setUsers}
+                            />
                     ))}
                 </div>
             </Container>
-            <EmployeeRegisterDialog open={isOpen} onClose={() => setOpen(false)} />
+            <EmployeeRegisterDialog open={isOpen} onClose={() => setOpen(false)} users={users} onUserCreated={setUsers} />
         </>
     )
 }

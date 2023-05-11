@@ -7,20 +7,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { User } from '../../types/types';
+import { EmployeeDeleteDialoProps } from '../../types/types';
 import apiClient from '../../services/api';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
-import { useQueryClient } from 'react-query';
 
 
-export default function EmployeeDeleteDialog({ nome, email, sobrenome, data_criacao, id }: User) {
+export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users }: EmployeeDeleteDialoProps) {
   const [open, setOpen] = React.useState(false);
   const { currentUser } = useAuth();
   const token = currentUser?.token;
-  const queryClient = useQueryClient();
-  const [deleted, setDeleted] = React.useState(1)
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,17 +26,19 @@ export default function EmployeeDeleteDialog({ nome, email, sobrenome, data_cria
     setOpen(false);
   };
 
-  const deleteEmployee = useMutation((id: Number) => {
+  const deleteEmployee = useMutation((id: number) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    return apiClient.delete(`http://localhost:8080/usuario/cadastro/${id}`, config).then(() => {
-      setDeleted(deleted + 1)
+    return apiClient.delete(`usuario/cadastro/${id}`, config).then(() => {
+      const arrCurrentUsers = users.filter(p => p.id !== id)
+      onDeletedUser(arrCurrentUsers)
+
       handleClose()
     });
   })
-  
-  
+
+
   return (
     <div>
       <IconButton aria-label="delete" onClick={handleClickOpen}>

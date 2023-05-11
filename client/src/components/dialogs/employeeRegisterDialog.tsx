@@ -18,10 +18,8 @@ import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { ErrorButton } from "../../styles/Buttons";
-import { DatePicker } from "@mui/x-date-pickers";
-import Box from "@mui/material/Box";
 
-const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
+const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -33,6 +31,7 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const cpfRef = useRef<HTMLInputElement>(null);
     const rgRef = useRef<HTMLInputElement>(null);
 
+
     useEffect(() => {
         setOpen(open);
     }, [open]);
@@ -40,16 +39,6 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     const handleClose = () => {
         onClose()
         setOpen(false);
-    };
-
-    const handleChangeDate = (value: any) => {
-        var a = value.$d as Date
-
-        console.log(a.getDate());
-        console.log(a.getUTCDate());
-        console.log(a.getDay());
-        console.log(a.getMonth());
-        console.log(a.getFullYear());
     };
 
     const mutation = useMutation(
@@ -86,17 +75,24 @@ const EmployeeRegisterDialog = ({ open, onClose }: EmployeeRegisterProps) => {
     };
 
     const handleSubmitInternal = async (data: Object) => {
+        if (!currentUser) return
         if (!ValidateCPF_RG()) return
 
         setLoading(true)
 
         const user = data as User
-        user.senha = '123'
         user.empresa_id = 1
         user.cpf = cpfRef.current?.value
         user.rg = rgRef.current?.value
+        user.nome = user.nome[0].toUpperCase() + user.nome.substring(1) 
+        user.sobrenome = user.sobrenome[0].toUpperCase() + user.sobrenome.substring(1) 
 
-        await mutation.mutateAsync(user)
+        const response = await mutation.mutateAsync(user)
+        const userCreated = response.data as User
+
+        const arrCurrentUsers = users
+        arrCurrentUsers.push(userCreated)
+        onUserCreated(arrCurrentUsers)
 
         onClose()
         setOpen(false)
