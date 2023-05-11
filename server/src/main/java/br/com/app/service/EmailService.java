@@ -6,9 +6,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.concurrent.Future;
 
 @Service
 @Slf4j
@@ -21,16 +24,19 @@ public class EmailService {
         this.jms = javaMailSender;
     }
 
-    public void enviar(String para, String titulo, String conteudo) {
-        log.info("Enviando email para confirmação de cadastro..");
+    @Async
+    public Future<Boolean> enviarAsync(String para, String titulo, String conteudo) {
+        try {
+            var mensagem = new SimpleMailMessage();
 
-        var mensagem = new SimpleMailMessage();
-
-        mensagem.setTo(para);
-        mensagem.setSubject(titulo);
-        mensagem.setText(conteudo);
-        jms.send(mensagem);
-        log.info("Email enviado com sucesso!");
+            mensagem.setTo(para);
+            mensagem.setSubject(titulo);
+            mensagem.setText(conteudo);
+            jms.send(mensagem);
+            return new AsyncResult<>(true);
+        }catch (Exception e){
+            return new AsyncResult<>(false  );
+        }
     }
 
     public void enviarEmailComAnexo(String para, String titulo, String conteudo, String arquivo)
