@@ -30,13 +30,9 @@ public class UsuarioRequestDto {
     public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
     public void setFoto(String foto) {this.foto = foto;}
     public void setEmail(String email) {this.email = email;}
-//    public void setSenha(String senha) {this.senha = senha;}
-//    public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
-//    public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
     public void setObservacao(String observacao) {this.observacao = observacao;}
-//    public void setGuid(String guid) {this.guid = guid;}
-//    public void setEtapa(Etapa etapa) {this.etapa = etapa;}
     public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
+    public String getEmail() {return email;}
     public Long getEmpresa_id() {return empresa_id;}
 
     public Usuario converter(UsuarioRepository repository){
