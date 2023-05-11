@@ -19,6 +19,7 @@ export default function EmployeeDeleteDialog({ nome, email, sobrenome, data_cria
   const { currentUser } = useAuth();
   const token = currentUser?.token;
   const queryClient = useQueryClient();
+  const [deleted, setDeleted] = React.useState(1)
 
 
   const handleClickOpen = () => {
@@ -34,6 +35,7 @@ export default function EmployeeDeleteDialog({ nome, email, sobrenome, data_cria
       headers: { Authorization: `Bearer ${token}` },
     };
     return apiClient.delete(`http://localhost:8080/usuario/cadastro/${id}`, config).then(() => {
+      setDeleted(deleted + 1)
       handleClose()
     });
   })
