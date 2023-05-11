@@ -21,9 +21,34 @@ export interface AuthenticatedUser extends User {
   expires?: number;
 }
 
+
+
+//Props
 export interface EmployeeRegisterProps {
   open: boolean;
   onClose: Function;
+  onUserCreated: Function;
+  users: User[];
+}
+
+export interface EmployeeCardProps {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  email: string;
+  data_criacao: Date;
+  users: User[],
+  onDeletedUser: Function;
+}
+
+export interface EmployeeDeleteDialoProps {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  email: string;
+  data_criacao: Date;
+  users: User[],
+  onDeletedUser: Function;
 }
 
 export interface EmployeeProps {

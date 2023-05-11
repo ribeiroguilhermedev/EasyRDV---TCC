@@ -7,20 +7,20 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { User } from '../../types/types';
+import { EmployeeCardProps } from '../../types/types';
 import EmployeeDeleteDialog from '../dialogs/employeeDeleteDialog';
 
 
-export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome, empresa_id, flag_ativo, guid }: User) {
-    function stringAvatar(name: string) {
-        return {
-          children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-        };
-      }
-    
-      
+export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users }: EmployeeCardProps) {
+  function stringAvatar(name: string) {
+    return {
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+  }
+
+
   return (
-    <Card sx={{ maxWidth: 345, minWidth:345, backgroundColor: '#080808'}} >
+    <Card sx={{ maxWidth: 345, minWidth: 345, backgroundColor: '#080808' }} >
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: '#add8e6' }} aria-label="recipe" {...stringAvatar(`${nome} ${sobrenome}`)}>
@@ -39,7 +39,14 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome,
         <IconButton aria-label="edit">
           <EditIcon />
         </IconButton>
-      <EmployeeDeleteDialog nome={nome} email={email} sobrenome={sobrenome} id={id} data_criacao={data_criacao} empresa_id={empresa_id} flag_ativo={flag_ativo} guid={guid}/>
+        <EmployeeDeleteDialog
+          nome={nome}
+          email={email}
+          sobrenome={sobrenome}
+          id={id}
+          data_criacao={data_criacao}
+          users={users}
+          onDeletedUser={onDeletedUser} />
       </CardActions>
     </Card>
   );
