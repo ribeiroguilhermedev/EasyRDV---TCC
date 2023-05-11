@@ -61,6 +61,7 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                             data_criacao={employee.data_criacao}
                             sobrenome={employee.sobrenome}
                             users={users} 
+                            flag_ativo={employee.flag_ativo}
                             onDeletedUser={setUsers}
                             />
                     ))}

@@ -21,3 +21,13 @@ export const WarningButton = styled(Button)({
     textDecoration: 'none'
   },
 });
+
+export const SuccessButton = styled(Button)({
+  color: '#4caf50',
+  border: '1px solid #66bb6a',
+  '&:hover': {
+    backgroundColor: '#1d2429',
+    border: '1px solid #4caf50',
+    textDecoration: 'none'
+  },
+});

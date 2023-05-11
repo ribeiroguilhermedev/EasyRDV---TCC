@@ -43,7 +43,8 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    return apiClient.delete(`usuario/cadastro/${id}`, config).then(() => {
+    const data = { ativo: false };
+    return apiClient.put(`usuario/cadastro/${id}`,data, config).then(() => {
       handleClose()
     });
   })
