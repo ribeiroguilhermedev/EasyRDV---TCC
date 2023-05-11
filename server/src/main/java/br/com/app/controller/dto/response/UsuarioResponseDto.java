@@ -37,6 +37,7 @@ public class UsuarioResponseDto {
 
     private List<Perfil> perfis = new ArrayList<>();
 
+
     public UsuarioResponseDto(Usuario usuario){
         this.id = usuario.getId();
         this.nome = usuario.getNome();

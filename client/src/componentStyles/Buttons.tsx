@@ -10,3 +10,14 @@ export const ErrorButton = styled(Button)({
     textDecoration: 'none'
   },
 });
+
+
+export const WarningButton = styled(Button)({
+  color: '#ffa726',
+  border: '1px solid #856027',
+  '&:hover': {
+    backgroundColor: '#1d2429',
+    border: '1px solid #ffa726',
+    textDecoration: 'none'
+  },
+});

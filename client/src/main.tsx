@@ -24,7 +24,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: '#ffffffe8',
-          borderColor: '#ffffff80',
+          border: '1px solid #ffffff80',
           "&:hover": {
             backgroundColor: 'rgba(255, 255, 255, 0.08)',
             border: '1px solid #FFF',

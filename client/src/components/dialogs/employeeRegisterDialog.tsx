@@ -17,7 +17,7 @@ import * as yup from "yup";
 import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { ErrorButton } from "../../styles/Buttons";
+import { ErrorButton } from "../../componentStyles/Buttons";
 
 const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
@@ -84,8 +84,8 @@ const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: Employe
         user.empresa_id = 1
         user.cpf = cpfRef.current?.value
         user.rg = rgRef.current?.value
-        user.nome = user.nome[0].toUpperCase() + user.nome.substring(1) 
-        user.sobrenome = user.sobrenome[0].toUpperCase() + user.sobrenome.substring(1) 
+        user.nome = user.nome[0].toUpperCase() + user.nome.substring(1)
+        user.sobrenome = user.sobrenome[0].toUpperCase() + user.sobrenome.substring(1)
 
         const response = await mutation.mutateAsync(user)
         const userCreated = response.data as User
