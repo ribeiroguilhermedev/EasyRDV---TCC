@@ -1,6 +1,5 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.ErrorDto;
 import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.controller.dto.request.UsuarioRequestDto;
@@ -30,7 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/usuario/cadastro")
-@CrossOrigin(origins =  "*")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
@@ -46,7 +45,7 @@ public class UsuarioController {
         Usuario usuario = form.converter(u_repository);
         usuario.setEmpresaId(form.getEmpresa_id());
 
-        Optional<Perfil> optPerfil = p_repository.findById(Long.valueOf(Role.ROLE_ADMIN_EMP.getId()));
+        Optional<Perfil> optPerfil = p_repository.findById((long) Role.ROLE_ADMIN_EMP.getId());
         Perfil perfil = optPerfil.orElse(null);
 
         usuario.addRole(perfil);
@@ -62,7 +61,7 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
         Optional<Usuario> optUsuario = u_repository.findByEmail(form.getEmail());
         Usuario rsUsuario = optUsuario.orElse(null);
-        if (rsUsuario != null){
+        if (rsUsuario != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UsuarioResponseDto(new Usuario()));
         }
         Usuario usuario = form.converter(u_repository);
@@ -73,12 +72,16 @@ public class UsuarioController {
         usuario.setEtapa(Etapa.PENDENTE_ATIVACAO);
         usuario.setEmpresaId(form.getEmpresa_id());
 
-        this.emailService.enviar(usuario.getEmail(), EmailMessage.createTitle(usuario),
+        this.emailService.enviarAsync(usuario.getEmail(), EmailMessage.createTitle(usuario),
                 EmailMessage.messageToNewUser(usuario, usuario.getSenha()));
 
         usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 
         Optional<Perfil> optPerfil = p_repository.findById((long) Role.ROLE_FUNC.getId());
+
+        if(optPerfil.isEmpty())
+            return ResponseEntity.internalServerError().body(new UsuarioResponseDto(new Usuario()));
+
         Perfil perfil = optPerfil.get();
 
         usuario.addRole(perfil);
@@ -90,9 +93,9 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> atualiza(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form){
+    public ResponseEntity<UsuarioResponseDto> atualiza(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
         Optional<Usuario> optional = u_repository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             Usuario usuario = form.atualizar(id, u_repository);
             return ResponseEntity.ok(new UsuarioResponseDto(usuario));
         }
@@ -101,9 +104,9 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> remover(@PathVariable Long id){
+    public ResponseEntity<?> remover(@PathVariable Long id) {
         Optional<Usuario> optional = u_repository.findById(id);
-        if (optional.isPresent()){
+        if (optional.isPresent()) {
             u_repository.deleteById(id);
             return ResponseEntity.ok().build();
         }
@@ -111,20 +114,20 @@ public class UsuarioController {
     }
 
     @GetMapping()
-    public List<UsuarioResponseDto> listaTodos(){
+    public List<UsuarioResponseDto> listaTodos() {
         List<Usuario> usuarios = u_repository.findAll();
         return UsuarioResponseDto.converter(usuarios);
     }
 
     @GetMapping("/nome")
-    public List<UsuarioResponseDto> listaPeloNome(@RequestParam("nome") String nome){
+    public List<UsuarioResponseDto> listaPeloNome(@RequestParam("nome") String nome) {
         List<Usuario> usuarios = u_repository.findByNome(nome);
         return UsuarioResponseDto.converter(usuarios);
     }
 
 
     @GetMapping("/{id}")
-    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable (value = "id") Long empresa_id){
+    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id) {
         List<Usuario> usuarios = u_repository.findAllByEmpresa_id(empresa_id);
         return UsuarioResponseDto.converter(usuarios);
     }
