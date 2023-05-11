@@ -1,5 +1,6 @@
 package br.com.app.controller;
 
+import br.com.app.controller.dto.ErrorDto;
 import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.controller.dto.request.UsuarioRequestDto;
@@ -12,6 +13,7 @@ import br.com.app.repository.PerfilRepository;
 import br.com.app.repository.UsuarioRepository;
 import br.com.app.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -58,12 +60,17 @@ public class UsuarioController {
     @PostMapping("/funcionario")
     @Transactional
     public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
+        Optional<Usuario> optUsuario = u_repository.findByEmail(form.getEmail());
+        Usuario rsUsuario = optUsuario.orElse(null);
+        if (rsUsuario != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UsuarioResponseDto(new Usuario()));
+        }
         Usuario usuario = form.converter(u_repository);
         usuario.setSenha(Usuario.generate());
         usuario.setData_criacao(LocalDateTime.now());
         usuario.setFlag_ativo(true);
         usuario.setGuid(String.valueOf(UUID.randomUUID()));
-        usuario.setEtapa(Etapa.CRIADO);
+        usuario.setEtapa(Etapa.PENDENTE_ATIVACAO);
         usuario.setEmpresaId(form.getEmpresa_id());
 
         this.emailService.enviar(usuario.getEmail(), EmailMessage.createTitle(usuario),
@@ -71,8 +78,8 @@ public class UsuarioController {
 
         usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 
-        Optional<Perfil> optPerfil = p_repository.findById(Long.valueOf(Role.ROLE_FUNC.getId()));
-        Perfil perfil = optPerfil.orElse(null);
+        Optional<Perfil> optPerfil = p_repository.findById((long) Role.ROLE_FUNC.getId());
+        Perfil perfil = optPerfil.get();
 
         usuario.addRole(perfil);
 
