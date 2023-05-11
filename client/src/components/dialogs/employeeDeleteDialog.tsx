@@ -38,6 +38,15 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
     });
   })
 
+  const inactivateEmployee = useMutation((id: number) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    return apiClient.delete(`usuario/cadastro/${id}`, config).then(() => {
+      handleClose()
+    });
+  })
+
 
   return (
     <div>
@@ -61,13 +70,9 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose} autoFocus>
-            Inativar
-          </Button> */}
-          <Button onClick={() => deleteEmployee.mutate(id)} autoFocus>Remover</Button>
-          <Button onClick={handleClose}>
-            Cancelar
-          </Button>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <Button color="warning" onClick={() => deleteEmployee.mutate(id)} autoFocus>Inativar</Button>
+          <Button color="error" onClick={() => inactivateEmployee.mutate(id)} autoFocus>Remover</Button>
         </DialogActions>
       </Dialog>
     </div>

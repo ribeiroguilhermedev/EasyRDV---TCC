@@ -48,8 +48,8 @@ const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: Employe
     );
 
     const schema = yup.object({
-        nome: yup.string().required(),
-        sobrenome: yup.string().required(),
+        nome: yup.string().min(3).matches(/^[A-Za-z]+$/, 'Insira somente letras').required(),
+        sobrenome: yup.string().min(3).matches(/^[A-Za-z]+$/, 'Insira somente letras').required(),
         cpf: yup.string(),
         rg: yup.string(),
         data_nascimento: yup.date().max(new Date(), 'Não é possível incluir uma data futura').required(),
