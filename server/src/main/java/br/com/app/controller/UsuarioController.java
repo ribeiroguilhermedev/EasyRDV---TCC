@@ -1,6 +1,8 @@
 package br.com.app.controller;
 
+import br.com.app.controller.dto.request.AtualizaUsuarioSenhaRequestDto;
 import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
+import br.com.app.controller.dto.request.UsuarioEmailRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.controller.dto.request.UsuarioRequestDto;
 import br.com.app.messages.EmailMessage;
@@ -28,7 +30,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/usuario/cadastro")
+@RequestMapping("/usuario")
 @CrossOrigin(origins = "*")
 public class UsuarioController {
 
@@ -39,7 +41,7 @@ public class UsuarioController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/empresa")
+    @PostMapping("/cadastro/empresa")
     @Transactional
     public ResponseEntity<UsuarioResponseDto> cadastrarEmpresa(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) {
         Usuario usuario = form.converter(u_repository);
@@ -56,7 +58,7 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new UsuarioResponseDto(usuario));
     }
 
-    @PostMapping("/funcionario")
+    @PostMapping("/cadastro/funcionario")
     @Transactional
     public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
         Optional<Usuario> optUsuario = u_repository.findByEmail(form.getEmail());
@@ -92,11 +94,36 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new UsuarioResponseDto(usuario));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> atualiza(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
+    @PostMapping("/recuperar/senha")
+    @Transactional
+    public ResponseEntity<Void> esqueciMinhaSenha(@RequestBody final UsuarioEmailRequestDto form, UriComponentsBuilder uriBuilder){
+        Optional<Usuario> uopt = u_repository.findByEmail(form.getEmail());
+        Usuario usuario = uopt.get();
+        if (uopt.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        this.emailService.enviarAsync(form.getEmail(), EmailMessage.createTitle(usuario),
+                EmailMessage.messageToForgotPassword(usuario, usuario.getSenha(), usuario.getGuid()));
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/atualiza/{id}")
+    public ResponseEntity<UsuarioResponseDto> atualizaUsuario(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
         Optional<Usuario> optional = u_repository.findById(id);
         if (optional.isPresent()) {
             Usuario usuario = form.atualizar(id, u_repository);
+            return ResponseEntity.ok(new UsuarioResponseDto(usuario));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/atualiza/senha/{id}")
+    public ResponseEntity<UsuarioResponseDto> atualizaSenha(@PathVariable Long id, @RequestBody AtualizaUsuarioSenhaRequestDto form) {
+        Optional<Usuario> optional = u_repository.findById(id);
+        if (optional.isPresent()) {
+            Usuario usuario = form.atualizar(id, u_repository);
+            usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            u_repository.save(usuario);
             return ResponseEntity.ok(new UsuarioResponseDto(usuario));
         }
         return ResponseEntity.notFound().build();
@@ -124,7 +151,6 @@ public class UsuarioController {
         List<Usuario> usuarios = u_repository.findByNome(nome);
         return UsuarioResponseDto.converter(usuarios);
     }
-
 
     @GetMapping("/{id}")
     public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id) {
