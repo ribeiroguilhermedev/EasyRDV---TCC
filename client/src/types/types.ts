@@ -47,6 +47,7 @@ export interface EmployeeDeleteDialoProps {
   nome: string;
   sobrenome: string;
   email: string;
+  flag_ativo: boolean;
   data_criacao: Date;
   users: User[],
   onDeletedUser: Function;

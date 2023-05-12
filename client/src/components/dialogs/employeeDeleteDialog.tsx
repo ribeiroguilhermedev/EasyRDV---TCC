@@ -7,14 +7,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { EmployeeDeleteDialoProps } from '../../types/types';
+import { EmployeeDeleteDialoProps, User } from '../../types/types';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
 import { ErrorButton, WarningButton } from '../../componentStyles/Buttons';
 
 
-export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users }: EmployeeDeleteDialoProps) {
+export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo }: EmployeeDeleteDialoProps) {
   const [open, setOpen] = React.useState(false);
   const { currentUser } = useAuth();
   const token = currentUser?.token;
@@ -44,7 +44,13 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
       headers: { Authorization: `Bearer ${token}` },
     };
     const data = { ativo: false };
-    return apiClient.put(`usuario/cadastro/${id}`,data, config).then(() => {
+    return apiClient.put(`usuario/cadastro/${id}`,data, config).then((response) => {
+      const userUpdated = response.data  
+      const indexOfUser = (users.findIndex((user: User) => user.id === id));
+      const arrCurrentUsers = users.filter(p => p.id !== id)
+      arrCurrentUsers.splice(indexOfUser,0,userUpdated)
+      onDeletedUser(arrCurrentUsers)
+
       handleClose()
     });
   })
