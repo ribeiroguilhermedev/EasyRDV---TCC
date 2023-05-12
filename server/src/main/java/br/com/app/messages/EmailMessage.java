@@ -17,6 +17,12 @@ public class EmailMessage {
                 + "É importante acessar sua conta e trocar sua senha";
     }
 
+    public static String messageToForgotPassword(Usuario usuario, String password, String guid) {
+        return "Olá " + usuario.getNome()
+                + "! Para recuperar sua senha, acesse esse link google.com?guid=" + guid + "\n \n"
+                + "Atenciosamente, equipe do EasyRDV";
+    }
+
     public static String messageToNewUserImg(Usuario user, String password) {
         return "‹div›olá " + user.getNome() + "| Seja muito bem-vindo(a) em nosso site."
                         + " Os seus dados e sua senha de acesso estão logo abaixo.‹/div>"

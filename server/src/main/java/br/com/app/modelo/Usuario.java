@@ -21,7 +21,6 @@ public class Usuario implements UserDetails {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@NotBlank(message = "{nome.obrigatorio}")
 	private String nome;
 	private String sobrenome;
 	private String cpf;
@@ -123,6 +122,13 @@ public class Usuario implements UserDetails {
 	public String getGuid() {return guid;}
 	public Etapa getEtapa() {return etapa;}
 	public Empresa getEmpresa() {return empresa;}
+	public void setNome(String nome) {this.nome = nome;}
+	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
+	public void setRg(String rg) {this.rg = rg;}
+	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
+	public void setObservacao(String observacao) {this.observacao = observacao;}
+	public void setEmpresa(Empresa empresa) {this.empresa = empresa;}
+	public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
 
 	public void addRole(Perfil perfil) {this.perfis.add(perfil);}
 
