@@ -31,7 +31,7 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    return apiClient.delete(`usuario/cadastro/${id}`, config).then(() => {
+    return apiClient.delete(`usuario/${id}`, config).then(() => {
       const arrCurrentUsers = users.filter(p => p.id !== id)
       onDeletedUser(arrCurrentUsers)
 
@@ -44,7 +44,7 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
       headers: { Authorization: `Bearer ${token}` },
     };
     const data = { ativo: false };
-    return apiClient.put(`usuario/cadastro/${id}`,data, config).then((response) => {
+    return apiClient.put(`usuario/${id}`,data, config).then((response) => {
       const userUpdated = response.data  
       const indexOfUser = (users.findIndex((user: User) => user.id === id));
       const arrCurrentUsers = users.filter(p => p.id !== id)

@@ -31,7 +31,7 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome,
       headers: { Authorization: `Bearer ${token}` },
     };
     const data = { ativo: true };
-    return apiClient.put(`usuario/cadastro/${id}`,data, config).then((response) => {
+    return apiClient.put(`usuario/${id}`,data, config).then((response) => {
       const userUpdated = response.data  
       const indexOfUser = (users.findIndex((user: User) => user.id === id));
       const arrCurrentUsers = users.filter(p => p.id !== id)
