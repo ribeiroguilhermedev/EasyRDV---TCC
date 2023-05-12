@@ -7,13 +7,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { EmployeeDeleteDialoProps } from '../../types/types';
+import { EmployeeDeleteDialoProps, User } from '../../types/types';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
+import { ErrorButton, WarningButton } from '../../componentStyles/Buttons';
 
 
-export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users }: EmployeeDeleteDialoProps) {
+export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo }: EmployeeDeleteDialoProps) {
   const [open, setOpen] = React.useState(false);
   const { currentUser } = useAuth();
   const token = currentUser?.token;
@@ -32,6 +33,22 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
     };
     return apiClient.delete(`usuario/cadastro/${id}`, config).then(() => {
       const arrCurrentUsers = users.filter(p => p.id !== id)
+      onDeletedUser(arrCurrentUsers)
+
+      handleClose()
+    });
+  })
+
+  const inactivateEmployee = useMutation((id: number) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const data = { ativo: false };
+    return apiClient.put(`usuario/cadastro/${id}`,data, config).then((response) => {
+      const userUpdated = response.data  
+      const indexOfUser = (users.findIndex((user: User) => user.id === id));
+      const arrCurrentUsers = users.filter(p => p.id !== id)
+      arrCurrentUsers.splice(indexOfUser,0,userUpdated)
       onDeletedUser(arrCurrentUsers)
 
       handleClose()
@@ -61,13 +78,9 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose} autoFocus>
-            Inativar
-          </Button> */}
-          <Button onClick={() => deleteEmployee.mutate(id)} autoFocus>Remover</Button>
-          <Button onClick={handleClose}>
-            Cancelar
-          </Button>
+          <Button onClick={handleClose}>Cancelar</Button>
+          <WarningButton onClick={() => inactivateEmployee.mutate(id)} autoFocus>Inativar</WarningButton>
+          <ErrorButton onClick={() => deleteEmployee.mutate(id)} autoFocus>Remover</ErrorButton>
         </DialogActions>
       </Dialog>
     </div>

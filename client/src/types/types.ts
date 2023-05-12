@@ -12,7 +12,7 @@ export interface User {
   data_criacao: Date;
   flag_ativo: boolean;
   foto?: string | null;
-
+  
   senha?: string;
 }
 
@@ -36,6 +36,7 @@ export interface EmployeeCardProps {
   nome: string;
   sobrenome: string;
   email: string;
+  flag_ativo: boolean;
   data_criacao: Date;
   users: User[],
   onDeletedUser: Function;
@@ -46,6 +47,7 @@ export interface EmployeeDeleteDialoProps {
   nome: string;
   sobrenome: string;
   email: string;
+  flag_ativo: boolean;
   data_criacao: Date;
   users: User[],
   onDeletedUser: Function;

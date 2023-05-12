@@ -27,7 +27,7 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
         const config = {
             headers: { Authorization: `Bearer ${token}` },
         };
-        return apiClient.get('http://localhost:8080/usuario/cadastro/1', {
+        return apiClient.get('usuario/cadastro/1', {
             params: { limit: perPage, page: currentPage }, ...config
         })
             .then((response => setUsers(response.data)));
@@ -61,6 +61,7 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                             data_criacao={employee.data_criacao}
                             sobrenome={employee.sobrenome}
                             users={users} 
+                            flag_ativo={employee.flag_ativo}
                             onDeletedUser={setUsers}
                             />
                     ))}
