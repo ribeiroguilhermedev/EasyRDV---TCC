@@ -57,3 +57,8 @@ export interface EmployeeProps {
   employeeControlOpen: boolean;
   setEmployeeControlOpen: Function;
 }
+
+export interface SearchProps {
+  busca: string;
+  setBusca: Function;
+}

@@ -14,12 +14,14 @@ import Divider from "@mui/material/Divider";
 import apiClient from "../../services/api";
 import EmployeeCard from "../muiComponents/employeeCard";
 import Loading from "../muiComponents/loading";
+import Search from "../muiComponents/search";
 
 const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) => {
     const [isOpen, setOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1)
     const [perPage, setPerPage] = useState(12)
     const [users, setUsers] = useState<User[]>([])
+    const [busca, setBusca] = useState<string>('')
     const { currentUser } = useAuth();
     const token = currentUser?.token;
 
@@ -38,6 +40,8 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
         return <Loading />;
     }
 
+    const filteredUsers = users.filter( (user) => ((user.nome).toLowerCase()).startsWith(busca.toLowerCase()))
+    
     return (
         <>
             <Container className="flex flex-col justify-center items-center">
@@ -46,13 +50,14 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                         <BadgeIcon sx={{ fontSize: 30 }} />
                         <Typography variant="h5">Funcionários</Typography>
                     </div>
+                    <Search setBusca={setBusca} busca={busca}/>
                     <Button variant="outlined" onClick={() => setOpen(true)} startIcon={<AddIcon />}>
                         Cadastrar
                     </Button>
                 </Box>
                 <Divider />
                 <div className="flex flex-row flex-wrap gap-2 justify-center ">
-                    {users.map((employee: User) => (
+                    {filteredUsers.map((employee: User) => (
                         <EmployeeCard
                             key={employee.id}
                             nome={employee.nome}
