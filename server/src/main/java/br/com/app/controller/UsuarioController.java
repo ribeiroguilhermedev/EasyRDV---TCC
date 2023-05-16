@@ -1,7 +1,7 @@
 package br.com.app.controller;
 
 import br.com.app.controller.dto.request.AtualizaUsuarioSenhaRequestDto;
-import br.com.app.controller.dto.request.AtualizacaoUsuarioFlagAtivoDto;
+import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
 import br.com.app.controller.dto.request.UsuarioEmailRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.controller.dto.request.UsuarioRequestDto;
@@ -107,14 +107,11 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDto> atualiza(@PathVariable Long id, @RequestBody AtualizacaoUsuarioFlagAtivoDto form) {
+    @PutMapping("/atualiza/{id}")
+    public ResponseEntity<UsuarioResponseDto> atualizaUsuario(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
         Optional<Usuario> optional = u_repository.findById(id);
         if (optional.isPresent()) {
-            boolean value = form.isAtivo();
-            Usuario usuario = optional.get();
-            usuario.setFlag_ativo(value);
-            u_repository.save(usuario);
+            Usuario usuario = form.atualizar(id, u_repository);
             return ResponseEntity.ok(new UsuarioResponseDto(usuario));
         }
         return ResponseEntity.badRequest().build();
