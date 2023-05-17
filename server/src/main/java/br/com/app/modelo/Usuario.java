@@ -4,15 +4,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class Usuario implements UserDetails {
@@ -32,7 +29,8 @@ public class Usuario implements UserDetails {
 	private String foto;
 	private String email;
 	private String senha;
-	private Boolean flag_ativo;
+	@Column(name = "flag_ativo")
+	private Boolean flagAtivo;
 	private LocalDateTime data_criacao;
 	private String observacao;
 
@@ -112,9 +110,9 @@ public class Usuario implements UserDetails {
 	public void setEmail(String email) {this.email = email;}
 	public String getSenha() {return senha;}
 	public void setSenha(String senha) {this.senha = senha;}
-	public Boolean getFlag_ativo() {return flag_ativo;}
+	public Boolean getFlagAtivo() {return flagAtivo;}
 	public LocalDateTime getData_criacao() {return data_criacao;}
-	public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
+	public void setFlagAtivo(Boolean flagAtivo) {this.flagAtivo = flagAtivo;}
 	public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
 	public void setGuid(String guid) {this.guid = guid;}
 	public void setEtapa(Etapa etapa) {this.etapa = etapa;}

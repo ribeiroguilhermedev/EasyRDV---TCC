@@ -13,7 +13,7 @@ public class AtualizaFlagUsuarioRequestDto {
 
         Usuario usuario = repository.getOne(id);
 
-        usuario.setFlag_ativo(this.flag_ativo);
+        usuario.setFlagAtivo(this.flag_ativo);
 
         repository.save(usuario);
         return usuario;

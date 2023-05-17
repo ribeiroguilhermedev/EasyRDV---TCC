@@ -16,6 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 
 import javax.mail.MessagingException;
@@ -66,7 +73,7 @@ public class UsuarioController {
         Usuario usuario = form.converter(u_repository);
         usuario.setSenha(Usuario.generate());
         usuario.setData_criacao(LocalDateTime.now());
-        usuario.setFlag_ativo(true);
+        usuario.setFlagAtivo(true);
         usuario.setGuid(String.valueOf(UUID.randomUUID()));
         usuario.setEtapa(Etapa.PENDENTE_ATIVACAO);
         usuario.setEmpresaId(form.getEmpresa_id());
@@ -160,8 +167,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id) {
-        List<Usuario> usuarios = u_repository.findAllByEmpresa_id(empresa_id);
-        return UsuarioResponseDto.converter(usuarios);
+    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id,
+                                                       @RequestParam(value = "limit", defaultValue = "12") int limit,
+                                                       @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                                       @RequestParam(value = "ativo", defaultValue = "true") boolean ativo) {
+
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<Usuario> userPage = u_repository.findAllByEmpresa_idAndFlagAtivo(empresa_id, ativo, pageable);
+        List<Usuario> lstUsuario = userPage.getContent();
+        return UsuarioResponseDto.converter(lstUsuario);
     }
 }
