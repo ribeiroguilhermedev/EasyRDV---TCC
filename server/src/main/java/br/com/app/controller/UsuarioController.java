@@ -1,10 +1,7 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.request.AtualizaUsuarioSenhaRequestDto;
-import br.com.app.controller.dto.request.AtualizacaoUsuarioRequestDto;
-import br.com.app.controller.dto.request.UsuarioEmailRequestDto;
+import br.com.app.controller.dto.request.*;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
-import br.com.app.controller.dto.request.UsuarioRequestDto;
 import br.com.app.messages.EmailMessage;
 import br.com.app.modelo.Enumeration.Role;
 import br.com.app.modelo.Etapa;
@@ -109,6 +106,16 @@ public class UsuarioController {
 
     @PutMapping("/atualiza/{id}")
     public ResponseEntity<UsuarioResponseDto> atualizaUsuario(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
+        Optional<Usuario> optional = u_repository.findById(id);
+        if (optional.isPresent()) {
+            Usuario usuario = form.atualizar(id, u_repository);
+            return ResponseEntity.ok(new UsuarioResponseDto(usuario));
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/atualiza/flag/{id}")
+    public ResponseEntity<UsuarioResponseDto> atualizaFlagAtivoUsuario(@PathVariable Long id, @RequestBody AtualizaFlagUsuarioRequestDto form) {
         Optional<Usuario> optional = u_repository.findById(id);
         if (optional.isPresent()) {
             Usuario usuario = form.atualizar(id, u_repository);
