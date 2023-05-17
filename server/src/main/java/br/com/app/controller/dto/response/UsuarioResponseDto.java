@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -48,7 +47,7 @@ public class UsuarioResponseDto {
         this.foto = usuario.getFoto();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
-        this.flag_ativo = usuario.getFlag_ativo();
+        this.flag_ativo = usuario.getFlagAtivo();
         this.data_criacao = usuario.getData_criacao();
         this.observacao = usuario.getObservacao();
         this.guid = usuario.getGuid();

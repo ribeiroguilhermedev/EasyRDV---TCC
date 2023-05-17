@@ -39,7 +39,7 @@ public class AutenticacaoController {
 		try {
 			Optional<Usuario> optUsuario = usuarioRepository.findByEmail(form.getEmail());
 			Usuario rsUsuario = optUsuario.get();
-			if (rsUsuario.getFlag_ativo()){
+			if (rsUsuario.getFlagAtivo()){
 				authentication = authManager.authenticate(dadosLogin);
 				Usuario usuario = (Usuario) authentication.getPrincipal();
 				String token = tokenService.gerarToken(authentication);
