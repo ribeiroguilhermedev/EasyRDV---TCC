@@ -7,14 +7,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { EmployeeDeleteDialoProps, User } from '../../types/types';
+import { EmployeeDeleteDialogProps, User } from '../../types/types';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
 import { ErrorButton, WarningButton } from '../../componentStyles/Buttons';
 
 
-export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo }: EmployeeDeleteDialoProps) {
+export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo }: EmployeeDeleteDialogProps) {
   const [open, setOpen] = React.useState(false);
   const { currentUser } = useAuth();
   const token = currentUser?.token;

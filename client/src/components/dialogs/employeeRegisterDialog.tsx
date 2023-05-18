@@ -102,7 +102,7 @@ const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: Employe
             nome: '',
             sobrenome: '',
             email: '',
-            data_nascimento: null,
+            data_nascimento: undefined,
             observacao: '',
         })
     }
