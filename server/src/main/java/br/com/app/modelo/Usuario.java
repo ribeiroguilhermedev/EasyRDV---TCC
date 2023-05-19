@@ -48,7 +48,7 @@ public class Usuario implements UserDetails {
 	private Long empresa_id;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Perfil> perfis = new ArrayList<>();
+	private final List<Perfil> perfis = new ArrayList<>();
 
 	public Usuario() {
 	}
@@ -95,6 +95,10 @@ public class Usuario implements UserDetails {
 			this.empresa = null;
 		}
 		this.empresa_id = empresa_id;
+	}
+
+	public Long getEmpresa_id() {
+		return empresa_id;
 	}
 
 	public Long getId() {return id;}

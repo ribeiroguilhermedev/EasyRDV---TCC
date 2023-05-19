@@ -6,9 +6,9 @@ import br.com.app.modelo.Usuario;
 
 public class TokenDto {
 
-	private String token;
-	private String tipo;
-	private UsuarioInfoResponseDto usuario;
+	private final String token;
+	private final String tipo;
+	private final UsuarioInfoResponseDto usuario;
 
 	public TokenDto(String token, String tipo, Usuario usuario) {
 		this.token = token;

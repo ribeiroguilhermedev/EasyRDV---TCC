@@ -45,8 +45,7 @@ export default function EmployeeEditDialog({ nome, email, id, sobrenome, onDelet
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     }
-    console.log(user);
-    
+
     const data = { nome: user.nome, sobrenome: user.sobrenome, email: user.email, rg: user.rg, cpf: user.cpf, data_nascimento: user.data_nascimento, observacao: user.observacao, foto: user.foto };
     return apiClient.put(`usuario/atualiza/${user.id}`, data, config).then((response) => {
       const userUpdated = response.data
@@ -112,130 +111,130 @@ export default function EmployeeEditDialog({ nome, email, id, sobrenome, onDelet
 
   return (
     <div>
-    <IconButton aria-label="edit" onClick={handleClickOpen}>
-    <EditIcon />
-  </IconButton>
-  <Dialog open={isOpen} onClose={handleClose} fullScreen={fullScreen}>
-                <div className='flex justify-between items-center'>
-                    <DialogTitle>Edição de funcionário</DialogTitle>
-                    {hasInputError && !cpfValidationFailed && <p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
-                    {hasRGOrCpfError && !hasInputError && <p className='pr-6 text-error'>Preencha corretamente os campos</p>}
-                </div>
-                <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
-                    <TextField className='basis-1/2'
-                        autoFocus
-                        margin="dense"
-                        defaultValue={nome}
-                        id="nome"
-                        label="Nome"
-                        type="text"
-                        variant="outlined"
-                        error={!!errors['nome']}
-                        {...register("nome", { required: true })}
-                    />
-                    <TextField className='basis-1/2'
-                        autoFocus
-                        margin="dense"
-                        id="last_name"
-                        label="Sobrenome"
-                        defaultValue={sobrenome}
-                        type="text"
-                        variant="outlined"
-                        error={!!errors['sobrenome']}
-                        {...register("sobrenome", { required: true })}
-                        />
-                </DialogContent>
-                <DialogContent style={{ padding: "0px 24px" }}>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="email"
-                        label="Email Address"
-                        type="email"
-                        defaultValue={email}
-                        fullWidth
-                        variant="outlined"
-                        error={!!errors['email']}
-                        {...register("email", { required: true })}
-                        />
-                </DialogContent>
-                <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
-                    <TextField className='basis-1/3'
-                        autoFocus
-                        margin="dense"
-                        id="data_nascimento"
-                        type="date"
-                        defaultValue={data_nascimento}
-                        label="Data nascimento"
-                        error={!!errors['data_nascimento']}
-                        InputLabelProps={{ shrink: true }}
-                        {...register("data_nascimento", { required: true })}
-                        />
-                    <InputMask
-                        mask="99.999.999-9"
-                        disabled={false}
-                        className='basis-1/3'
-                        autoFocus
-                        id="rg"
-                        type="text"
-                        defaultValue ={rg ? rg : ''}
-                        inputRef={rgRef}
-                        onChange={() => setRGValidationFailed(false)}
-                        >
-                        <TextField
-                            margin="dense"
-                            label="RG"
-                            variant="outlined"
-                            error={rgValidationFailed}
-                            />
-                    </InputMask>
-                    <InputMask
-                        mask="999.999.999-99"
-                        disabled={false}
-                        className='basis-1/3'
-                        autoFocus
-                        id="cpf"
-                        type="text"
-                        defaultValue ={cpf ? cpf : ''}
-                        inputRef={cpfRef}
-                        onChange={() => setCpfValidationFailed(false)}
-                        >
-                        <TextField
-                            margin="dense"
-                            label="CPF"
-                            variant="outlined"
-                            error={cpfValidationFailed}
-                            />
-                    </InputMask>
-                </DialogContent>
-                <DialogContent style={{ padding: "0px 24px" }}>
-                    <TextField
-                        id="observacao"
-                        label="Observação"
-                        margin='dense'
-                        defaultValue ={observacao}
-                        multiline
-                        fullWidth
-                        rows={4}
-                        placeholder="Digite uma observação sobre o funcionário se necessário."
-                        {...register("observacao")}
-                        />
-                </DialogContent>
-                <DialogActions className='mr-4'>
-                    <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
-                    <LoadingButton
-                        onClick={
-                          handleSubmit(handleSubmitInternal)
-                        }
-                        startIcon={<EditIcon />}
-                        variant='outlined'
-                        loadingPosition="start"
-                        loading={loading}
-                        >
-                        Editar
-                    </LoadingButton>
-                </DialogActions>
-            </Dialog >
+      <IconButton aria-label="edit" onClick={handleClickOpen}>
+        <EditIcon />
+      </IconButton>
+      <Dialog open={isOpen} onClose={handleClose} fullScreen={fullScreen}>
+        <div className='flex justify-between items-center'>
+          <DialogTitle>Edição de funcionário</DialogTitle>
+          {hasInputError && !cpfValidationFailed && <p className='pr-6 text-error'>Preencha os campos obrigatórios</p>}
+          {hasRGOrCpfError && !hasInputError && <p className='pr-6 text-error'>Preencha corretamente os campos</p>}
+        </div>
+        <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
+          <TextField className='basis-1/2'
+            autoFocus
+            margin="dense"
+            defaultValue={nome}
+            id="nome"
+            label="Nome"
+            type="text"
+            variant="outlined"
+            error={!!errors['nome']}
+            {...register("nome", { required: true })}
+          />
+          <TextField className='basis-1/2'
+            autoFocus
+            margin="dense"
+            id="last_name"
+            label="Sobrenome"
+            defaultValue={sobrenome}
+            type="text"
+            variant="outlined"
+            error={!!errors['sobrenome']}
+            {...register("sobrenome", { required: true })}
+          />
+        </DialogContent>
+        <DialogContent style={{ padding: "0px 24px" }}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Email Address"
+            type="email"
+            defaultValue={email}
+            fullWidth
+            variant="outlined"
+            error={!!errors['email']}
+            {...register("email", { required: true })}
+          />
+        </DialogContent>
+        <DialogContent className='flex flex-row gap-3' style={{ padding: "0px 24px" }}>
+          <TextField className='basis-1/3'
+            autoFocus
+            margin="dense"
+            id="data_nascimento"
+            type="date"
+            defaultValue={data_nascimento}
+            label="Data nascimento"
+            error={!!errors['data_nascimento']}
+            InputLabelProps={{ shrink: true }}
+            {...register("data_nascimento", { required: true })}
+          />
+          <InputMask
+            mask="99.999.999-9"
+            disabled={false}
+            className='basis-1/3'
+            autoFocus
+            id="rg"
+            type="text"
+            defaultValue={rg ? rg : ''}
+            inputRef={rgRef}
+            onChange={() => setRGValidationFailed(false)}
+          >
+            <TextField
+              margin="dense"
+              label="RG"
+              variant="outlined"
+              error={rgValidationFailed}
+            />
+          </InputMask>
+          <InputMask
+            mask="999.999.999-99"
+            disabled={false}
+            className='basis-1/3'
+            autoFocus
+            id="cpf"
+            type="text"
+            defaultValue={cpf ? cpf : ''}
+            inputRef={cpfRef}
+            onChange={() => setCpfValidationFailed(false)}
+          >
+            <TextField
+              margin="dense"
+              label="CPF"
+              variant="outlined"
+              error={cpfValidationFailed}
+            />
+          </InputMask>
+        </DialogContent>
+        <DialogContent style={{ padding: "0px 24px" }}>
+          <TextField
+            id="observacao"
+            label="Observação"
+            margin='dense'
+            defaultValue={observacao}
+            multiline
+            fullWidth
+            rows={4}
+            placeholder="Digite uma observação sobre o funcionário se necessário."
+            {...register("observacao")}
+          />
+        </DialogContent>
+        <DialogActions className='mr-4'>
+          <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
+          <LoadingButton
+            onClick={
+              handleSubmit(handleSubmitInternal)
+            }
+            startIcon={<EditIcon />}
+            variant='outlined'
+            loadingPosition="start"
+            loading={loading}
+          >
+            Editar
+          </LoadingButton>
+        </DialogActions>
+      </Dialog >
     </div >
   );
 }

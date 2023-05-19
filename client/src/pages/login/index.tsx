@@ -18,6 +18,8 @@ const Login = () => {
         async (auth: { email: String, senha: String }) => {
             return await apiClient.post('/auth', auth)
                 .then(response => {
+                    console.log(response);
+                    
                     var user: AuthenticatedUser = {
                         email,
                         id: response.data?.usuario?.id,
@@ -27,7 +29,7 @@ const Login = () => {
                         rg: response.data?.usuario?.rg,
                         data_nascimento: response.data?.usuario?.data_nascimento,
                         token: response.data?.token,
-                        empresa_id: response.data?.empresa_id,
+                        empresa_id: response.data?.usuario?.empresa_id,
                         guid: response.data?.guid,
                         observacao: response.data?.observacao,
                         data_criacao: response.data?.data_criacao,

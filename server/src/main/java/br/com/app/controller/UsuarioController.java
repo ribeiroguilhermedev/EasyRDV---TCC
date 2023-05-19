@@ -29,9 +29,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/usuario")
@@ -167,7 +165,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id,
+    public Map<String, Object> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id,
                                                        @RequestParam(value = "limit", defaultValue = "12") int limit,
                                                        @RequestParam(value = "offset", defaultValue = "0") int offset,
                                                        @RequestParam(value = "ativo", defaultValue = "true") boolean ativo) {
@@ -175,6 +173,10 @@ public class UsuarioController {
         Pageable pageable = PageRequest.of(offset, limit);
         Page<Usuario> userPage = u_repository.findAllByEmpresa_idAndFlagAtivo(empresa_id, ativo, pageable);
         List<Usuario> lstUsuario = userPage.getContent();
-        return UsuarioResponseDto.converter(lstUsuario);
+
+        Map<String, Object> objeto = new HashMap<>();
+        objeto.put("totalElements", userPage.getTotalElements());
+        objeto.put("elements",UsuarioResponseDto.converter(lstUsuario));
+        return objeto;
     }
 }

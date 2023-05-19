@@ -11,6 +11,7 @@ import java.util.List;
 public class UsuarioInfoResponseDto {
 
     private Long id;
+    private Long empresa_id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -21,6 +22,7 @@ public class UsuarioInfoResponseDto {
         this.nome = usuario.getNome();
         this.sobrenome = usuario.getSobrenome();
         this.email = usuario.getEmail();
+        this.empresa_id = usuario.getEmpresa_id();
         this.perfis = (List<Perfil>) usuario.getAuthorities();
     }
 

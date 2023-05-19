@@ -11,7 +11,7 @@ const Home = () => {
     <>
       <div className="flex flex-col h-screen">
         <Header />
-        <div className="flex h-full">
+        <div className="flex justify-center shrink grow">
           <Aside employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />
           <Paper className="w-full pt-5 rounded-none" square={true}>
             {employeeControlOpen && <EmployeeControl employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />}
