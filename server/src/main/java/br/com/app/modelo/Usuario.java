@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
@@ -18,7 +19,9 @@ public class Usuario implements UserDetails {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotNull
 	private String nome;
+	@NotNull
 	private String sobrenome;
 	private String cpf;
 	private String rg;
@@ -27,11 +30,15 @@ public class Usuario implements UserDetails {
 	private Date data_nascimento;
 
 	private String foto;
+	@NotNull
 	private String email;
+	@NotNull
 	private String senha;
 	@Column(name = "flag_ativo")
-	private Boolean flagAtivo;
-	private LocalDateTime data_criacao;
+	@NotNull
+	private Boolean flagAtivo = true;
+	@NotNull
+	private LocalDateTime data_criacao = LocalDateTime.now();
 	private String observacao;
 
 	private String guid;
@@ -97,6 +104,7 @@ public class Usuario implements UserDetails {
 		this.empresa_id = empresa_id;
 	}
 
+	public void setId(Long id) {this.id = id;}
 	public Long getId() {return id;}
 	public String getNome() {return nome;}
 	public String getSobrenome() {return sobrenome;}

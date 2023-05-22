@@ -36,7 +36,6 @@ public class UsuarioResponseDto {
 
     private List<Perfil> perfis = new ArrayList<>();
 
-
     public UsuarioResponseDto(Usuario usuario){
         this.id = usuario.getId();
         this.nome = usuario.getNome();
@@ -58,5 +57,9 @@ public class UsuarioResponseDto {
 
     public static List<UsuarioResponseDto> converter(List<Usuario> usuarios) {
         return usuarios.stream().map(UsuarioResponseDto::new).collect(Collectors.toList());
+    }
+
+    public static UsuarioResponseDto converter(Usuario usuarios) {
+        return new UsuarioResponseDto(usuarios);
     }
 }

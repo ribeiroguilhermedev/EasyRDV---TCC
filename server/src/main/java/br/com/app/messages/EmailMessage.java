@@ -1,5 +1,6 @@
 package br.com.app.messages;
 
+import br.com.app.modelo.Enumeration.Constantes;
 import br.com.app.modelo.Usuario;
 
 public class EmailMessage {
@@ -19,7 +20,7 @@ public class EmailMessage {
 
     public static String messageToForgotPassword(Usuario usuario, String password, String guid) {
         return "Olá " + usuario.getNome()
-                + "! Para recuperar sua senha, acesse esse link google.com?guid=" + guid + "\n \n"
+                + "! Para recuperar sua senha, acesse esse link" + Constantes.URL_ESQUECI_SENHA +"?guid=" + guid + "\n \n"
                 + "Atenciosamente, equipe do EasyRDV";
     }
 

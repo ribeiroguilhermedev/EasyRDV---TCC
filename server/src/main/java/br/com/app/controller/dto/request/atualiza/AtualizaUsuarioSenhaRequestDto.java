@@ -1,4 +1,4 @@
-package br.com.app.controller.dto.request;
+package br.com.app.controller.dto.request.atualiza;
 
 import br.com.app.modelo.Usuario;
 import br.com.app.repository.UsuarioRepository;

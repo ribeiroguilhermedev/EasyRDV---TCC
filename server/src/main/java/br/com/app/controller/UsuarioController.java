@@ -1,6 +1,9 @@
 package br.com.app.controller;
 
 import br.com.app.controller.dto.request.*;
+import br.com.app.controller.dto.request.atualiza.AtualizaFlagUsuarioRequestDto;
+import br.com.app.controller.dto.request.atualiza.AtualizaUsuarioSenhaRequestDto;
+import br.com.app.controller.dto.request.atualiza.AtualizacaoUsuarioRequestDto;
 import br.com.app.controller.dto.response.UsuarioResponseDto;
 import br.com.app.messages.EmailMessage;
 import br.com.app.modelo.Enumeration.Role;
@@ -28,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -72,8 +74,6 @@ public class UsuarioController {
         }
         Usuario usuario = form.converter(u_repository);
         usuario.setSenha(Usuario.generate());
-        usuario.setData_criacao(LocalDateTime.now());
-        usuario.setFlagAtivo(true);
         usuario.setGuid(String.valueOf(UUID.randomUUID()));
         usuario.setEtapa(Etapa.PENDENTE_ATIVACAO);
         usuario.setEmpresaId(form.getEmpresa_id());
@@ -169,12 +169,22 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public List<UsuarioResponseDto> listaPeloEmpresaId(@PathVariable(value = "id") Long empresa_id,
                                                        @RequestParam(value = "limit", defaultValue = "12") int limit,
-                                                       @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                                       @RequestParam(value = "ativo", defaultValue = "true") boolean ativo) {
+                                                       @RequestParam(value = "offset", defaultValue = "0") int offset) {
 
         Pageable pageable = PageRequest.of(offset, limit);
-        Page<Usuario> userPage = u_repository.findAllByEmpresa_idAndFlagAtivo(empresa_id, ativo, pageable);
+        Page<Usuario> userPage = u_repository.findAllByEmpresa_id(empresa_id, pageable);
         List<Usuario> lstUsuario = userPage.getContent();
         return UsuarioResponseDto.converter(lstUsuario);
+    }
+
+    @GetMapping("/guid/{guid}")
+    public ResponseEntity<UsuarioResponseDto> getByGuid(@PathVariable(value = "guid") String guid) {
+        Optional<Usuario> usuarios = u_repository.findByGuid(guid);
+        if(!usuarios.isPresent()){
+            return ResponseEntity.badRequest().build();
+        }
+        Usuario user = usuarios.get();
+        UsuarioResponseDto ret = UsuarioResponseDto.converter(user);
+        return ResponseEntity.ok(ret);
     }
 }
