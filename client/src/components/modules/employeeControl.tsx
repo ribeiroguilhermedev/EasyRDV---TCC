@@ -43,9 +43,6 @@ const EmployeeControl = ({ employeeControlOpen, setEmployeeControlOpen }: Employ
                 return
             }
 
-            console.log(totalElements);
-
-
             const totalPages = Math.ceil(totalElements / perPage)
             setTotalPages(totalPages)
         }));

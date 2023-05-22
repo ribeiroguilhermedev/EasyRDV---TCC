@@ -18,8 +18,6 @@ const Login = () => {
         async (auth: { email: String, senha: String }) => {
             return await apiClient.post('/auth', auth)
                 .then(response => {
-                    console.log(response);
-                    
                     var user: AuthenticatedUser = {
                         email,
                         id: response.data?.usuario?.id,
@@ -72,8 +70,7 @@ const Login = () => {
                         <label htmlFor="">Senha</label>
                         <input onChange={e => setPassword(e.target.value)} className="rounded-lg bg-gray-500 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none" type="password" />
                     </div>
-                    <div className="flex justify-between text-gray-300 py-2">
-                        <p className="flex items-center"><input type="checkbox" className="mr-2" /> Lembrar</p>
+                    <div className="flex justify-center text-gray-300 py-2">
                         <p>Esqueci minha senha</p>
                     </div>
                     <button className="w-full my-5 py-2 text-blue-post bg-dark-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 font-semibold rounded-lg">

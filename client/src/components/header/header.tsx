@@ -137,7 +137,7 @@ const Header = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Abrir configurações">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar {...stringAvatar(`${location.state.currentUser?.nome} ${location.state.currentUser?.sobrenome}`)} src="/static/images/avatar/2.jpg" />
+                  <Avatar {...stringAvatar(`${auth.currentUser?.nome} ${auth.currentUser?.sobrenome}`)} src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
