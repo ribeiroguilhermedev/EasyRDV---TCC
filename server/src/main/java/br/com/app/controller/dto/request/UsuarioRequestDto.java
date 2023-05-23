@@ -1,14 +1,9 @@
 package br.com.app.controller.dto.request;
 
-import br.com.app.modelo.Empresa;
-import br.com.app.modelo.Etapa;
 import br.com.app.modelo.Usuario;
 import br.com.app.repository.UsuarioRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
 
 public class UsuarioRequestDto {
 
