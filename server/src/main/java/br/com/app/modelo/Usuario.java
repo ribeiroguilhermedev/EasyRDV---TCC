@@ -104,6 +104,9 @@ public class Usuario implements UserDetails {
 		this.empresa_id = empresa_id;
 	}
 
+	public Long getEmpresa_id() {
+		return empresa_id;
+	}
 	public void setId(Long id) {this.id = id;}
 	public Long getId() {return id;}
 	public String getNome() {return nome;}
