@@ -1,54 +1,30 @@
-import { useLayoutEffect, useState } from "react"
+import { useState } from "react"
 import { useMutation } from 'react-query'
-import { useAuth } from "../../auth/authContext";
-import { AuthenticatedUser } from "../../types/types";
-import { useNavigate } from 'react-router-dom';
 import businessTravel from '../../assets/business_travel.avif'
 import apiClient from "../../services/api";
 
 const ForgotPassword = () => {
-    const navigate = useNavigate();
-    const { login } = useAuth();
-
     const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(null);
 
     const mutation = useMutation(
-        async (auth: { email: String, senha: String }) => {
-            return await apiClient.post('/auth', auth)
-                .then(response => {
-                    var user: AuthenticatedUser = {
-                        email,
-                        id: response.data?.usuario?.id,
-                        nome: response.data?.usuario?.nome,
-                        sobrenome: response.data?.usuario?.sobrenome,
-                        cpf: response.data?.usuario?.cpf,
-                        rg: response.data?.usuario?.rg,
-                        data_nascimento: response.data?.usuario?.data_nascimento,
-                        token: response.data?.token,
-                        empresa_id: response.data?.usuario?.empresa_id,
-                        guid: response.data?.guid,
-                        observacao: response.data?.observacao,
-                        data_criacao: response.data?.data_criacao,
-                        flag_ativo: response.data?.flag_ativo,
-                        foto: response.data?.foto,
-                    }
-                    setCurrentUser(user)
-                    login(user);
+        async (email: String) => {
+            const objEmail = {email}
+            return await apiClient.post('/usuario/recuperar/senha', objEmail)
+                .then(() => {
+                  alert('Email enviado!')
                 })
                 .catch(error => {
                     console.error(error)
-                    alert('E-mail ou senha incorretos')
+                    alert('Erro no envio de e-mail!')
                 })
         }
     );
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        await mutation.mutateAsync({ email: email, senha: password })
+        await mutation.mutateAsync(email)
     };
-    
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
             <div className="hidden sm:block">
