@@ -20,7 +20,8 @@ public class EmailMessage {
 
     public static String messageToForgotPassword(Usuario usuario, String password, String guid) {
         return "Olá " + usuario.getNome()
-                + "! Para recuperar sua senha, acesse esse link " + Constantes.URL_ESQUECI_SENHA +"?guid=" + guid + "\n \n"
+                + "! Para recuperar sua senha, clique abaixo "
+                + "<a href=\"" + Constantes.URL_ESQUECI_SENHA +"?guid=" + guid + "\"" + ">Clique aqui</a>" +"\n \n"
                 + "Atenciosamente, equipe do EasyRDV";
     }
 

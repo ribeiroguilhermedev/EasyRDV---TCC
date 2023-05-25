@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.concurrent.Future;
 
 @Service
@@ -26,13 +27,13 @@ public class EmailService {
 
     @Async
     public Future<Boolean> enviarAsync(String para, String titulo, String conteudo) {
+        MimeMessage mail = jms.createMimeMessage();
         try {
-            var mensagem = new SimpleMailMessage();
-
-            mensagem.setTo(para);
-            mensagem.setSubject(titulo);
-            mensagem.setText(conteudo);
-            jms.send(mensagem);
+            MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+            helper.setTo(para);
+            helper.setSubject(titulo);
+            helper.setText(conteudo, true);
+            jms.send(mail);
             return new AsyncResult<>(true);
         }catch (Exception e){
             return new AsyncResult<>(false  );

@@ -7,7 +7,7 @@ import Login from '../pages/login'
 import Home from '../pages/home'
 import PrivateRoute from './privateRoute'
 import ForgotPassword from '../pages/forgotPassword'
-import ChangePassword from '../pages/forgotPassword/changePassword'
+import ChangePassword from '../pages/changePassword'
 
 
 
