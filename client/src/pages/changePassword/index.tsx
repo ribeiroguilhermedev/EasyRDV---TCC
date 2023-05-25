@@ -1,47 +1,44 @@
 import { useState } from "react"
 import { useMutation } from 'react-query'
-import businessTravel from '../../../assets/business_travel.avif'
-import apiClient from "../../../services/api";
+import businessTravel from '../../assets/business_travel.avif'
+import apiClient from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState<string>('');
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [idUser, setIdUser] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const currentUrl = window.location.href
   const guidUser = currentUrl.substring('http://localhost:5173/forgotPassword/change?guid='.length)
-
-
 
   apiClient.get(`/usuario/guid/${guidUser}`)
     .then((response) => {
       setIdUser(Number(response.data.id));
     })
     .catch(error => {
-      console.error(error)
+      navigate("/")
     })
 
-
-    const mutation = useMutation(
-      async (id: number | null) => {
-          const objPassword = {senha: password}
-          return await apiClient.put(`/usuario/atualiza/senha/${id}`, objPassword)
-              .then(() => {
-                alert('Senha alterada!')
-              })
-              .catch(error => {
-                  console.error(error)
-                  alert('Erro na alteração de senha!')
-              })
-      }
+  const mutation = useMutation(
+    async (id: number | null) => {
+      const objPassword = { senha: password }
+      return await apiClient.put(`/usuario/atualiza/senha/${id}`, objPassword)
+        .then(() => {
+          alert('Senha alterada!')
+        })
+        .catch(error => {
+          console.error(error)
+          alert('Erro na alteração de senha!')
+        })
+    }
   );
-
-
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     await mutation.mutateAsync(idUser)
-    
+
   };
 
   return (

@@ -138,6 +138,7 @@ public class UsuarioController {
         if (optional.isPresent()) {
             Usuario usuario = form.atualizar(id, u_repository);
             usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
+            usuario.setGuid(String.valueOf(UUID.randomUUID()));
             u_repository.save(usuario);
             return ResponseEntity.ok(new UsuarioResponseDto(usuario));
         }
