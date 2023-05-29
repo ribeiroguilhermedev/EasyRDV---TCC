@@ -21,8 +21,18 @@ const Login = () => {
                     var user: AuthenticatedUser = {
                         email,
                         id: response.data?.usuario?.id,
-                        name: response.data?.usuario?.nome,
+                        nome: response.data?.usuario?.nome,
+                        sobrenome: response.data?.usuario?.sobrenome,
+                        cpf: response.data?.usuario?.cpf,
+                        rg: response.data?.usuario?.rg,
+                        data_nascimento: response.data?.usuario?.data_nascimento,
                         token: response.data?.token,
+                        empresa_id: response.data?.usuario?.empresa_id,
+                        guid: response.data?.guid,
+                        observacao: response.data?.observacao,
+                        data_criacao: response.data?.data_criacao,
+                        flag_ativo: response.data?.flag_ativo,
+                        foto: response.data?.foto,
                     }
                     setCurrentUser(user)
                     login(user);
@@ -60,9 +70,8 @@ const Login = () => {
                         <label htmlFor="">Senha</label>
                         <input onChange={e => setPassword(e.target.value)} className="rounded-lg bg-gray-500 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none" type="password" />
                     </div>
-                    <div className="flex justify-between text-gray-300 py-2">
-                        <p className="flex items-center"><input type="checkbox" className="mr-2" /> Lembrar</p>
-                        <p>Esqueci minha senha</p>
+                    <div className="flex justify-center text-gray-300 py-2">
+                        <a href="/forgotPassword">Esqueci minha senha</a>
                     </div>
                     <button className="w-full my-5 py-2 text-blue-post bg-dark-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 font-semibold rounded-lg">
                         Login

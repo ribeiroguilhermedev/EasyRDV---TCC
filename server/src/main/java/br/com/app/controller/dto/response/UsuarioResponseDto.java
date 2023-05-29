@@ -2,12 +2,16 @@ package br.com.app.controller.dto.response;
 
 import br.com.app.modelo.Empresa;
 import br.com.app.modelo.Etapa;
+import br.com.app.modelo.Perfil;
 import br.com.app.modelo.Usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class UsuarioResponseDto {
@@ -30,6 +34,8 @@ public class UsuarioResponseDto {
     private Etapa etapa;
     private Empresa empresa;
 
+    private List<Perfil> perfis = new ArrayList<>();
+
     public UsuarioResponseDto(Usuario usuario){
         this.id = usuario.getId();
         this.nome = usuario.getNome();
@@ -40,11 +46,20 @@ public class UsuarioResponseDto {
         this.foto = usuario.getFoto();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
-        this.flag_ativo = usuario.getFlag_ativo();
+        this.flag_ativo = usuario.getFlagAtivo();
         this.data_criacao = usuario.getData_criacao();
         this.observacao = usuario.getObservacao();
         this.guid = usuario.getGuid();
         this.etapa = usuario.getEtapa();
         this.empresa = usuario.getEmpresa();
+        this.perfis = (List<Perfil>) usuario.getAuthorities();
+    }
+
+    public static List<UsuarioResponseDto> converter(List<Usuario> usuarios) {
+        return usuarios.stream().map(UsuarioResponseDto::new).collect(Collectors.toList());
+    }
+
+    public static UsuarioResponseDto converter(Usuario usuarios) {
+        return new UsuarioResponseDto(usuarios);
     }
 }

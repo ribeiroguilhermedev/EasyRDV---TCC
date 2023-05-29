@@ -1,24 +1,23 @@
-import React from "react"
-import { useAuth } from "../../auth/authContext"
-import { useLocation } from 'react-router-dom';
-import EmployeeRegister from "../../components/dialogs/employeeRegister";
+import { useState } from "react"
+import Header from "../../components/header/header";
+import Aside from "../../components/aside/aside";
+import EmployeeControl from "../../components/modules/employeeControl";
+import Paper from "@mui/material/Paper";
 
 const Home = () => {
-  const auth = useAuth()
-  const location = useLocation();
+  const [employeeControlOpen, setEmployeeControlOpen] = useState(false)
 
   return (
     <>
-      <div>
-        {location.state?.currentUser && (
-          <h1>Bem-vindo, {location.state.currentUser?.name}!</h1>
-        )}
+      <div className="flex flex-col h-screen">
+        <Header />
+        <div className="flex justify-center shrink grow">
+          <Aside employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />
+          <Paper className="w-full pt-5 rounded-none" square={true}>
+            {employeeControlOpen && <EmployeeControl employeeControlOpen={employeeControlOpen} setEmployeeControlOpen={setEmployeeControlOpen} />}
+          </Paper>
+        </div>
       </div>
-      <button onClick={e => {
-        auth.logout()
-      }}>logout</button>
-
-      <EmployeeRegister open={true} />
     </>
   )
 }

@@ -11,14 +11,18 @@ import java.util.List;
 public class UsuarioInfoResponseDto {
 
     private Long id;
+    private Long empresa_id;
     private String nome;
+    private String sobrenome;
     private String email;
     private List<Perfil> perfis = new ArrayList<>();
 
     public UsuarioInfoResponseDto(Usuario usuario){
         this.id = usuario.getId();
         this.nome = usuario.getNome();
+        this.sobrenome = usuario.getSobrenome();
         this.email = usuario.getEmail();
+        this.empresa_id = usuario.getEmpresa_id();
         this.perfis = (List<Perfil>) usuario.getAuthorities();
     }
 

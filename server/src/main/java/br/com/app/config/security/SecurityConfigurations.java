@@ -43,10 +43,25 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	//Configuracoes de autorizacao
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.authorizeHttpRequests()
 				.antMatchers(HttpMethod.POST, "/auth").permitAll()
 				.antMatchers(HttpMethod.POST, "/usuario/**").permitAll()
-				.antMatchers(HttpMethod.DELETE, "/usuario/*").hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET	, "/usuario/**").permitAll()
+				.antMatchers(HttpMethod.PUT, "/usuario/**").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/usuario/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/anexo/**").permitAll()
+				.antMatchers(HttpMethod.GET	, "/anexo/**").permitAll()
+				.antMatchers(HttpMethod.PUT, "/anexo/**").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/anexo/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/viagem/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/viagem/**").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/viagem/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/viagem/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/comprovante/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/comprovante/**").permitAll()
+				.antMatchers(HttpMethod.DELETE, "/comprovante/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/comprovante/**").permitAll()
+				.antMatchers(HttpMethod.PUT, "/usuario/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/empresa/*").permitAll()
 				.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "**/swagger-resources/**",

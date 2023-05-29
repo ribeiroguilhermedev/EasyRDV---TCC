@@ -1,12 +1,10 @@
 package br.com.app.modelo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.OnDelete;
@@ -21,7 +19,9 @@ public class Usuario implements UserDetails {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotNull
 	private String nome;
+	@NotNull
 	private String sobrenome;
 	private String cpf;
 	private String rg;
@@ -30,11 +30,17 @@ public class Usuario implements UserDetails {
 	private Date data_nascimento;
 
 	private String foto;
+	@NotNull
 	private String email;
+	@NotNull
 	private String senha;
-	private Boolean flag_ativo;
-	private LocalDateTime data_criacao;
+	@Column(name = "flag_ativo")
+	@NotNull
+	private Boolean flagAtivo = true;
+	@NotNull
+	private LocalDateTime data_criacao = LocalDateTime.now();
 	private String observacao;
+
 	private String guid;
 
 	@Enumerated(EnumType.STRING)
@@ -49,14 +55,13 @@ public class Usuario implements UserDetails {
 	private Long empresa_id;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<Perfil> perfis = new ArrayList<>();
+	private final List<Perfil> perfis = new ArrayList<>();
 
 	public Usuario() {
 	}
 
 	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
-				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa, Long empresa_id) {
+				   String foto, String email, String observacao, Long empresa_id) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
@@ -64,19 +69,12 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		this.senha = senha;
-		this.flag_ativo = true;
-		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = guid;
-		this.etapa = Etapa.CRIADO;
 		this.empresa_id = empresa_id;
 	}
 
 	public Usuario(String nome, String sobrenome, String cpf, String rg, Date data_nascimento,
-				   String foto, String email, String senha, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String observacao, String guid, Etapa etapa,
-				   Empresa empresa) {
+				   String foto, String email,String observacao, Empresa empresa) {
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.cpf = cpf;
@@ -84,12 +82,7 @@ public class Usuario implements UserDetails {
 		this.data_nascimento = data_nascimento;
 		this.foto = foto;
 		this.email = email;
-		this.senha = senha;
-		this.flag_ativo = true;
-		this.data_criacao = LocalDateTime.now();
 		this.observacao = observacao;
-		this.guid = guid;
-		this.etapa = Etapa.CRIADO;
 		this.empresa = empresa;
 	}
 
@@ -111,25 +104,40 @@ public class Usuario implements UserDetails {
 		this.empresa_id = empresa_id;
 	}
 
+	public Long getEmpresa_id() {
+		return empresa_id;
+	}
+	public void setId(Long id) {this.id = id;}
 	public Long getId() {return id;}
 	public String getNome() {return nome;}
-	public void setNome(String nome) {this.nome = nome;}
 	public String getSobrenome() {return sobrenome;}
-	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
 	public String getCpf() {return cpf;}
 	public void setCpf(String cpf) {this.cpf = cpf;}
 	public String getRg() {return rg;}
 	public Date getData_nascimento() {return data_nascimento;}
 	public String getFoto() {return foto;}
+	public void setFoto(String foto) {this.foto = foto;}
 	public String getEmail() {return email;}
+	public void setEmail(String email) {this.email = email;}
 	public String getSenha() {return senha;}
-	public Boolean getFlag_ativo() {return flag_ativo;}
+	public void setSenha(String senha) {this.senha = senha;}
+	public Boolean getFlagAtivo() {return flagAtivo;}
 	public LocalDateTime getData_criacao() {return data_criacao;}
+	public void setFlagAtivo(Boolean flagAtivo) {this.flagAtivo = flagAtivo;}
+	public void setData_criacao(LocalDateTime data_criacao) {this.data_criacao = data_criacao;}
+	public void setGuid(String guid) {this.guid = guid;}
+	public void setEtapa(Etapa etapa) {this.etapa = etapa;}
 	public String getObservacao() {return observacao;}
 	public String getGuid() {return guid;}
 	public Etapa getEtapa() {return etapa;}
 	public Empresa getEmpresa() {return empresa;}
-
+	public void setNome(String nome) {this.nome = nome;}
+	public void setSobrenome(String sobrenome) {this.sobrenome = sobrenome;}
+	public void setRg(String rg) {this.rg = rg;}
+	public void setData_nascimento(Date data_nascimento) {this.data_nascimento = data_nascimento;}
+	public void setObservacao(String observacao) {this.observacao = observacao;}
+	public void setEmpresa(Empresa empresa) {this.empresa = empresa;}
+	public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
 
 	public void addRole(Perfil perfil) {this.perfis.add(perfil);}
 
@@ -168,4 +176,19 @@ public class Usuario implements UserDetails {
 		return true;
 	}
 
+	private static final String CHARACTERS =
+			"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	private static final int PASSWORD_LENGTH = 6;
+
+	public static String generate() {
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < PASSWORD_LENGTH; i++) {
+			int index = random.nextInt(CHARACTERS.length());
+			sb.append(CHARACTERS.charAt(index));
+		}
+		return sb.toString();
+	}
+
 }
+

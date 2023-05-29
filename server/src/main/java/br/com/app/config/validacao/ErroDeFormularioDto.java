@@ -2,8 +2,8 @@ package br.com.app.config.validacao;
 
 public class ErroDeFormularioDto {
 	
-	private String campo;
-	private String erro;
+	private final String campo;
+	private final String erro;
 	
 	public ErroDeFormularioDto(String campo, String erro) {
 		this.campo = campo;
