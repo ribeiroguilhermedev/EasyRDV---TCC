@@ -1,6 +1,14 @@
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
 
+export const HeaderButton = styled(Button)({
+  color: '#f44336',
+  border: 'none',
+  '&:hover': {
+    border: 'none',
+  },
+});
+
 export const ErrorButton = styled(Button)({
   color: '#f44336',
   border: '1px solid #7f2e2f',
