@@ -11,6 +11,7 @@ import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
 import EmployeeEditDialog from '../dialogs/employeeEditDialog';
+import EmployeeTripsDialog from '../dialogs/employeeTripsDialog';
 
 export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo, data_nascimento, observacao, foto, rg, cpf }: EmployeeCardProps) {
   function stringAvatar(name: string) {
@@ -77,6 +78,8 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome,
               users={users}
               flag_ativo={flag_ativo}
               onDeletedUser={onDeletedUser} />
+              <EmployeeTripsDialog id={id}/>
+              
           </>
           :
           <SuccessButton onClick={() => activateEmployee.mutate(id)}>Ativar</SuccessButton>

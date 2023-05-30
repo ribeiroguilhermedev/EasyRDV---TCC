@@ -15,6 +15,18 @@ export interface User {
   
   senha?: string;
 }
+export interface Trip {
+  id: number;
+  cidade: string;
+  data_fim: Date;
+  data_inicio: Date;
+  descricao: string;
+  status: number;
+  uf: string;
+  valorTotal: number;
+  valorTotalReembolsado: number;
+  usuario_id: number;
+}
 
 export interface AuthenticatedUser extends User {
   token: string;
@@ -69,6 +81,9 @@ export interface EmployeeEditDialogProps {
   observacao?: string | null;
   users: User[],
   onDeletedUser: Function;
+}
+export interface EmployeeTripsDialogProps {
+  id: number;
 }
 
 export interface EmployeeProps {
