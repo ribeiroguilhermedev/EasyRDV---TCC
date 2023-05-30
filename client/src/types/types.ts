@@ -27,6 +27,30 @@ export interface Trip {
   valorTotalReembolsado: number;
   usuario_id: number;
 }
+export interface Trip {
+  id: number;
+  cidade: string;
+  data_fim: Date;
+  data_inicio: Date;
+  descricao: string;
+  status: number;
+  uf: string;
+  valorTotal: number;
+  valorTotalReembolsado: number;
+  usuario_id: number;
+}
+export interface Receipt {
+  id: number;
+  aprovado: boolean;
+  data: Date;
+  local: string;
+  observacao: string;
+  observacao_Empresa: string;
+  valor: number;
+  valorReembolsado: number;
+  viagem_id: number;
+  categoria: string;
+}
 
 export interface AuthenticatedUser extends User {
   token: string;

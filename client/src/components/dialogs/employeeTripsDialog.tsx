@@ -1,4 +1,4 @@
-import { EmployeeTripsDialogProps, Trip } from '../../types/types';
+import { EmployeeTripsDialogProps, Receipt, Trip } from '../../types/types';
 import { useAuth } from '../../auth/authContext';
 import { useState } from 'react';
 import { useMediaQuery, TextField, Button, DialogContentText, Typography } from '@mui/material';
@@ -27,6 +27,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   const [totalPages, setTotalPages] = useState(0)
   const [perPage, setPerPage] = useState(10)
   const [trips, setTrips] = useState<Trip[]>([])
+  const [receipts, setReceipts] = useState<Receipt[]>([])
 
   const handleClickOpen = () => {
     const config = {
@@ -36,8 +37,6 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
       params: { limit: perPage, offset: currentPage - 1 }, ...config
     }).then((response => {
       setTrips(response.data)
-      console.log(response.data);
-      
       const totalElements = response.data.totalElements
 
       if (totalElements < perPage) {
@@ -58,7 +57,31 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   };
 
 
+  const handleClickTrip = (id: EmployeeTripsDialogProps) => {
+    console.log(id.id);
 
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    apiClient.get(`comprovante/viagem/${id.id}`, {
+      params: { limit: perPage, offset: currentPage - 1 }, ...config
+    }).then((response => {
+      setReceipts(response.data)
+      const totalElements = response.data.totalElements
+
+      if (totalElements < perPage) {
+        setTotalPages(0)
+        return
+      }
+
+      const totalPages = Math.ceil(totalElements / perPage)
+      setTotalPages(totalPages)
+    }));
+    
+  }
+
+let contadorViagem = 1
+let contadorComprovante = 1
   return (
     <div>
       <IconButton aria-label="delete" onClick={handleClickOpen}>
@@ -79,21 +102,16 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
         
         <div className='flex'>
 
-        <DialogContent>
+        <DialogContent className='flex flex-col w-1/2 gap-2'>
           {trips.map((trip: Trip) => (
-            <Typography key={trip.id}>
-              Cidade: {trip.cidade}
-              <br />
-              UF: {trip.uf}
-              <br />
-              Valor total: {trip.valorTotal}
-              <br />
-              <br />
-            </Typography>
+            <Button onClick={()=> handleClickTrip(({id: trip.id}))} key={trip.id}> Viagem: {contadorViagem++} Cidade: {trip.cidade} </Button>
           ))}
         </DialogContent>
         <div id="linha-vertical" className='border-r border-white'></div>
-        <DialogContent>
+        <DialogContent className='flex flex-col w-1/2 gap-2'>
+        {receipts.map((receipt: Receipt) => (
+            <Button key={receipt.id}> Comprovante: {contadorComprovante++} Comprovante: {receipt.categoria} </Button>
+          ))}
         </DialogContent>
           </div>
         <DialogActions>
