@@ -68,7 +68,7 @@ public class UsuarioController {
     @PostMapping("/cadastro/funcionario")
     @Transactional
     public ResponseEntity<UsuarioResponseDto> cadastrarFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
-        Optional<Usuario> optUsuario = u_repository.findByEmail(form.getEmail());
+        Optional<Usuario> optUsuario = u_repository.findByEmailOrCpfOrRg(form.getEmail(), form.getCpf(), form.getRg());
         Usuario rsUsuario = optUsuario.orElse(null);
         if (rsUsuario != null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UsuarioResponseDto(new Usuario()));

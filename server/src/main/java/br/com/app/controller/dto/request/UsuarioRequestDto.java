@@ -29,6 +29,8 @@ public class UsuarioRequestDto {
     public void setEmpresa_id(Long empresa_id) {this.empresa_id = empresa_id;}
     public String getEmail() {return email;}
     public Long getEmpresa_id() {return empresa_id;}
+    public String getCpf() {return cpf;}
+    public String getRg() {return rg;}
 
     public Usuario converter(UsuarioRepository repository){
         return new Usuario(nome, sobrenome, cpf, rg, data_nascimento,
