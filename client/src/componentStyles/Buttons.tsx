@@ -9,7 +9,7 @@ export const HeaderButton = styled(Button)({
   },
 });
 
-export const ErrorButton = styled(Button)({
+export const RedButton = styled(Button)({
   color: '#f44336',
   border: '1px solid #7f2e2f',
   '&:hover': {
@@ -30,7 +30,7 @@ export const WarningButton = styled(Button)({
   },
 });
 
-export const SuccessButton = styled(Button)({
+export const GreenButton = styled(Button)({
   color: '#4caf50',
   border: '1px solid #66bb6a',
   '&:hover': {

@@ -103,7 +103,7 @@ export interface EmployeeEditDialogProps {
   data_nascimento?: Date;
   foto?: string | null;
   observacao?: string | null;
-  users: User[],
+  users: User[];
   onDeletedUser: Function;
 }
 export interface EmployeeTripsDialogProps {
@@ -118,4 +118,9 @@ export interface EmployeeProps {
 export interface SearchProps {
   busca: string;
   setBusca: Function;
+}
+
+export interface TextFieldReversalProps {
+  value: number;
+  disabled: boolean;
 }

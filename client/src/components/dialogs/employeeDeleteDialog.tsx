@@ -11,7 +11,7 @@ import { EmployeeDeleteDialogProps, User } from '../../types/types';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
-import { ErrorButton, WarningButton } from '../../componentStyles/Buttons';
+import { RedButton, WarningButton } from '../../componentStyles/Buttons';
 
 
 export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, sobrenome, onDeletedUser, users, flag_ativo }: EmployeeDeleteDialogProps) {
@@ -80,7 +80,7 @@ export default function EmployeeDeleteDialog({ nome, email, id, data_criacao, so
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
           <WarningButton onClick={() => inactivateEmployee.mutate(id)} autoFocus>Inativar</WarningButton>
-          <ErrorButton onClick={() => deleteEmployee.mutate(id)} autoFocus>Remover</ErrorButton>
+          <RedButton onClick={() => deleteEmployee.mutate(id)} autoFocus>Remover</RedButton>
         </DialogActions>
       </Dialog>
     </div>

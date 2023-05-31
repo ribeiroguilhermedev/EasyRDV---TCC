@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { EmployeeCardProps, User } from '../../types/types';
 import EmployeeDeleteDialog from '../dialogs/employeeDeleteDialog';
-import { SuccessButton } from '../../componentStyles/Buttons';
+import { GreenButton } from '../../componentStyles/Buttons';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
 import { useAuth } from '../../auth/authContext';
@@ -82,7 +82,7 @@ export default function EmployeeCard({ nome, email, id, data_criacao, sobrenome,
               
           </>
           :
-          <SuccessButton onClick={() => activateEmployee.mutate(id)}>Ativar</SuccessButton>
+          <GreenButton onClick={() => activateEmployee.mutate(id)}>Ativar</GreenButton>
         }
       </CardActions>
     </Card>

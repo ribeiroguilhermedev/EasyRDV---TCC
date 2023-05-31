@@ -7,7 +7,6 @@ const Home = () => {
   const [employeeControlOpen, setEmployeeControlOpen] = useState(true)
   const [panelOpen, setPanelOpen] = useState(!employeeControlOpen)
 
-
   return (
     <>
       <div className="flex flex-col h-screen">

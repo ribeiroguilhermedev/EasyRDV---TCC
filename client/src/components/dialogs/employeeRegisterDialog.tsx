@@ -17,7 +17,7 @@ import * as yup from "yup";
 import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { ErrorButton } from "../../componentStyles/Buttons";
+import { RedButton } from "../../componentStyles/Buttons";
 
 const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
@@ -216,7 +216,7 @@ const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: Employe
                     />
                 </DialogContent>
                 <DialogActions className='mr-4'>
-                    <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
+                    <RedButton onClick={handleClose}>Cancelar</RedButton>
                     <LoadingButton
                         onClick={
                             handleSubmit(handleSubmitInternal)

@@ -3,7 +3,7 @@ import { useMutation } from 'react-query'
 import { useAuth } from "../../auth/authContext";
 import { AuthenticatedUser } from "../../types/types";
 import { useNavigate } from 'react-router-dom';
-import businessTravel from '../../assets/business_travel.avif'
+import businessTravel from '../../assets/business_travel.png'
 import apiClient from "../../services/api";
 
 const Login = () => {
