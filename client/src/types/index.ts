@@ -58,6 +58,12 @@ export interface EmployeeRegisterProps {
   users: User[];
 }
 
+export interface ConfirmEventProps {
+  isOpen: boolean;
+  setOpen: Function;
+  approved: boolean;
+}
+
 export interface EmployeeCardProps {
   id: number;
   nome: string;
@@ -128,6 +134,7 @@ export interface StatusCircleProps {
 
 export interface CloseDialogProps {
   handleClose: React.MouseEventHandler<HTMLButtonElement>;
+  title?: string
 }
 
 export interface BigDialogProps {

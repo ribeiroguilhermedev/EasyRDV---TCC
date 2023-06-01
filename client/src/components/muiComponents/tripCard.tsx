@@ -16,13 +16,21 @@ import { useState } from 'react';
 import { Stack, TextField, Typography } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { TextFieldReversal } from './textFieldReversal';
+import ConfirmEventDialog from '../dialogs/confirmEventDialog';
 
 export default function TripCard() {
   const [approved, setApproved] = useState(false);
   const [textReversalDisabled, setTextReversalDisabled] = useState<boolean>(true);
+  const [isOpen, setOpen] = useState(false);
 
-  const handleApprove = () => { }
-  const handleReprove = () => { }
+  const handleApprove = () => { 
+    setApproved(true)
+    setOpen(true)
+  }
+  const handleReprove = () => {
+    setApproved(false)
+    setOpen(true)
+   }
 
   const handleCheckReversalDisabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTextReversalDisabled(event.target.checked);
@@ -64,6 +72,7 @@ export default function TripCard() {
         <Stack direction={'row'} spacing={2}>
           <RedButton onClick={handleReprove}>Reprovar</RedButton>
           <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
+          <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved}/>
         </Stack>
         <Stack direction={'row'} spacing={2}>
           <Checkbox checked={textReversalDisabled} onChange={handleCheckReversalDisabledChange}/>

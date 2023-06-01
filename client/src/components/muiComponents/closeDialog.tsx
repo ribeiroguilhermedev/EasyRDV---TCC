@@ -4,10 +4,11 @@ import { CloseDialogProps, } from '../../types';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function CloseDialog(props: CloseDialogProps) {
-    const { handleClose } = props
+    const { handleClose, title } = props
 
     return (
         <DialogTitle>
+            {title}
             <IconButton
                 onClick={handleClose}
                 sx={{
