@@ -101,15 +101,22 @@ const ContentCard = (props: ContentCardProps) => {
         </TableContainer>
       </CardContent>
       <CardActions disableSpacing className='flex flex-row justify-between align-center w-full'>
+          {trip.status === "AGUARDANDO_APROVACAO" &&
+          <>
         <Stack direction={'row'} spacing={2}>
-          <RedButton onClick={handleReprove}>Reprovar</RedButton>
-          <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
-          <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved} />
-        </Stack>
+           <RedButton onClick={handleReprove}>Reprovar</RedButton>
+           <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
+           <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved} />
+           </Stack>
         <Stack direction={'row'} spacing={2}>
           <Checkbox checked={textReversalDisabled} onChange={handleCheckReversalDisabledChange} />
           <TextFieldReversal value={trip.valorTotal} disabled={textReversalDisabled} />
         </Stack>
+          </>
+           }
+          {/* <RedButton onClick={handleReprove}>Reprovar</RedButton>
+          <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
+          <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved} /> */}
       </CardActions>
     </Card>
   )
