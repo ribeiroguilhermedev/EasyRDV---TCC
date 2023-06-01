@@ -9,6 +9,7 @@ import TripCard from '../muiComponents/tripCard';
 import TripList from '../muiComponents/tripList';
 import CloseDialog from '../muiComponents/closeDialog';
 import BigDialog from '../muiComponents/bigDialog';
+import ReceiptList from '../muiComponents/receiptList';
 
 export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   const { currentUser } = useAuth();
@@ -52,8 +53,12 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
               <TripList handleClickTrip={handleClickTrip} trips={trips} />
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
-            <Stack className='w-1/3'>
-
+            <Stack spacing={3} className='w-1/3 items-center'>
+            <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Comprovantes</Typography>
+            {receipts.map((receipt: Receipt) => (
+              <ReceiptList id={receipt.id} aprovado={receipt.aprovado} data={receipt.data} local={receipt.local} observacao={receipt.observacao} 
+              observacao_Empresa={receipt.observacao_Empresa} valor={receipt.valor} valorReembolsado={receipt.valorReembolsado} viagem_id={receipt.viagem_id} categoria={receipt.categoria} />
+            ))}
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
             <Stack className='w-1/3'>
