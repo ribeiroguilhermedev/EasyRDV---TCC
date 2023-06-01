@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface User {
   id: number;
   nome: string;
@@ -122,4 +124,14 @@ export interface TripListProps {
 export interface StatusCircleProps {
   status?: number;
   hide?: boolean
+}
+
+export interface CloseDialogProps {
+  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+export interface BigDialogProps {
+  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+  open: boolean;
+  children: React.ReactNode;
 }

@@ -74,7 +74,7 @@ export default function TripList(props: TripListProps) {
                     height: 370
                 }}>
                 {trips.map((trip: Trip) => (
-                    <>
+                    <div key={trip.id}>
                         <ListItemButton
                             selected={trip.id === selectedId}
                             onClick={() => {
@@ -88,7 +88,7 @@ export default function TripList(props: TripListProps) {
                             </div>
                         </ListItemButton>
                         <Divider />
-                    </>
+                    </div>
                 ))}
             </List>
         </Paper>
