@@ -1,7 +1,7 @@
 import { EmployeeTripsDialogProps, Receipt, Trip } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useState } from 'react';
-import { useMediaQuery, Typography, Stack, IconButton, Divider } from '@mui/material';
+import { Typography, Stack, IconButton, Divider, Paper, Box } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import apiClient from '../../services/api';
 import HistoryIcon from '@mui/icons-material/History';
@@ -10,29 +10,40 @@ import TripList from '../muiComponents/tripList';
 import CloseDialog from '../muiComponents/closeDialog';
 import BigDialog from '../muiComponents/bigDialog';
 import ReceiptList from '../muiComponents/receiptList';
+import { useMutation } from 'react-query';
+
+
 
 export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
-  const [trips, setTrips] = useState<Trip[]>([])
-  const [currentTrip, setCurrentTrip] = useState<Trip | null>(null);
   const [receipts, setReceipts] = useState<Receipt[]>([])
 
   const header = { headers: { Authorization: `Bearer ${currentUser?.token}` } }
 
+  const fetchTrips = async () => {
+    const { data } = await apiClient.get(`viagem/usuario/${id}`, header);
+    return data;
+  }
+  const mutationTrips = useMutation(fetchTrips)
+
+  const fetchTrip = async (id: number) => {
+    const { data } = await apiClient.get(`viagem/${id}`, header);
+    return data[0];
+  }
+  const mutationTrip = useMutation(fetchTrip)
+
   const handleClickOpen = async () => {
     setOpen(true);
-    const ret = await apiClient.get(`viagem/usuario/${id}`, header)
-    setTrips(ret.data)
+    mutationTrips.mutate()
   }
 
   const handleClose = () => {
     setOpen(false);
-    setTrips([])
   }
 
   const handleClickTrip = async (id: number) => {
-
+    mutationTrip.mutate(id)
 
     const ret = await apiClient.get(`comprovante/viagem/${id}`, header)
     setReceipts(ret.data)
@@ -49,8 +60,8 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
           <Stack spacing={2} direction={'row'}>
             <Stack spacing={3} className='w-1/3 items-center justify-center'>
               <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Viagens</Typography>
-              <TripCard />
-              <TripList handleClickTrip={handleClickTrip} trips={trips} />
+              <TripCard loading={mutationTrip.isLoading} trip={mutationTrip?.data} />
+              <TripList handleClickTrip={handleClickTrip} trips={mutationTrips?.data} />
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
             <Stack spacing={3} className='w-1/3 items-center'>
@@ -84,8 +95,6 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
           <Button onClick={handleClose}>Fechar</Button>
         </DialogActions> */}
       </BigDialog>
-
     </div>
   )
-
 }

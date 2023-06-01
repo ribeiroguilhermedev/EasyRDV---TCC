@@ -123,7 +123,7 @@ export interface TextFieldReversalProps {
 }
 
 export interface TripListProps {
-  trips: Trip[];
+  trips: Trip[] | undefined;
   handleClickTrip: Function;
 }
 
@@ -141,4 +141,9 @@ export interface BigDialogProps {
   handleClose: React.MouseEventHandler<HTMLButtonElement>;
   open: boolean;
   children: React.ReactNode;
+}
+
+export interface TripCardProps {
+  trip: Trip | undefined;
+  loading: boolean;
 }

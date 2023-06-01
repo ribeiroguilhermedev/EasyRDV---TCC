@@ -5,6 +5,7 @@ import { formatCurrency, formatDate } from '../../utils/format';
 import { useState } from 'react';
 import { statusEnum } from '../../enumeration';
 import StatusCircle from './statusCircle';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface CityNameWithStatusProps {
     status: string
@@ -67,13 +68,42 @@ export default function TripList(props: TripListProps) {
     }
 
     return (
-        <Paper className='w-full'>
-            <List
-                sx={{
-                    overflow: 'auto',
-                    height: 370
-                }}>
-                {trips.map((trip: Trip) => (
+        <Paper className='w-full' sx={{ overflow: 'auto', height: 370 }}>
+            {
+                !trips ?
+                    <Loading /> :
+                    <ListItem
+                        handleClickTrip={handleClickTrip}
+                        handleSelectId={handleSelectId}
+                        list={trips}
+                        selectedId={selectedId} />
+            }
+        </Paper>
+    );
+}
+
+const Loading = () => {
+    return (
+        <Box className='flex h-full items-center justify-center'>
+            <CircularProgress />
+        </Box>
+    )
+}
+
+
+interface ListItemProps {
+    list: Trip[]
+    selectedId: number
+    handleClickTrip: Function
+    handleSelectId: Function
+}
+
+const ListItem = (props: ListItemProps) => {
+    const { handleClickTrip, handleSelectId, list, selectedId } = props
+    return (
+        <List>
+            {
+                list && list.map((trip: Trip) => (
                     <div key={trip.id}>
                         <ListItemButton
                             selected={trip.id === selectedId}
@@ -89,8 +119,8 @@ export default function TripList(props: TripListProps) {
                         </ListItemButton>
                         <Divider />
                     </div>
-                ))}
-            </List>
-        </Paper>
-    );
+                ))
+            }
+        </List>
+    )
 }
