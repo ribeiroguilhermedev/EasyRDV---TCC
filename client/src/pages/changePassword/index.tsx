@@ -37,6 +37,17 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()])[a-zA-Z0-9!@#$%^&*()]{8,}$/;
+
+  if (!passwordRegex.test(password)) {
+    alert("A senha deve ter 8 caracteres, pelo menos 1 número, 1 caractere especial e letras maiúscula e minúscula.");
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    alert("A senha e a confirmação de senha não correspondem.");
+    return;
+  }
     await mutation.mutateAsync(idUser)
 
   };
