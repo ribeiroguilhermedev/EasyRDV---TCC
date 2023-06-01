@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { EmployeeProps } from "../../types/types"
+import { EmployeeProps } from "../../types"
 import { useQuery } from "react-query";
-import { User } from "../../types/types";
+import { User } from "../../types";
 import { useAuth } from "../../auth/authContext";
 import EmployeeRegisterDialog from "../../components/dialogs/employeeRegisterDialog";
 import Container from '@mui/material/Container';

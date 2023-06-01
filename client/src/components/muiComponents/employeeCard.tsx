@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { EmployeeCardProps, User } from '../../types/types';
+import { EmployeeCardProps, User } from '../../types';
 import EmployeeDeleteDialog from '../dialogs/employeeDeleteDialog';
 import { GreenButton } from '../../componentStyles/Buttons';
 import apiClient from '../../services/api';

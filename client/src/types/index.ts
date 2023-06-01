@@ -12,33 +12,22 @@ export interface User {
   data_criacao: Date;
   flag_ativo: boolean;
   foto?: string | null;
-  
+
   senha?: string;
 }
 export interface Trip {
   id: number;
   cidade: string;
-  data_fim: Date;
-  data_inicio: Date;
+  dataFim: Date;
+  dataInicio: Date;
   descricao: string;
-  status: number;
+  status: string;
   uf: string;
   valorTotal: number;
   valorTotalReembolsado: number;
   usuario_id: number;
 }
-export interface Trip {
-  id: number;
-  cidade: string;
-  data_fim: Date;
-  data_inicio: Date;
-  descricao: string;
-  status: number;
-  uf: string;
-  valorTotal: number;
-  valorTotalReembolsado: number;
-  usuario_id: number;
-}
+
 export interface Receipt {
   id: number;
   aprovado: boolean;
@@ -123,4 +112,14 @@ export interface SearchProps {
 export interface TextFieldReversalProps {
   value: number;
   disabled: boolean;
+}
+
+export interface TripListProps {
+  trips: Trip[];
+  handleClickTrip: Function;
+}
+
+export interface StatusCircleProps {
+  status?: number;
+  hide?: boolean
 }

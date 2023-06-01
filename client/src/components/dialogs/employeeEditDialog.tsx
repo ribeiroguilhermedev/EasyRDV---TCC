@@ -1,4 +1,4 @@
-import { EmployeeEditDialogProps, User } from '../../types/types';
+import { EmployeeEditDialogProps, User } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useRef, useState } from 'react';
 import { useMediaQuery, TextField } from '@mui/material';

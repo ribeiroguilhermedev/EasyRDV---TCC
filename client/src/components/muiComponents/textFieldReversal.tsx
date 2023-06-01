@@ -1,8 +1,8 @@
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
-import { TextFieldReversalProps } from '../../types/types';
+import { TextFieldReversalProps } from '../../types';
 
 export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) => {
     const [currentValue, setCurrentValue] = useState<number | null>(value);
@@ -27,6 +27,13 @@ export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) =
             onChange={handleChange}
             disabled={disabled}
             value={currentValue}
-            variant="outlined" />
+            size="small"
+            variant="outlined"
+            InputProps={{
+                startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+              }}
+            sx={{
+                width:'140px'
+            }} />
     )
 }

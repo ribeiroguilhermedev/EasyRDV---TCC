@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from "react"
 import { useMutation } from 'react-query'
 import { useAuth } from "../../auth/authContext";
-import { AuthenticatedUser } from "../../types/types";
+import { AuthenticatedUser } from "../../types";
 import { useNavigate } from 'react-router-dom';
 import businessTravel from '../../assets/business_travel.png'
 import apiClient from "../../services/api";

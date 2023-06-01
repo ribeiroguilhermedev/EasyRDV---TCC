@@ -5,7 +5,7 @@ import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, To
 import MenuIcon from '@mui/icons-material/Menu';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
 import { HeaderButton } from "../../componentStyles/Buttons";
-import { EmployeeProps } from "../../types/types";
+import { EmployeeProps } from "../../types";
 
 
 

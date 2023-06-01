@@ -1,6 +1,6 @@
 // AuthContext.tsx
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { AuthenticatedUser } from '../types/types';
+import { AuthenticatedUser } from '../types';
 
 const AuthContext = createContext<{
   currentUser: AuthenticatedUser | null;

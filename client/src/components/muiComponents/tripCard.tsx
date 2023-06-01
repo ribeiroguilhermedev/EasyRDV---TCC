@@ -13,7 +13,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState } from 'react';
-import { Stack, TextField } from '@mui/material';
+import { Stack, TextField, Typography } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { TextFieldReversal } from './textFieldReversal';
 
@@ -38,20 +38,21 @@ export default function TripCard() {
   }
 
   return (
-    <Card sx={{ width: `100%` }} >
+    <Card className='w-full' >
       <CardHeader
         title={`${data.cidade}, ${data.uf}`}
         subheader={`${data.dtInicio} - ${data.dtFim}`}
-      />
+      >
+      </CardHeader>
       <CardContent>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table>
             <TableBody>
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow>
                 <TableCell>Total</TableCell>
                 <TableCell align="right">R$ {data.total}</TableCell>
               </TableRow>
-              <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow sx={ { border: 0 } }>
                 <TableCell>Valor reembolsado</TableCell>
                 <TableCell align="right">R$ {data.reembolso}</TableCell>
               </TableRow>
