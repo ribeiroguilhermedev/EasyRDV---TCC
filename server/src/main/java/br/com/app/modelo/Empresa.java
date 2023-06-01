@@ -1,17 +1,7 @@
 package br.com.app.modelo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 public class Empresa {
@@ -28,18 +18,56 @@ public class Empresa {
 	private String logo;
 	private String guid;
 
+	@ManyToOne
+	@JoinColumn(name = "matriz_id")
+	private Empresa matriz;
+
+	@Transient
+	private Long matriz_id;
+
+	@PostLoad
+	private void postLoad() {
+		if (matriz == null){
+			return;
+		}
+		this.matriz_id = matriz.getId();
+	}
+
+	public void setMatrizId(Long matriz_id) {
+		if (matriz_id != null) {
+			this.matriz = new Empresa();
+			this.matriz.setId(matriz_id);
+		} else {
+			this.matriz = null;
+		}
+		this.matriz_id = matriz_id;
+	}
+
 	public Empresa() {
 	}
 
 	public Empresa(String nome, String cnpj, String razao_social, Boolean flag_ativo,
-				   LocalDateTime data_criacao, String logo, String guid) {
+				   LocalDateTime data_criacao, String logo, String guid, Empresa matriz) {
 		this.nome = nome;
 		this.cnpj = cnpj;
 		this.razao_social = razao_social;
-		this.flag_ativo = true;
-		this.data_criacao = LocalDateTime.now();
+		this.flag_ativo = flag_ativo;
+		this.data_criacao = data_criacao;
 		this.logo = logo;
 		this.guid = guid;
+		this.matriz = matriz;
+	}
+
+	public Empresa(String nome, String cnpj, String razao_social, Boolean flag_ativo,
+				   LocalDateTime data_criacao, String logo, String guid, Long matriz_id) {
+		this.nome = nome;
+		this.cnpj = cnpj;
+		this.razao_social = razao_social;
+		this.flag_ativo = flag_ativo;
+		this.data_criacao = data_criacao;
+		this.logo = logo;
+		this.guid = guid;
+		this.matriz_id = matriz_id;
 	}
 
 	public Long getId() {
@@ -97,12 +125,14 @@ public class Empresa {
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-
 	public String getGuid() {
 		return guid;
 	}
-
 	public void setGuid(String guid) {
 		this.guid = guid;
 	}
+	public Empresa getMatriz() {return matriz;}
+	public void setMatriz(Empresa matriz) {this.matriz = matriz;}
+	public Long getMatriz_id() {return matriz_id;}
+	public void setMatriz_id(Long matriz_id) {this.matriz_id = matriz_id;}
 }

@@ -189,6 +189,4 @@ public class Usuario implements UserDetails {
 		}
 		return sb.toString();
 	}
-
 }
-

@@ -16,6 +16,7 @@ public class EmpresaResponseDto {
     private LocalDateTime data_criacao;
     private String logo;
     private String guid;
+    private Long matriz_id;
 
     public EmpresaResponseDto(Empresa empresa){
         this.id = empresa.getId();
@@ -26,5 +27,6 @@ public class EmpresaResponseDto {
         this.data_criacao = empresa.getData_criacao();
         this.logo = empresa.getLogo();
         this.guid = empresa.getGuid();
+        this.matriz_id = empresa.getMatriz_id();
     }
 }

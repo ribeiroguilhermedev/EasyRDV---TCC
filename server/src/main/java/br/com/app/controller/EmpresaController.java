@@ -25,6 +25,7 @@ public class EmpresaController {
     @Transactional
     public ResponseEntity<EmpresaResponseDto> cadastrar(@RequestBody final EmpresaRequestDto form, UriComponentsBuilder uriBuilder) {
         Empresa empresa = form.converter(repository);
+        empresa.setMatrizId(form.getMatriz_id());
         repository.save(empresa);
 
         URI uri = uriBuilder.path("/cadastro/{id}").buildAndExpand(empresa.getId()).toUri();
