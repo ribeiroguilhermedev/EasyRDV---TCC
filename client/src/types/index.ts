@@ -12,8 +12,33 @@ export interface User {
   data_criacao: Date;
   flag_ativo: boolean;
   foto?: string | null;
-  
+
   senha?: string;
+}
+export interface Trip {
+  id: number;
+  cidade: string;
+  dataFim: Date;
+  dataInicio: Date;
+  descricao: string;
+  status: string;
+  uf: string;
+  valorTotal: number;
+  valorTotalReembolsado: number;
+  usuario_id: number;
+}
+
+export interface Receipt {
+  id: number;
+  aprovado: boolean;
+  data: Date;
+  local: string;
+  observacao: string;
+  observacao_Empresa: string;
+  valor: number;
+  valorReembolsado: number;
+  viagem_id: number;
+  categoria: string;
 }
 
 export interface AuthenticatedUser extends User {
@@ -67,8 +92,11 @@ export interface EmployeeEditDialogProps {
   data_nascimento?: Date;
   foto?: string | null;
   observacao?: string | null;
-  users: User[],
+  users: User[];
   onDeletedUser: Function;
+}
+export interface EmployeeTripsDialogProps {
+  id: number;
 }
 
 export interface EmployeeProps {
@@ -79,4 +107,19 @@ export interface EmployeeProps {
 export interface SearchProps {
   busca: string;
   setBusca: Function;
+}
+
+export interface TextFieldReversalProps {
+  value: number;
+  disabled: boolean;
+}
+
+export interface TripListProps {
+  trips: Trip[];
+  handleClickTrip: Function;
+}
+
+export interface StatusCircleProps {
+  status?: number;
+  hide?: boolean
 }

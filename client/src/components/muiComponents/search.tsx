@@ -1,7 +1,7 @@
 import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { SearchProps } from '../../types/types';
+import { SearchProps } from '../../types';
 
 const Search = ({ setBusca, busca }: SearchProps) => {
 

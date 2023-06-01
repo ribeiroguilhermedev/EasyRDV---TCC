@@ -1,10 +1,13 @@
 package br.com.app.repository;
 
 import br.com.app.modelo.Viagem;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import feign.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ViagemRepository extends JpaRepository<Viagem, Long> {
-    Page<Viagem> findAllByUsuario_Id(Long usuario_id, Pageable pageable);
+    @Query("SELECT v FROM Viagem v WHERE v.usuario.id = :usuario_id ORDER BY v.status")
+    List<Viagem> findAllByUsuario_IdOrderByStatus(@Param("usuario_id") Long usuario_id);
 }

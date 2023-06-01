@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useMutation } from 'react-query'
-import businessTravel from '../../assets/business_travel.avif'
+import businessTravel from '../../assets/business_travel.png'
 import apiClient from "../../services/api";
 
 const ForgotPassword = () => {

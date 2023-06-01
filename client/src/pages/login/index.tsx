@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from "react"
 import { useMutation } from 'react-query'
 import { useAuth } from "../../auth/authContext";
-import { AuthenticatedUser } from "../../types/types";
+import { AuthenticatedUser } from "../../types";
 import { useNavigate } from 'react-router-dom';
-import businessTravel from '../../assets/business_travel.avif'
+import businessTravel from '../../assets/business_travel.png'
 import apiClient from "../../services/api";
 
 const Login = () => {
@@ -70,12 +70,12 @@ const Login = () => {
                         <label htmlFor="">Senha</label>
                         <input onChange={e => setPassword(e.target.value)} className="rounded-lg bg-gray-500 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none" type="password" />
                     </div>
-                    <div className="flex justify-center text-gray-300 py-2">
-                        <a href="/forgotPassword">Esqueci minha senha</a>
-                    </div>
                     <button className="w-full my-5 py-2 text-blue-post bg-dark-blue shadow-lg shadow-teal-500/50 hover:shadow-teal-500/40 font-semibold rounded-lg">
                         Login
                     </button>
+                    <div className="flex justify-center text-gray-300 py-2">
+                        <a href="/forgotPassword">Esqueci minha senha</a>
+                    </div>
                 </form>
             </div>
         </div>

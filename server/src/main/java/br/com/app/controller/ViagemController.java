@@ -61,13 +61,9 @@ public class ViagemController {
     }
 
     @GetMapping("/usuario/{id}")
-    public List<ViagemResponseDto> listaPeloUsuarioId(@PathVariable(value = "id") Long usuario_id,
-                                                       @RequestParam(value = "limit", defaultValue = "12") int limit,
-                                                       @RequestParam(value = "offset", defaultValue = "0") int offset) {
+    public List<ViagemResponseDto> listaPeloUsuarioId(@PathVariable(value = "id") Long usuario_id) {
 
-        Pageable pageable = PageRequest.of(offset, limit);
-        Page<Viagem> viagem = repository.findAllByUsuario_Id(usuario_id, pageable);
-        List<Viagem> lstViagem = viagem.getContent();
+        List<Viagem> lstViagem = repository.findAllByUsuario_IdOrderByStatus(usuario_id);
         return ViagemResponseDto.converter(lstViagem);
     }
 }

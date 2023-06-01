@@ -1,8 +1,20 @@
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
 
-export const ErrorButton = styled(Button)({
+export const HeaderButton = styled(Button)({
   color: '#f44336',
+  textTransform: 'none',
+  height: '30px',
+  border: 'none',
+  '&:hover': {
+    border: 'none',
+  },
+});
+
+export const RedButton = styled(Button)({
+  color: '#f44336',
+  textTransform: 'none',
+  height: '30px',
   border: '1px solid #7f2e2f',
   '&:hover': {
     backgroundColor: 'rgba(244, 67, 54, 0.08)',
@@ -14,6 +26,8 @@ export const ErrorButton = styled(Button)({
 
 export const WarningButton = styled(Button)({
   color: '#ffa726',
+  textTransform: 'none',
+  height: '30px',
   border: '1px solid #856027',
   '&:hover': {
     backgroundColor: '#1d2429',
@@ -22,8 +36,10 @@ export const WarningButton = styled(Button)({
   },
 });
 
-export const SuccessButton = styled(Button)({
+export const GreenButton = styled(Button)({
   color: '#4caf50',
+  textTransform: 'none',
+  height: '30px',
   border: '1px solid #66bb6a',
   '&:hover': {
     backgroundColor: '#1d2429',

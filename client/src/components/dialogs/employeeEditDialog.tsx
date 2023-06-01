@@ -1,4 +1,4 @@
-import { EmployeeEditDialogProps, User } from '../../types/types';
+import { EmployeeEditDialogProps, User } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useRef, useState } from 'react';
 import { useMediaQuery, TextField } from '@mui/material';
@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoadingButton } from '@mui/lab';
 import { useTheme } from '@mui/material/styles';
-import { ErrorButton } from '../../componentStyles/Buttons';
+import { RedButton } from '../../componentStyles/Buttons';
 import { useForm } from 'react-hook-form';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -221,7 +221,7 @@ export default function EmployeeEditDialog({ nome, email, id, sobrenome, onDelet
           />
         </DialogContent>
         <DialogActions className='mr-4'>
-          <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
+          <RedButton onClick={handleClose}>Cancelar</RedButton>
           <LoadingButton
             onClick={
               handleSubmit(handleSubmitInternal)

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { yupResolver } from '@hookform/resolvers/yup';
-import { User, EmployeeRegisterProps } from "../../types/types";
+import { User, EmployeeRegisterProps } from "../../types";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -17,7 +17,7 @@ import * as yup from "yup";
 import InputMask from 'react-input-mask';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { ErrorButton } from "../../componentStyles/Buttons";
+import { RedButton } from "../../componentStyles/Buttons";
 
 const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: EmployeeRegisterProps) => {
     const { currentUser } = useAuth();
@@ -216,7 +216,7 @@ const EmployeeRegisterDialog = ({ open, onClose, users, onUserCreated }: Employe
                     />
                 </DialogContent>
                 <DialogActions className='mr-4'>
-                    <ErrorButton onClick={handleClose}>Cancelar</ErrorButton>
+                    <RedButton onClick={handleClose}>Cancelar</RedButton>
                     <LoadingButton
                         onClick={
                             handleSubmit(handleSubmitInternal)

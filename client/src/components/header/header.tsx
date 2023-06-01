@@ -4,15 +4,21 @@ import { useLocation } from 'react-router-dom';
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CardTravelIcon from '@mui/icons-material/CardTravel';
+import { HeaderButton } from "../../componentStyles/Buttons";
+import { EmployeeProps } from "../../types";
 
 
 
-const Header = () => {
+const Header = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) =>  {
   const auth = useAuth()
   const location = useLocation();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  function openEmployeeControl() {
+    setEmployeeControlOpen(true)
+}
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -40,7 +46,7 @@ const Header = () => {
     };
   }
 
-  const pages = [{}];
+  const pages = [{nome: 'Funcionários', fClick: () => openEmployeeControl}];
   const settings = [{ nome: 'Perfil', fClick: handleCloseUserMenu }, { nome: 'Logout', fClick: logout }]
 
   return (
@@ -96,11 +102,11 @@ const Header = () => {
                   display: { xs: 'block', md: 'none' },
                 }}
               >
-                {/* {pages.map((page) => (
+                {pages.map((page) => (
                   <MenuItem key={page.nome} onClick={page.fClick}>
                     <Typography textAlign="center">{page.nome}</Typography>
                   </MenuItem>
-                ))} */}
+                ))}
               </Menu>
             </Box>
             <CardTravelIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -123,15 +129,15 @@ const Header = () => {
               EasyRDV
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {/* {pages.map((page) => (
-                <Button
+              {pages.map((page) => (
+                <HeaderButton
                   key={page.nome}
                   onClick={page.fClick}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page.nome}
-                </Button>
-              ))} */}
+                </HeaderButton>
+              ))}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
