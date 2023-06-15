@@ -1,52 +1,52 @@
 import { EmployeeTripsDialogProps, Receipt, Trip } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useState } from 'react';
-import { useMediaQuery, Typography, Stack, IconButton, Divider } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
+import { Typography, Stack, IconButton, Divider, Paper, Box } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import apiClient from '../../services/api';
 import HistoryIcon from '@mui/icons-material/History';
 import TripCard from '../muiComponents/tripCard';
 import TripList from '../muiComponents/tripList';
+import CloseDialog from '../muiComponents/closeDialog';
+import BigDialog from '../muiComponents/bigDialog';
+import ReceiptList from '../muiComponents/receiptList';
+import { useMutation } from 'react-query';
+
 
 
 export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   const { currentUser } = useAuth();
-  const token = currentUser?.token;
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [open, setOpen] = useState(false);
-  const [trips, setTrips] = useState<Trip[]>([])
   const [receipts, setReceipts] = useState<Receipt[]>([])
 
-  const handleClickOpen = () => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    apiClient.get(`viagem/usuario/${id}`, {
-      ...config
-    }).then((response => {
-      setTrips(response.data)
-    }));
+  const header = { headers: { Authorization: `Bearer ${currentUser?.token}` } }
 
+  const fetchTrips = async () => {
+    const { data } = await apiClient.get(`viagem/usuario/${id}`, header);
+    return data;
+  }
+  const mutationTrips = useMutation(fetchTrips)
+
+  const fetchTrip = async (id: number) => {
+    const { data } = await apiClient.get(`viagem/${id}`, header);
+    return data[0];
+  }
+  const mutationTrip = useMutation(fetchTrip)
+
+  const handleClickOpen = async () => {
     setOpen(true);
+    mutationTrips.mutate()
   }
 
   const handleClose = () => {
     setOpen(false);
-    setTrips([])
   }
 
-  const handleClickTrip = (id: number) => {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    apiClient.get(`comprovante/viagem/${id}`, {
-      ...config
-    }).then((response => {
-      setReceipts(response.data)
-    }));
+  const handleClickTrip = async (id: number) => {
+    mutationTrip.mutate(id)
+
+    const ret = await apiClient.get(`comprovante/viagem/${id}`, header)
+    setReceipts(ret.data)
   }
 
   return (
@@ -54,28 +54,22 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
       <IconButton onClick={handleClickOpen}>
         <HistoryIcon />
       </IconButton>
-      <Dialog
-        fullWidth
-        maxWidth={'xl'}
-        PaperProps={{
-          sx: {
-            height: 800
-          }
-        }}
-        open={open}
-        onClose={handleClose}
-        fullScreen={fullScreen}
-      >
+      <BigDialog open={open} handleClose={handleClose}>
+        <CloseDialog handleClose={handleClose} />
         <DialogContent sx={{ overflow: 'hidden' }} className='h-full'>
           <Stack spacing={2} direction={'row'}>
             <Stack spacing={3} className='w-1/3 items-center justify-center'>
-              <Typography variant='h6'>Viagens</Typography>
-              <TripCard />
-              <TripList handleClickTrip={handleClickTrip} trips={trips} />
+              <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Viagens</Typography>
+              <TripCard loading={mutationTrip.isLoading} trip={mutationTrip?.data} />
+              <TripList handleClickTrip={handleClickTrip} trips={mutationTrips?.data} />
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
-            <Stack className='w-1/3'>
-
+            <Stack spacing={3} className='w-1/3 items-center'>
+            <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Comprovantes</Typography>
+            {receipts.map((receipt: Receipt) => (
+              <ReceiptList id={receipt.id} aprovado={receipt.aprovado} data={receipt.data} local={receipt.local} observacao={receipt.observacao} 
+              observacao_Empresa={receipt.observacao_Empresa} valor={receipt.valor} valorReembolsado={receipt.valorReembolsado} viagem_id={receipt.viagem_id} categoria={receipt.categoria} />
+            ))}
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
             <Stack className='w-1/3'>
@@ -100,9 +94,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
         <DialogActions>
           <Button onClick={handleClose}>Fechar</Button>
         </DialogActions> */}
-      </Dialog>
-
+      </BigDialog>
     </div>
   )
-
 }

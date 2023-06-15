@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface User {
   id: number;
   nome: string;
@@ -54,6 +56,12 @@ export interface EmployeeRegisterProps {
   onClose: Function;
   onUserCreated: Function;
   users: User[];
+}
+
+export interface ConfirmEventProps {
+  isOpen: boolean;
+  setOpen: Function;
+  approved: boolean;
 }
 
 export interface EmployeeCardProps {
@@ -115,11 +123,27 @@ export interface TextFieldReversalProps {
 }
 
 export interface TripListProps {
-  trips: Trip[];
+  trips: Trip[] | undefined;
   handleClickTrip: Function;
 }
 
 export interface StatusCircleProps {
   status?: number;
   hide?: boolean
+}
+
+export interface CloseDialogProps {
+  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+  title?: string
+}
+
+export interface BigDialogProps {
+  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+  open: boolean;
+  children: React.ReactNode;
+}
+
+export interface TripCardProps {
+  trip: Trip | undefined;
+  loading: boolean;
 }
