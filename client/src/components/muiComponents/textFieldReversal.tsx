@@ -3,10 +3,9 @@ import Button from '@mui/material/Button';
 import { InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
 import { TextFieldReversalProps } from '../../types';
-import { formatCurrency } from '../../utils/format';
 
 export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) => {
-    const [currentValue, setCurrentValue] = useState<string | null>(value);
+    const [currentValue, setCurrentValue] = useState<number | null>(value);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         let { value } = event.target
@@ -19,7 +18,7 @@ export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) =
             return
         }
 
-        setCurrentValue(formatCurrency(floatValue))
+        setCurrentValue(floatValue)
     }
 
     return (
