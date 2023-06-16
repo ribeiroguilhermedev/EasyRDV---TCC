@@ -60,9 +60,12 @@ function CityNameWithStatus(props: CityNameWithStatusProps) {
 }
 
 export default function TripList(props: TripListProps) {
-    const { trips, handleClickTrip } = props
+    const { trips, handleClickTrip, existentTrip } = props
     const [selectedId, setSelectedId] = useState(0);
-
+    
+    if (selectedId === 0 && existentTrip != undefined) {
+        setSelectedId(existentTrip)
+    }
     const handleSelectId = (id: number) => {
         setSelectedId(id)
     }

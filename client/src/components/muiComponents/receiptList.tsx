@@ -8,7 +8,7 @@ import { Receipt } from '../../types';
 
 export default function ReceiptList({id, aprovado, data, local, observacao, observacao_Empresa, valor, valorReembolsado, viagem_id, categoria}: Receipt ) {
   return (
-      <Card key={id} className='w-full' variant="outlined">
+      <Card className='w-full' variant="outlined">
         <CardContent>
       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
         {categoria}

@@ -18,6 +18,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [receipts, setReceipts] = useState<Receipt[]>([])
+  const [existentTrip, setExistentTrip] = useState<number | undefined>(undefined)
 
   const header = { headers: { Authorization: `Bearer ${currentUser?.token}` } }
 
@@ -43,6 +44,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
   }
 
   const handleClickTrip = async (id: number) => {
+    setExistentTrip(id)
     mutationTrip.mutate(id)
 
     const ret = await apiClient.get(`comprovante/viagem/${id}`, header)
@@ -61,13 +63,13 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
             <Stack spacing={3} className='w-1/3 items-center justify-center'>
               <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Viagens</Typography>
               <TripCard loading={mutationTrip.isLoading} trip={mutationTrip?.data} />
-              <TripList handleClickTrip={handleClickTrip} trips={mutationTrips?.data} />
+              <TripList handleClickTrip={handleClickTrip} trips={mutationTrips?.data} existentTrip={existentTrip}/>
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />
             <Stack spacing={3} className='w-1/3 items-center'>
             <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Comprovantes</Typography>
             {receipts.map((receipt: Receipt) => (
-              <ReceiptList id={receipt.id} aprovado={receipt.aprovado} data={receipt.data} local={receipt.local} observacao={receipt.observacao} 
+              <ReceiptList key={receipt.id} id={receipt.id} aprovado={receipt.aprovado} data={receipt.data} local={receipt.local} observacao={receipt.observacao} 
               observacao_Empresa={receipt.observacao_Empresa} valor={receipt.valor} valorReembolsado={receipt.valorReembolsado} viagem_id={receipt.viagem_id} categoria={receipt.categoria} />
             ))}
             </Stack>

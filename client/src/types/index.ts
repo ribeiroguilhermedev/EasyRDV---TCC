@@ -124,6 +124,7 @@ export interface TextFieldReversalProps {
 
 export interface TripListProps {
   trips: Trip[] | undefined;
+  existentTrip?: number;
   handleClickTrip: Function;
 }
 
