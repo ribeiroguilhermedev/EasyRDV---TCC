@@ -12,7 +12,7 @@ public class AtualizaUsuarioSenhaRequestDto {
 
     public void setSenha(String senha) {this.senha = senha;}
 
-    public Usuario atualizar(Usuario usuario, UsuarioRepository repository){
+    public Usuario update(Usuario usuario, UsuarioRepository repository){
         usuario.setSenha(new BCryptPasswordEncoder().encode(this.senha));
         usuario.setGuid(String.valueOf(UUID.randomUUID()));
         repository.save(usuario);

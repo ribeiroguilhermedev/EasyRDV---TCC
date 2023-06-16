@@ -3,7 +3,6 @@ package br.com.app.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -26,7 +25,7 @@ public class EmailService {
     }
 
     @Async
-    public Future<Boolean> enviarAsync(String para, String titulo, String conteudo) {
+    public Future<Boolean> sendAsync(String para, String titulo, String conteudo) {
         MimeMessage mail = jms.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);

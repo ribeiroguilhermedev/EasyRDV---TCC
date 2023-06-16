@@ -9,7 +9,7 @@ public class AtualizaFlagUsuarioRequestDto {
 
     public void setFlag_ativo(Boolean flag_ativo) {this.flag_ativo = flag_ativo;}
 
-    public Usuario atualizar(Usuario usuario, UsuarioRepository repository){
+    public Usuario update(Usuario usuario, UsuarioRepository repository){
         usuario.setFlagAtivo(this.flag_ativo);
         repository.save(usuario);
         return usuario;

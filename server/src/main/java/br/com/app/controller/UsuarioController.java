@@ -40,171 +40,169 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UsuarioController {
-    private final UsuarioRepository usuarioRepository;
-    private final PerfilRepository perfilRepository;
+    private final UsuarioRepository userRepository;
+    private final PerfilRepository profileRepository;
     private final EmailService emailService;
 
     @PostMapping("/cadastro/empresa")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> cadastraEmpresa(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) {
-        Perfil role = getPerfil(Role.ROLE_ADMIN_EMP);
+    public ResponseEntity<UsuarioResponseDto> registerCompanyUser(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) {
+        Perfil role = getProfile(Role.ROLE_ADMIN_EMP);
 
-        Usuario usuario = form.converter(usuarioRepository);
-        usuario.setEmpresaId(form.getEmpresa_id());
-        usuario.addRole(role);
+        Usuario user = form.converter(userRepository);
+        user.setEmpresaId(form.getEmpresa_id());
+        user.addRole(role);
 
-        usuarioRepository.save(usuario);
+        userRepository.save(user);
 
-        URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UsuarioResponseDto(usuario));
+        URI uri = uriBuilder.path("/empresa/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UsuarioResponseDto(user));
     }
 
     @PostMapping("/cadastro/funcionario")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> cadastraFuncionario(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
-        Usuario usuario = getUsuarioByEmailOrCpfOrRg(form);
-        Perfil perfil = getPerfil(Role.ROLE_FUNC);
+    public ResponseEntity<UsuarioResponseDto> registerEmployee(@RequestBody final UsuarioRequestDto form, UriComponentsBuilder uriBuilder) throws MessagingException {
+        Usuario user = getUserByEmailOrCpfOrRg(form);
+        Perfil profile = getProfile(Role.ROLE_FUNC);
 
-        preparaDadosFuncionario(form, usuario, perfil);
+        prepareEmployeeData(form, user, profile);
 
-        enviaEmailAsync(usuario);
+        sendEmailAsync(user);
 
-        usuarioRepository.save(usuario);
+        userRepository.save(user);
 
-        URI uri = uriBuilder.path("/funcionario/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UsuarioResponseDto(usuario));
+        URI uri = uriBuilder.path("/funcionario/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UsuarioResponseDto(user));
     }
 
     @PostMapping("/recuperar/senha")
     @Transactional
-    public ResponseEntity<Void> esqueciMinhaSenha(@RequestBody final UsuarioEmailRequestDto form, UriComponentsBuilder uriBuilder) {
-        Usuario usuario = getUsuarioByEmail(form.getEmail());
-
-        enviaEmailRecuperacaoSenhaAsync(usuario);
-
+    public ResponseEntity<Void> forgotPassword(@RequestBody final UsuarioEmailRequestDto form, UriComponentsBuilder uriBuilder) {
+        Usuario user = getUserByEmail(form.getEmail());
+        sendPasswordRecoveryEmailAsync(user);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/atualiza/{id}")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> atualizaDadosUsuario(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
-        Usuario usuario = getUsuarioById(id);
-        usuario = form.atualizar(usuario, usuarioRepository);
-        return ResponseEntity.ok(new UsuarioResponseDto(usuario));
+    public ResponseEntity<UsuarioResponseDto> updateUserData(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
+        Usuario user = getUserById(id);
+        user = form.atualizar(user, userRepository);
+        return ResponseEntity.ok(new UsuarioResponseDto(user));
     }
 
     @PutMapping("/atualiza/flag/{id}")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> atualizaFlagAtivoUsuario(@PathVariable Long id, @RequestBody AtualizaFlagUsuarioRequestDto form) {
-        Usuario usuario = getUsuarioById(id);
-        usuario = form.atualizar(usuario, usuarioRepository);
-        return ResponseEntity.ok(new UsuarioResponseDto(usuario));
+    public ResponseEntity<UsuarioResponseDto> updateActiveFlag(@PathVariable Long id, @RequestBody AtualizaFlagUsuarioRequestDto form) {
+        Usuario user = getUserById(id);
+        user = form.update(user, userRepository);
+        return ResponseEntity.ok(new UsuarioResponseDto(user));
     }
 
     @PutMapping("/atualiza/senha/{id}")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> atualizaSenha(@PathVariable Long id, @RequestBody AtualizaUsuarioSenhaRequestDto form) {
-        Usuario usuario = getUsuarioById(id);
-        usuario = form.atualizar(usuario, usuarioRepository);
-        return ResponseEntity.ok(new UsuarioResponseDto(usuario));
+    public ResponseEntity<UsuarioResponseDto> updatePassword(@PathVariable Long id, @RequestBody AtualizaUsuarioSenhaRequestDto form) {
+        Usuario user = getUserById(id);
+        user = form.update(user, userRepository);
+        return ResponseEntity.ok(new UsuarioResponseDto(user));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<Void> removeUsuario(@PathVariable Long id) {
-        Usuario usuario = getUsuarioById(id);
-        usuarioRepository.deleteById(id);
+    public ResponseEntity<Void> removeUser(@PathVariable Long id) {
+        Usuario user = getUserById(id);
+        userRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping()
-    public List<UsuarioResponseDto> listaTodosUsuarios() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        return UsuarioResponseDto.converter(usuarios);
+    public List<UsuarioResponseDto> getAllUsers() {
+        List<Usuario> users = userRepository.findAll();
+        return UsuarioResponseDto.converter(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> listaPeloEmpresaId(@PathVariable(value = "id") Long empresaId, @RequestParam(value = "limit", defaultValue = "12") int limit, @RequestParam(value = "offset", defaultValue = "0") int offset) {
-        Page<Usuario> userPage = findUsuariosByEmpresaId(empresaId, limit, offset);
-        List<UsuarioResponseDto> usuarioDtos = convertUsersToListDto(userPage.getContent());
+    public ResponseEntity<Map<String, Object>> getUsersByCompanyId(@PathVariable(value = "id") Long empresaId, @RequestParam(value = "limit", defaultValue = "12") int limit, @RequestParam(value = "offset", defaultValue = "0") int offset) {
+        Page<Usuario> userPage = findUsersByCompanyId(empresaId, limit, offset);
+        List<UsuarioResponseDto> userDtos = convertUsersToListDto(userPage.getContent());
 
         Map<String, Object> response = new HashMap<>();
         response.put("totalElements", userPage.getTotalElements());
-        response.put("elements", usuarioDtos);
+        response.put("elements", userDtos);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/guid/{guid}")
-    public ResponseEntity<UsuarioResponseDto> getUsuarioByGuid(@PathVariable(value = "guid") String guid) {
-        Usuario usuario = getUsuarioByGuidInternal(guid);
-        UsuarioResponseDto responseDto = new UsuarioResponseDto(usuario);
+    public ResponseEntity<UsuarioResponseDto> getUserByGuid(@PathVariable(value = "guid") String guid) {
+        Usuario user = getUsuarioByGuidInternal(guid);
+        UsuarioResponseDto responseDto = new UsuarioResponseDto(user);
         return ResponseEntity.ok(responseDto);
     }
 
-    private Usuario getUsuarioById(Long id) {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id);
-        if (optionalUsuario.isEmpty())
-            throw new ResourceNotFoundException("Usuário não encontrado com o id: " + id);
-        return optionalUsuario.get();
+    private Usuario getUserById(Long id) {
+        Optional<Usuario> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty())
+            throw new ResourceNotFoundException("User not found with id: " + id);
+        return optionalUser.get();
     }
 
     private Usuario getUsuarioByGuidInternal(String guid) {
-        return usuarioRepository.findByGuid(guid)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o GUID: " + guid));
+        return userRepository.findByGuid(guid)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with GUID: " + guid));
     }
 
-    private Page<Usuario> findUsuariosByEmpresaId(Long empresaId, int limit, int offset) {
+    private Page<Usuario> findUsersByCompanyId(Long empresaId, int limit, int offset) {
         Pageable pageable = PageRequest.of(offset, limit);
-        return usuarioRepository.findAllByEmpresa_id(empresaId, pageable);
+        return userRepository.findAllByEmpresa_id(empresaId, pageable);
     }
 
-    private Usuario getUsuarioByEmailOrCpfOrRg(final UsuarioRequestDto form) {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findByEmailOrCpfOrRg(form.getEmail(), form.getCpf(), form.getRg());
-        if (optionalUsuario.isPresent()) {
-            throw new ResourceNotFoundException("Usuário já existente com esse email, CPF ou RG");
+    private Usuario getUserByEmailOrCpfOrRg(final UsuarioRequestDto form) {
+        Optional<Usuario> optionalUser = userRepository.findByEmailOrCpfOrRg(form.getEmail(), form.getCpf(), form.getRg());
+        if (optionalUser.isPresent()) {
+            throw new ResourceNotFoundException("User already exists with this e-mail, RG or CPF");
         }
-        return form.converter(usuarioRepository);
+        return form.converter(userRepository);
     }
 
-    private Usuario getUsuarioByEmail(String email) {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findByEmail(email);
-        if (optionalUsuario.isEmpty())
-            throw new ResourceNotFoundException("Usuário não encontrado com o e-mail: " + email);
-        return optionalUsuario.get();
+    private Usuario getUserByEmail(String email) {
+        Optional<Usuario> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty())
+            throw new ResourceNotFoundException("User not found with e-mail: " + email);
+        return optionalUser.get();
     }
 
-    private Perfil getPerfil(Role role) {
-        Optional<Perfil> optionalPerfil = perfilRepository.findById((long) role.getId());
-        if (optionalPerfil.isEmpty())
-            throw new ResourceNotFoundException("Perfil " + role.name() + " não encontrado");
-        return optionalPerfil.get();
+    private Perfil getProfile(Role role) {
+        Optional<Perfil> optionalProfile = profileRepository.findById((long) role.getId());
+        if (optionalProfile.isEmpty())
+            throw new ResourceNotFoundException("Profile " + role.name() + " not found");
+        return optionalProfile.get();
     }
 
-    private void preparaDadosFuncionario(final UsuarioRequestDto form, Usuario usuario, Perfil perfil) {
+    private void prepareEmployeeData(final UsuarioRequestDto form, Usuario usuario, Perfil profile) {
         usuario.setSenha(Usuario.generate());
         usuario.setGuid(String.valueOf(UUID.randomUUID()));
         usuario.setEtapa(Etapa.PENDENTE_ATIVACAO);
         usuario.setEmpresaId(form.getEmpresa_id());
         usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
-        usuario.addRole(perfil);
+        usuario.addRole(profile);
     }
 
-    private void enviaEmailAsync(Usuario usuario) {
-        this.emailService.enviarAsync(usuario.getEmail(), EmailMessage.createTitle(usuario),
-                EmailMessage.messageToNewUser(usuario, usuario.getSenha()));
+    private void sendEmailAsync(Usuario user) {
+        this.emailService.sendAsync(user.getEmail(), EmailMessage.createTitle(user),
+                EmailMessage.messageToNewUser(user, user.getSenha()));
     }
 
-    private void enviaEmailRecuperacaoSenhaAsync(Usuario usuario) {
-        this.emailService.enviarAsync(
-                usuario.getEmail(),
-                EmailMessage.createTitle(usuario),
-                EmailMessage.messageToForgotPassword(usuario, usuario.getSenha(), usuario.getGuid())
+    private void sendPasswordRecoveryEmailAsync(Usuario user) {
+        this.emailService.sendAsync(
+                user.getEmail(),
+                EmailMessage.createTitle(user),
+                EmailMessage.messageToForgotPassword(user, user.getSenha(), user.getGuid())
         );
     }
 
-    private List<UsuarioResponseDto> convertUsersToListDto(List<Usuario> usuarios) {
-        return usuarios.stream()
+    private List<UsuarioResponseDto> convertUsersToListDto(List<Usuario> users) {
+        return users.stream()
                 .map(UsuarioResponseDto::new)
                 .collect(Collectors.toList());
     }
