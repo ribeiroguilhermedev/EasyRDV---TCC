@@ -28,10 +28,7 @@ public class AtualizacaoUsuarioRequestDto {
     public void setEmail(String email) {this.email = email;}
     public void setObservacao(String observacao) {this.observacao = observacao;}
 
-    public Usuario atualizar(Long id, UsuarioRepository repository){
-
-        Usuario usuario = repository.getOne(id);
-
+    public Usuario atualizar(Usuario usuario, UsuarioRepository repository){
         usuario.setNome(this.nome);
         usuario.setSobrenome(this.sobrenome);
         usuario.setCpf(this.cpf);
