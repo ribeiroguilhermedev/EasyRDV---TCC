@@ -36,7 +36,6 @@ public class ComprovanteResponseDto {
         this.local = comprovante.getLocal();
         this.observacao = comprovante.getObservacao();
         this.data = comprovante.getData();
-        this.valorReembolsado = comprovante.getValorReembolsado();
         this.observacaoEmpresa = comprovante.getObservacaoEmpresa();
         this.viagem = comprovante.getViagem();
         this.anexos = comprovante.getAnexos();

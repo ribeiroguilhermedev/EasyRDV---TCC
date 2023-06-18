@@ -30,6 +30,6 @@ public class ComprovanteRequestDto {
 
         public Comprovante converter(ComprovanteRepository repository){
         return new Comprovante(valor, categoria, local, observacao, data,
-                valorReembolsado, observacaoEmpresa, viagem_id);
+                 observacaoEmpresa, viagem_id);
     }
 }
