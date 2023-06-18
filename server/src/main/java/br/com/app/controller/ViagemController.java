@@ -73,7 +73,6 @@ public class ViagemController {
         return ResponseEntity.ok(response);
     }
 
-
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<?> removeTrip(@PathVariable Long id) {
@@ -85,6 +84,15 @@ public class ViagemController {
     public List<ViagemResponseDto> findAll() {
         List<Viagem> trips = repository.findAll();
         return ViagemResponseDto.converter(trips);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ViagemResponseDto> findById(@PathVariable Long id) {
+        Viagem trip = getTripById(id);
+
+        ViagemResponseDto response = ViagemResponseDto.converter(trip);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/usuario/{id}")
