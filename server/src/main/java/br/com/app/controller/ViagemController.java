@@ -1,69 +1,147 @@
 package br.com.app.controller;
 
+import br.com.app.Utils.Utils;
+import br.com.app.controller.dto.request.ViagemAprovacaoRequestDto;
 import br.com.app.controller.dto.request.ViagemRequestDto;
 import br.com.app.controller.dto.response.ViagemResponseDto;
+import br.com.app.exception.ResourceWithErrorsException;
+import br.com.app.exception.ResourceNotFoundException;
+import br.com.app.modelo.Enumeration.ViagemStatus;
 import br.com.app.modelo.Viagem;
 import br.com.app.repository.ViagemRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/viagem")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ViagemController {
 
-    @Autowired
-    private ViagemRepository repository;
+    private final ViagemRepository repository;
 
     @PostMapping("/cadastro")
     @Transactional
-    public ResponseEntity<ViagemResponseDto> cadastrarEmpresa(@RequestBody final ViagemRequestDto form, UriComponentsBuilder uriBuilder) {
-        Viagem viagem = form.converter(repository);
-        viagem.setUsuarioId(form.getUsuario_id());
-        repository.save(viagem);
+    public ResponseEntity<ViagemResponseDto> registerTrip(@RequestBody final ViagemRequestDto form, UriComponentsBuilder uriBuilder) {
+        Viagem trip = form.converter();
+        trip.setUsuarioId(form.getUsuario_id());
 
-        URI uri = uriBuilder.path("/viagem/{id}").buildAndExpand(viagem.getId()).toUri();
-        return ResponseEntity.created(uri).body(new ViagemResponseDto(viagem));
+        ViagemStatus tripStatus = getTripStatusByStartDate(form.getDataInicio());
+        trip.setStatus(tripStatus);
+
+        repository.save(trip);
+
+        URI uri = uriBuilder.path("/viagem/{id}").buildAndExpand(trip.getId()).toUri();
+        return ResponseEntity.created(uri).body(new ViagemResponseDto(trip));
     }
+
+    @PostMapping("/aprovar")
+    @Transactional
+    public ResponseEntity<ViagemResponseDto> approveTrip(@RequestBody final ViagemAprovacaoRequestDto form, UriComponentsBuilder uriBuilder) {
+        Viagem trip = getTripById(form.getId());
+
+        ValidateTripStatus(trip);
+        ValidateApprovedValue(trip, form);
+
+        trip.setDescricao(form.getDescription());
+
+        if (form.isFullValue()) {
+            setApprovedTrip(trip);
+        }
+
+        if (!form.isFullValue()) {
+            boolean equalValues = Utils.compareDoubles(form.getValue(), trip.getValorTotal());
+            if (equalValues) {
+                setApprovedTrip(trip);
+            } else {
+                setPartialApprovedTrip(trip, form);
+            }
+        }
+
+        repository.save(trip);
+
+        ViagemResponseDto response = ViagemResponseDto.converter(trip);
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> remover(@PathVariable Long id) {
-        Optional<Viagem> optional = repository.findById(id);
-        if (optional.isPresent()) {
-            repository.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> removeTrip(@PathVariable Long id) {
+        repository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping()
-    public List<ViagemResponseDto> listaTodos() {
-        List<Viagem> viagens = repository.findAll();
-        return ViagemResponseDto.converter(viagens);
-    }
-
-    @GetMapping("/{id}")
-    public List<ViagemResponseDto> listaPeloId(@PathVariable Long id) {
-        List<Viagem> viagens = repository.findAllById(Collections.singleton(id));
-        return ViagemResponseDto.converter(viagens);
+    public List<ViagemResponseDto> findAll() {
+        List<Viagem> trips = repository.findAll();
+        return ViagemResponseDto.converter(trips);
     }
 
     @GetMapping("/usuario/{id}")
-    public List<ViagemResponseDto> listaPeloUsuarioId(@PathVariable(value = "id") Long usuario_id) {
-
-        List<Viagem> lstViagem = repository.findAllByUsuario_IdOrderByStatus(usuario_id);
-        return ViagemResponseDto.converter(lstViagem);
+    public List<ViagemResponseDto> findAllByUserId(@PathVariable(value = "id") Long userId) {
+        List<Viagem> trips = repository.findAllByUserId(userId);
+        return ViagemResponseDto.converter(trips);
     }
+
+    private Viagem getTripById(Long id) {
+        Optional<Viagem> trip = repository.findById(id);
+        if (trip.isEmpty())
+            throw new ResourceNotFoundException("Trip not found with id: " + id);
+
+        return trip.get();
+    }
+
+    private ViagemStatus getTripStatusByStartDate(Date startTripDate) {
+        Date now = new Date();
+
+        if (startTripDate.compareTo(now) < 0) {
+            return ViagemStatus.AGUARDANDO_INICIO;
+        }
+
+        if (startTripDate.compareTo(now) > 0) {
+            return ViagemStatus.EM_ANDAMENTO;
+        }
+
+        throw new ResourceNotFoundException("Trip status not found");
+    }
+
+    private void setApprovedTrip(Viagem trip) {
+        trip.setStatus(ViagemStatus.APROVADA);
+        trip.setValorTotalAprovado(trip.getValorTotal());
+        trip.setDataAprovado(new Date());
+    }
+
+    private void setPartialApprovedTrip(Viagem trip, ViagemAprovacaoRequestDto form) {
+        trip.setStatus(ViagemStatus.APROVADA_PARCIAL);
+        trip.setValorTotalAprovado(form.getValue());
+        trip.setDataAprovado(new Date());
+    }
+
+    private void ValidateTripStatus(Viagem trip) {
+        if (trip.getStatus() != ViagemStatus.AGUARDANDO_APROVACAO) {
+            throw new ResourceWithErrorsException("Invalid status: the trip status should be AGUARDANDO_APROVACAO");
+        }
+    }
+
+    private void ValidateApprovedValue(Viagem trip, ViagemAprovacaoRequestDto form) {
+        if (form.isFullValue())
+            return;
+
+        boolean requestValueIsGreaterThanTripValue = Utils.doubleIsGreaterThan(form.getValue(), trip.getValorTotal());
+
+        if (requestValueIsGreaterThanTripValue)
+            throw new ResourceWithErrorsException("The requested value is greater than trip value");
+    }
+
+
 }

@@ -110,7 +110,6 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Void> removeUser(@PathVariable Long id) {
-        Usuario user = getUserById(id);
         userRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

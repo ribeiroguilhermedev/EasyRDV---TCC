@@ -24,56 +24,34 @@ public class Comprovante {
     private String local;
     private String observacao;
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date data = new Date();
-
-    @Column(name = "valor_reembolsado")
-    private Double valorReembolsado;
     @Column(name = "observacao_empresa")
     private String observacaoEmpresa;
-
     @Transient
     private Long viagem_id;
-
     @ManyToOne
     @JoinColumn(name = "viagem_id")
     private Viagem viagem;
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "comprovante_id")
     @NotNull
     private List<Anexo> anexos = new ArrayList<>();
 
-
     public Comprovante(Double valor, String categoria, String local,
-                       String observacao, Date data, Double valorReembolsado,
-                       String observacaoEmpresa, Viagem viagem) {
+                       String observacao, Date data, String observacaoEmpresa, Long viagem_id) {
         this.valor = valor;
         this.categoria = categoria;
         this.local = local;
         this.observacao = observacao;
         this.data = data;
-        this.valorReembolsado = valorReembolsado;
-        this.observacaoEmpresa = observacaoEmpresa;
-        this.viagem = viagem;
-    }
-
-    public Comprovante(Double valor, String categoria, String local,
-                       String observacao, Date data, Double valorReembolsado,
-                       String observacaoEmpresa, Long viagem_id) {
-        this.valor = valor;
-        this.categoria = categoria;
-        this.local = local;
-        this.observacao = observacao;
-        this.data = data;
-        this.valorReembolsado = valorReembolsado;
         this.observacaoEmpresa = observacaoEmpresa;
         this.viagem_id = viagem_id;
     }
 
     @PostLoad
     private void postLoad() {
-        if (viagem_id == null){
+        if (viagem_id == null) {
             return;
         }
         this.viagem_id = viagem.getId();
@@ -89,26 +67,77 @@ public class Comprovante {
         this.viagem_id = viagem_id;
     }
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-    public Double getValor() {return valor;}
-    public void setValor(Double valor) {this.valor = valor;}
-    public String getLocal() {return local;}
-    public void setLocal(String local) {this.local = local;}
-    public String getObservacao() {return observacao;}
-    public void setObservacao(String observacao) {this.observacao = observacao;}
-    public Date getData() {return data;}
-    public void setData(Date data) {this.data = data;}
-    public String getCategoria() {return categoria;}
-    public void setCategoria(String categoria) {this.categoria = categoria;}
-    public Double getValorReembolsado() {return valorReembolsado;}
-    public void setValorReembolsado(Double valorReembolsado) {this.valorReembolsado = valorReembolsado;}
-    public String getObservacaoEmpresa() {return observacaoEmpresa;}
-    public void setObservacaoEmpresa(String observacaoEmpresa) {this.observacaoEmpresa = observacaoEmpresa;}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getObservacaoEmpresa() {
+        return observacaoEmpresa;
+    }
+
+    public void setObservacaoEmpresa(String observacaoEmpresa) {
+        this.observacaoEmpresa = observacaoEmpresa;
+    }
+
     @JsonBackReference
-    public Viagem getViagem() {return viagem;}
-    public void setViagem(Viagem viagem) {this.viagem = viagem;}
+    public Viagem getViagem() {
+        return viagem;
+    }
+
+    public void setViagem(Viagem viagem) {
+        this.viagem = viagem;
+    }
+
     @JsonManagedReference
-    public List<Anexo> getAnexos() {return anexos;}
-    public void setAnexos(List<Anexo> anexos) {this.anexos = anexos;}
+    public List<Anexo> getAnexos() {
+        return anexos;
+    }
+
+    public void setAnexos(List<Anexo> anexos) {
+        this.anexos = anexos;
+    }
 }

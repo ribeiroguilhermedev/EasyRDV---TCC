@@ -24,23 +24,31 @@ public class Viagem {
 
     @Column(name = "data_inicio")
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dataInicio;
     @Column(name = "data_fim")
     @NotNull
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dataFim;
+    @Column(name = "data_reembolsado")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date dataReembolsado;
+    @Column(name = "data_aprovado")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date dataAprovado;
+
     @Column(name = "valor_total")
     private Double valorTotal;
     @Column(name = "valor_total_reembolsado")
     private Double valorTotalReembolsado;
+    @Column(name = "valor_total_aprovado")
+    private Double valorTotalAprovado;
     @NotNull
     private String cidade;
     @NotNull
     private String uf;
     @NotNull
     private ViagemStatus status;
-
     @Transient
     private Long usuario_id;
 
@@ -49,24 +57,13 @@ public class Viagem {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 
-    @OneToMany()
+
     @JoinColumn(name = "viagem_id")
+    @OneToMany()
     @NotNull
     private List<Comprovante> comprovantes = new ArrayList<>();
 
     public Viagem() {
-    }
-
-    public Viagem(String descricao, Date dataInicio, Date dataFim, Double valorTotal,
-                  Double valorTotalReembolsado, String cidade, String uf, Usuario usuario) {
-        this.descricao = descricao;
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.valorTotal = valorTotal;
-        this.valorTotalReembolsado = valorTotalReembolsado;
-        this.cidade = cidade;
-        this.uf = uf;
-        this.usuario = usuario;
     }
 
     public Viagem(String descricao, Date dataInicio, Date dataFim, Double valorTotal,
@@ -83,7 +80,7 @@ public class Viagem {
 
     @PostLoad
     private void postLoad() {
-        if (usuario == null){
+        if (usuario == null) {
             return;
         }
         this.usuario_id = usuario.getId();
@@ -99,29 +96,124 @@ public class Viagem {
         this.usuario_id = usuario_id;
     }
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
-    public String getDescricao() {return descricao;}
-    public void setDescricao(String descricao) {this.descricao = descricao;}
-    public Date getDataInicio() {return dataInicio;}
-    public void setDataInicio(Date dataInicio) {this.dataInicio = dataInicio;}
-    public Date getDataFim() {return dataFim;}
-    public void setDataFim(Date dataFim) {this.dataFim = dataFim;}
-    public Double getValorTotal() {return valorTotal;}
-    public void setValorTotal(Double valorTotal) {this.valorTotal = valorTotal;}
-    public String getCidade() {return cidade;}
-    public void setCidade(String cidade) {this.cidade = cidade;}
-    public String getUf() {return uf;}
-    public void setUf(String uf) {this.uf = uf;}
-    public ViagemStatus getStatus() {return status;}
-    public void setStatus(ViagemStatus status) {this.status = status;}
-    public Double getValorTotalReembolsado() {return valorTotalReembolsado;}
-    public void setValorTotalReembolsado(Double valorTotalReembolsado) {this.valorTotalReembolsado = valorTotalReembolsado;}
-    public Long getUsuario_id() {return usuario_id;}
-    public void setUsuario_id(Long usuario_id) {this.usuario_id = usuario_id;}
-    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
-    public Usuario getUsuario() {return usuario;}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public ViagemStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ViagemStatus status) {
+        this.status = status;
+    }
+
+    public Double getValorTotalReembolsado() {
+        return valorTotalReembolsado;
+    }
+
+    public void setValorTotalReembolsado(Double valorTotalReembolsado) {
+        this.valorTotalReembolsado = valorTotalReembolsado;
+    }
+
+    public Long getUsuario_id() {
+        return usuario_id;
+    }
+
+    public void setUsuario_id(Long usuario_id) {
+        this.usuario_id = usuario_id;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
     @JsonManagedReference
-    public List<Comprovante> getComprovantes() {return comprovantes;}
-    public void setComprovantes(List<Comprovante> comprovantes) {this.comprovantes = comprovantes;}
+    public List<Comprovante> getComprovantes() {
+        return comprovantes;
+    }
+
+    public void setComprovantes(List<Comprovante> comprovantes) {
+        this.comprovantes = comprovantes;
+    }
+
+    public Date getDataReembolsado() {
+        return dataReembolsado;
+    }
+
+    public void setDataReembolsado(Date dataReembolsado) {
+        this.dataReembolsado = dataReembolsado;
+    }
+
+    public Date getDataAprovado() {
+        return dataAprovado;
+    }
+
+    public void setDataAprovado(Date dataAprovado) {
+        this.dataAprovado = dataAprovado;
+    }
+
+    public Double getValorTotalAprovado() {
+        return valorTotalAprovado;
+    }
+
+    public void setValorTotalAprovado(Double valorTotalAprovado) {
+        this.valorTotalAprovado = valorTotalAprovado;
+    }
 }

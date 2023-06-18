@@ -6,7 +6,8 @@ public enum ViagemStatus {
     AGUARDANDO_INICIO(2),
     APROVADA(3),
     APROVADA_PARCIAL(4),
-    REPROVADA(5);
+    REPROVADA(5),
+    FINALIZADA(6);
     private int id;
 
     ViagemStatus(int id) {
