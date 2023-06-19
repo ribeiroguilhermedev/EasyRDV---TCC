@@ -1,4 +1,4 @@
-import { ConfirmEventProps, approveTripBody } from '../../types';
+import { ConfirmEventProps, approveTripBody, reproveTripBody } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useState } from 'react';
 import { useMediaQuery, TextField, DialogContentText, Button } from '@mui/material';
@@ -24,13 +24,18 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversal
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = useState(false);
 
-  const mutation = useMutation(
+  const approveMutation = useMutation(
     async (approveTripBody: approveTripBody) => {
         return await apiClient.post('/viagem/aprovar', approveTripBody)
     }
 );
 
-  const handleClickOpen = () => { };
+const reproveMutation = useMutation(
+  async (reproveTripBody: reproveTripBody) => {
+      return await apiClient.post('/viagem/reprovar', reproveTripBody)
+  }
+);
+
 
   const handleClose = () => {
     setOpen(false);
@@ -60,9 +65,29 @@ const handleApprove = async (data: Object) => {
     description: observacao
   }
 
-  console.log(approveTripBody);
   
-  const response = await mutation.mutateAsync(approveTripBody)
+  const response = await approveMutation.mutateAsync(approveTripBody)
+  console.log(response.data);
+  
+}
+
+const handleReprove = async (data: Object) => {
+  setOpen(false)  
+  if (!trip) {
+    // Colocar toast de erro.
+    return
+  }
+
+  const {observacao} = data as ApproveData
+
+  const reproveTripBody = {
+    id: trip.id, 
+    description: observacao
+  }
+
+  console.log(reproveTripBody);
+  
+  const response = await reproveMutation.mutateAsync(reproveTripBody)
   console.log(response.data);
   
 }
@@ -98,7 +123,7 @@ const handleApprove = async (data: Object) => {
         />
       </DialogContent>
       <DialogActions>
-        {approved ? <GreenButton onClick={handleSubmit(handleApprove)}>Aprovar</GreenButton> : <RedButton>Reprovar</RedButton>}
+        {approved ? <GreenButton onClick={handleSubmit(handleApprove)}>Aprovar</GreenButton> : <RedButton onClick={handleSubmit(handleReprove)}>Reprovar</RedButton>}
       </DialogActions>
     </Dialog>
   );

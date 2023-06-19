@@ -36,6 +36,10 @@ export interface approveTripBody {
   value: number;
   fullValue: boolean;
 }
+export interface reproveTripBody {
+  id: number;
+  description: string;
+}
 
 export interface Receipt {
   id: number;
