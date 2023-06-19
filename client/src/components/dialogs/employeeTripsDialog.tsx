@@ -30,7 +30,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
 
   const fetchTrip = async (id: number) => {
     const { data } = await apiClient.get(`viagem/${id}`, header);
-    return data[0];
+    return data;
   }
   const mutationTrip = useMutation(fetchTrip)
 

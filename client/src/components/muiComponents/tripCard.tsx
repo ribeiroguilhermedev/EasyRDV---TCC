@@ -14,19 +14,23 @@ import { Box, Stack } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { TextFieldReversal } from './textFieldReversal';
 import ConfirmEventDialog from '../dialogs/confirmEventDialog';
-import { Trip, TripCardProps } from '../../types';
+import { Trip, TripCardProps, approveTripBody } from '../../types';
 import Loading from './loading';
 import CircularProgress from '@mui/material/CircularProgress';
 import { formatCurrency, formatDate } from '../../utils/format';
+import apiClient from '../../services/api';
+import { useMutation } from 'react-query';
 
 export default function TripCard(props: TripCardProps) {
   const { trip, loading } = props
-
   const [textReversalDisabled, setTextReversalDisabled] = useState<boolean>(true);
   const [isOpen, setOpen] = useState(false);
   const [approved, setApproved] = useState(false);
-
-  const handleApprove = () => {
+  
+  
+  
+  
+  const handleApprove = async () => {
     setApproved(true)
     setOpen(true)
   }
@@ -34,31 +38,31 @@ export default function TripCard(props: TripCardProps) {
     setApproved(false)
     setOpen(true)
   }
-
+  
   const handleCheckReversalDisabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTextReversalDisabled(event.target.checked);
   };
-
+  
   return (
     <>
       {
         !trip ?
-          (
-            loading ?
+        (
+          loading ?
               <LoadingCard /> :
               <LoadingCard />
-          ) :
-          <ContentCard
-            handleApprove={handleApprove}
-            handleCheckReversalDisabledChange={handleCheckReversalDisabledChange}
-            handleReprove={handleReprove}
-            trip={trip}
-            approved={approved}
-            setOpen={setOpen}
-            isOpen={isOpen}
-            textReversalDisabled={textReversalDisabled}
-          />
-      }
+              ) :
+              <ContentCard
+              handleApprove={handleApprove}
+              handleCheckReversalDisabledChange={handleCheckReversalDisabledChange}
+              handleReprove={handleReprove}
+              trip={trip}
+              setOpen={setOpen}
+              approved={approved}
+              isOpen={isOpen}
+              textReversalDisabled={textReversalDisabled}
+              />
+            }
     </>
   );
 }
@@ -75,14 +79,15 @@ interface ContentCardProps {
 }
 
 const ContentCard = (props: ContentCardProps) => {
-  const { handleApprove, handleCheckReversalDisabledChange, handleReprove, trip, approved, isOpen, setOpen, textReversalDisabled } = props
-
+  const { handleApprove, handleCheckReversalDisabledChange,approved,  handleReprove, trip, isOpen, setOpen, textReversalDisabled } = props
+  const [value, setValue] = useState<number>(0);
+  
   return (
     <Card className='w-full h-72'>
       <CardHeader
         title={`${trip.cidade}, ${trip.uf}`}
         subheader={`${formatDate(trip.dataInicio)} - ${formatDate(trip.dataFim)}`}
-      >
+        >
       </CardHeader>
       <CardContent>
         <TableContainer component={Paper}>
@@ -106,17 +111,14 @@ const ContentCard = (props: ContentCardProps) => {
         <Stack direction={'row'} spacing={2}>
            <RedButton onClick={handleReprove}>Reprovar</RedButton>
            <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
-           <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved} />
+           <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} trip={trip} textReversalDisabled={textReversalDisabled} approved={approved} value={value} />
            </Stack>
         <Stack direction={'row'} spacing={2}>
           <Checkbox checked={textReversalDisabled} onChange={handleCheckReversalDisabledChange} />
-          <TextFieldReversal value={trip.valorTotal} disabled={textReversalDisabled} />
+          <TextFieldReversal value={trip.valorTotal} disabled={textReversalDisabled} setValue={setValue} />
         </Stack>
           </>
-           }
-          {/* <RedButton onClick={handleReprove}>Reprovar</RedButton>
-          <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
-          <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} approved={approved} /> */}
+           }    
       </CardActions>
     </Card>
   )

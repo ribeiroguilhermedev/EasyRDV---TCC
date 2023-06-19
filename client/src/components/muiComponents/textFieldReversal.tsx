@@ -4,7 +4,7 @@ import { InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
 import { TextFieldReversalProps } from '../../types';
 
-export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) => {
+export const TextFieldReversal = ({ value, disabled, setValue }: TextFieldReversalProps) => {
     const [currentValue, setCurrentValue] = useState<number | null>(value);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +18,7 @@ export const TextFieldReversal = ({ value, disabled }: TextFieldReversalProps) =
             return
         }
 
+        setValue(floatValue)
         setCurrentValue(floatValue)
     }
 

@@ -30,6 +30,13 @@ export interface Trip {
   usuario_id: number;
 }
 
+export interface approveTripBody {
+  id: number;
+  description: string;
+  value: number;
+  fullValue: boolean;
+}
+
 export interface Receipt {
   id: number;
   aprovado: boolean;
@@ -61,7 +68,10 @@ export interface EmployeeRegisterProps {
 export interface ConfirmEventProps {
   isOpen: boolean;
   setOpen: Function;
+  trip: Trip;
+  textReversalDisabled: boolean;
   approved: boolean;
+  value: number;
 }
 
 export interface EmployeeCardProps {
@@ -120,6 +130,7 @@ export interface SearchProps {
 export interface TextFieldReversalProps {
   value: number;
   disabled: boolean;
+  setValue: Function;
 }
 
 export interface TripListProps {

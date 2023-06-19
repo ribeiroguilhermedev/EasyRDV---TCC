@@ -1,4 +1,4 @@
-import { ConfirmEventProps, EmployeeEditDialogProps, User } from '../../types';
+import { ConfirmEventProps, approveTripBody } from '../../types';
 import { useAuth } from '../../auth/authContext';
 import { useState } from 'react';
 import { useMediaQuery, TextField, DialogContentText, Button } from '@mui/material';
@@ -17,12 +17,18 @@ import * as yup from "yup";
 import CloseDialog from '../muiComponents/closeDialog';
 
 
-export default function ConfirmEventDialog({ isOpen, setOpen, approved }: ConfirmEventProps) {
+export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversalDisabled, approved, value }: ConfirmEventProps) {
   const { currentUser } = useAuth();
   const token = currentUser?.token;
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [loading, setLoading] = useState(false);
+
+  const mutation = useMutation(
+    async (approveTripBody: approveTripBody) => {
+        return await apiClient.post('/viagem/aprovar', approveTripBody)
+    }
+);
 
   const handleClickOpen = () => { };
 
@@ -34,11 +40,36 @@ let schema = yup.object({
   observacao: yup.string().min(3).required(),
 }).required();
 
+interface ApproveData {
+  observacao: string;
+}
+
+const handleApprove = async (data: Object) => {
+  setOpen(false)  
+  if (!trip) {
+    // Colocar toast de erro.
+    return
+  }
+
+  const {observacao} = data as ApproveData
+
+  const approveTripBody = {
+    id: trip.id, 
+    fullValue: textReversalDisabled, 
+    value, 
+    description: observacao
+  }
+
+  console.log(approveTripBody);
+  
+  const response = await mutation.mutateAsync(approveTripBody)
+  console.log(response.data);
+  
+}
 
 
 
   const handleSubmitInternal = async (data: Object) => {
-
 
     setLoading(true)
 
@@ -67,7 +98,7 @@ let schema = yup.object({
         />
       </DialogContent>
       <DialogActions>
-        {approved ? <GreenButton>Aprovar</GreenButton> : <RedButton>Reprovar</RedButton>}
+        {approved ? <GreenButton onClick={handleSubmit(handleApprove)}>Aprovar</GreenButton> : <RedButton>Reprovar</RedButton>}
       </DialogActions>
     </Dialog>
   );
