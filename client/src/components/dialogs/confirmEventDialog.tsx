@@ -97,6 +97,7 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversal
       <DialogContent>
         <TextField
           id="observacao"
+          fullWidth={true}
           multiline
           rows={4}
           error={!!errors['observacao']}
