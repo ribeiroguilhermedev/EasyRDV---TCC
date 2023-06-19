@@ -1,124 +1,105 @@
-import { ConfirmEventProps, approveTripBody, reproveTripBody } from '../../types';
-import { useAuth } from '../../auth/authContext';
-import { useState } from 'react';
-import { useMediaQuery, TextField, DialogContentText, Button } from '@mui/material';
+import { ConfirmEventProps, ErrorMessage, approveTripBody, reproveTripBody } from '../../types';
+import { TextField } from '@mui/material';
 import { useMutation } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LoadingButton } from '@mui/lab';
-import { useTheme } from '@mui/material/styles';
 import { GreenButton, RedButton } from '../../componentStyles/Buttons';
 import { useForm } from 'react-hook-form';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import apiClient from '../../services/api';
 import * as yup from "yup";
 import CloseDialog from '../muiComponents/closeDialog';
+import { AxiosError, AxiosResponse } from 'axios';
+import { ErrorToast, SuccessToast } from '../../componentStyles/Toasts';
+import { useCallback } from 'react';
 
+const getInputSchema = (approved: boolean) => {
+  if (!approved) {
+    return yup.object({
+      observacao: yup.string().required(),
+    }).required();
+  }
+
+  return yup.object({
+    observacao: yup.string(),
+  });
+};
 
 export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversalDisabled, approved, value }: ConfirmEventProps) {
-  const { currentUser } = useAuth();
-  const token = currentUser?.token;
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [loading, setLoading] = useState(false);
-
-  const approveMutation = useMutation(
-    async (approveTripBody: approveTripBody) => {
-        return await apiClient.post('/viagem/aprovar', approveTripBody)
-    }
-);
-
-const reproveMutation = useMutation(
-  async (reproveTripBody: reproveTripBody) => {
-      return await apiClient.post('/viagem/reprovar', reproveTripBody)
-  }
-);
-
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-let schema = yup.object({
-  observacao: yup.string().min(3).required(),
-}).required();
-
-interface ApproveData {
-  observacao: string;
-}
-
-const handleApprove = async (data: Object) => {
-  setOpen(false)  
-  if (!trip) {
-    // Colocar toast de erro.
-    return
-  }
-
-  const {observacao} = data as ApproveData
-
-  const approveTripBody = {
-    id: trip.id, 
-    fullValue: textReversalDisabled, 
-    value, 
-    description: observacao
-  }
-
-  
-  const response = await approveMutation.mutateAsync(approveTripBody)
-  console.log(response.data);
-  
-}
-
-const handleReprove = async (data: Object) => {
-  setOpen(false)  
-  if (!trip) {
-    // Colocar toast de erro.
-    return
-  }
-
-  const {observacao} = data as ApproveData
-
-  const reproveTripBody = {
-    id: trip.id, 
-    description: observacao
-  }
-
-  console.log(reproveTripBody);
-  
-  const response = await reproveMutation.mutateAsync(reproveTripBody)
-  console.log(response.data);
-  
-}
-
-
-
-  const handleSubmitInternal = async (data: Object) => {
-
-    setLoading(true)
-
-
-
-    setOpen(false)
-    setLoading(false)
-  }
-
+  let schema = getInputSchema(approved);
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
 
+  const approveMutation = useMutation(
+    async (approveTripBody: approveTripBody) => {
+      return await apiClient.post('/viagem/aprovar', approveTripBody)
+    }
+  );
 
+  const reproveMutation = useMutation(
+    async (reproveTripBody: reproveTripBody) => {
+      return await apiClient.post('/viagem/reprovar', reproveTripBody)
+    }
+  );
+
+  const handleClose = useCallback(() => setOpen(false), [setOpen]);
+
+  const handleApprove = useCallback(async (data: any) => {
+    if (!trip) {
+      ErrorToast('Erro ao executar ação');
+      return
+    }
+
+    const approveTripBody = {
+      id: trip.id,
+      fullValue: textReversalDisabled,
+      value,
+      description: data.observacao
+    }
+
+    try {
+      await approveMutation.mutateAsync(approveTripBody)
+      SuccessToast()
+      handleClose()
+    } catch (error) {
+      const axiosError = error as AxiosError
+      const axiosResponse = axiosError.response as AxiosResponse<ErrorMessage>
+      ErrorToast(axiosResponse.data.message)
+    }
+  }, [approveMutation, handleClose, textReversalDisabled, trip, value])
+
+  const handleReprove = useCallback(async (data: any) => {
+    if (!trip) {
+      ErrorToast('Erro ao executar ação');
+      return
+    }
+    const reproveTripBody = {
+      id: trip.id,
+      description: data.observacao
+    }
+
+    try {
+      await reproveMutation.mutateAsync(reproveTripBody)
+      SuccessToast()
+      handleClose()
+    } catch (error) {
+      const axiosError = error as AxiosError
+      const axiosResponse = axiosError.response as AxiosResponse<ErrorMessage>
+      ErrorToast(axiosResponse.data.message)
+    }
+  }, [handleClose, reproveMutation, trip])
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
-      {approved ? <CloseDialog handleClose={handleClose} title='Aprovação'/> : <CloseDialog handleClose={handleClose} title='Reprovação'/>}
+    <Dialog open={isOpen} onClose={handleClose} maxWidth='sm' fullWidth={true}>
+      <CloseDialog handleClose={handleClose} title={approved ? 'Aprovação' : 'Reprovação'} />
       <DialogContent>
         <TextField
           id="observacao"
-          sx={{width: '30rem'}}
           multiline
           rows={4}
+          error={!!errors['observacao']}
           {...register("observacao")}
         />
       </DialogContent>

@@ -9,6 +9,7 @@ import { QueryClientProvider } from 'react-query'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import toast, { Toaster } from 'react-hot-toast';
 
 const { palette } = createTheme();
 const { augmentColor } = palette;
@@ -42,6 +43,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <ThemeProvider theme={theme}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <RouterProvider router={router} />
+            <Toaster />
           </LocalizationProvider>
         </ThemeProvider>
       </QueryClientProvider>

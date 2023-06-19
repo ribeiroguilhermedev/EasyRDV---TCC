@@ -2,6 +2,7 @@ package br.com.app.controller;
 
 import br.com.app.Utils.Utils;
 import br.com.app.controller.dto.request.ViagemAprovacaoRequestDto;
+import br.com.app.controller.dto.request.ViagemReprovacaoRequestDto;
 import br.com.app.controller.dto.request.ViagemRequestDto;
 import br.com.app.controller.dto.response.ViagemResponseDto;
 import br.com.app.exception.ResourceWithErrorsException;
@@ -48,8 +49,8 @@ public class ViagemController {
     public ResponseEntity<ViagemResponseDto> approveTrip(@RequestBody final ViagemAprovacaoRequestDto form, UriComponentsBuilder uriBuilder) {
         Viagem trip = getTripById(form.getId());
 
-        ValidateTripStatus(trip);
-        ValidateApprovedValue(trip, form);
+        validateTripStatus(trip);
+        validateApprovedValue(trip, form);
 
         trip.setDescricao(form.getDescription());
 
@@ -65,6 +66,24 @@ public class ViagemController {
                 setPartialApprovedTrip(trip, form);
             }
         }
+
+        repository.save(trip);
+
+        ViagemResponseDto response = ViagemResponseDto.converter(trip);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/reprovar")
+    @Transactional
+    public ResponseEntity<ViagemResponseDto> reproveTrip(@RequestBody final ViagemReprovacaoRequestDto form, UriComponentsBuilder uriBuilder) {
+        Viagem trip = getTripById(form.getId());
+
+        validateTripStatus(trip);
+
+        trip.setDescricao(form.getDescription());
+
+        trip.setStatus(ViagemStatus.REPROVADA);
 
         repository.save(trip);
 
@@ -135,20 +154,20 @@ public class ViagemController {
         trip.setDataAprovado(new Date());
     }
 
-    private void ValidateTripStatus(Viagem trip) {
+    private void validateTripStatus(Viagem trip) {
         if (trip.getStatus() != ViagemStatus.AGUARDANDO_APROVACAO) {
             throw new ResourceWithErrorsException("Invalid status: the trip status should be AGUARDANDO_APROVACAO");
         }
     }
 
-    private void ValidateApprovedValue(Viagem trip, ViagemAprovacaoRequestDto form) {
+    private void validateApprovedValue(Viagem trip, ViagemAprovacaoRequestDto form) {
         if (form.isFullValue())
             return;
 
         boolean requestValueIsGreaterThanTripValue = Utils.doubleIsGreaterThan(form.getValue(), trip.getValorTotal());
 
         if (requestValueIsGreaterThanTripValue)
-            throw new ResourceWithErrorsException("The requested value is greater than trip value");
+            throw new ResourceWithErrorsException("O valor aprovado deve ser menor ou igual ao valor total da viagem");
     }
 
 

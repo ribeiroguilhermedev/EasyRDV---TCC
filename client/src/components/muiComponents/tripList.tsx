@@ -62,7 +62,7 @@ function CityNameWithStatus(props: CityNameWithStatusProps) {
 export default function TripList(props: TripListProps) {
     const { trips, handleClickTrip, existentTrip } = props
     const [selectedId, setSelectedId] = useState(0);
-    
+
     if (selectedId === 0 && existentTrip != undefined) {
         setSelectedId(existentTrip)
     }
@@ -71,7 +71,7 @@ export default function TripList(props: TripListProps) {
     }
 
     return (
-        <Paper className='w-full' sx={{ overflow: 'auto',  height: existentTrip ? 370 : 682  }}>
+        <Paper className='w-full' sx={{ overflow: 'auto', height: existentTrip ? 370 : 682 }}>
             {
                 !trips ?
                     <Loading /> :

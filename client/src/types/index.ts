@@ -163,3 +163,8 @@ export interface TripCardProps {
   trip: Trip | undefined;
   loading: boolean;
 }
+
+export interface ErrorMessage {
+  message: string
+}
+
