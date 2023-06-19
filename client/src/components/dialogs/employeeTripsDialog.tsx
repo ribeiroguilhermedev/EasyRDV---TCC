@@ -62,7 +62,7 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
           <Stack spacing={2} direction={'row'}>
             <Stack spacing={3} className='w-1/3 items-center justify-center'>
               <Typography variant='h6' sx={{ color: (theme) => theme.palette.grey[400] }}>Viagens</Typography>
-              <TripCard loading={mutationTrip.isLoading} trip={mutationTrip?.data} />
+              {existentTrip && <TripCard loading={mutationTrip.isLoading} trip={mutationTrip?.data} /> }
               <TripList handleClickTrip={handleClickTrip} trips={mutationTrips?.data} existentTrip={existentTrip}/>
             </Stack>
             <Divider orientation="vertical" flexItem sx={{ backgroundColor: '#ffffff52' }} />

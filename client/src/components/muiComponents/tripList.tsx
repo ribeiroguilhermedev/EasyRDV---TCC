@@ -71,7 +71,7 @@ export default function TripList(props: TripListProps) {
     }
 
     return (
-        <Paper className='w-full' sx={{ overflow: 'auto', height: 370 }}>
+        <Paper className='w-full' sx={{ overflow: 'auto',  height: existentTrip ? 370 : 682  }}>
             {
                 !trips ?
                     <Loading /> :
