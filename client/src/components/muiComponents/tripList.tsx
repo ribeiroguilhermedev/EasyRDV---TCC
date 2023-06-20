@@ -22,15 +22,6 @@ function CityNameWithStatus(props: CityNameWithStatusProps) {
     const AGUARDANDO_INICIO = status === statusEnum[statusEnum.AGUARDANDO_INICIO]
     const AGUARDANDO_APROVACAO = status === statusEnum[statusEnum.AGUARDANDO_APROVACAO]
 
-    if (APROVADA || REPROVADA || APROVADA_PARCIAL) {
-        return (
-            <div className="w-1/3 flex items-center justify-start">
-                <StatusCircle hide={true} />
-                <Typography className='text-start'>{city}</Typography>
-            </div>
-        )
-    }
-
     let statusId: number = 0
     if (EM_ANDAMENTO) {
         statusId = statusEnum.EM_ANDAMENTO
@@ -40,6 +31,15 @@ function CityNameWithStatus(props: CityNameWithStatusProps) {
     }
     if (AGUARDANDO_APROVACAO) {
         statusId = statusEnum.AGUARDANDO_APROVACAO
+    }
+    if (APROVADA) {
+        statusId = statusEnum.APROVADA
+    }
+    if (REPROVADA) {
+        statusId = statusEnum.REPROVADA
+    }
+    if (APROVADA_PARCIAL) {
+        statusId = statusEnum.APROVADA_PARCIAL
     }
 
     if (!statusId) {
@@ -62,7 +62,7 @@ function CityNameWithStatus(props: CityNameWithStatusProps) {
 export default function TripList(props: TripListProps) {
     const { trips, handleClickTrip, existentTrip } = props
     const [selectedId, setSelectedId] = useState(0);
-
+    
     if (selectedId === 0 && existentTrip != undefined) {
         setSelectedId(existentTrip)
     }
@@ -71,7 +71,7 @@ export default function TripList(props: TripListProps) {
     }
 
     return (
-        <Paper className='w-full' sx={{ overflow: 'auto', height: existentTrip ? 370 : 682 }}>
+        <Paper className='w-full' sx={{ overflow: 'auto',  height: existentTrip ? 370 : 682  }}>
             {
                 !trips ?
                     <Loading /> :

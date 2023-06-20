@@ -1,5 +1,5 @@
 import { ConfirmEventProps, ErrorMessage, approveTripBody, reproveTripBody } from '../../types';
-import { TextField } from '@mui/material';
+import { Checkbox, Stack, TextField } from '@mui/material';
 import { useMutation } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { GreenButton, RedButton } from '../../componentStyles/Buttons';
@@ -12,7 +12,8 @@ import * as yup from "yup";
 import CloseDialog from '../muiComponents/closeDialog';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ErrorToast, SuccessToast } from '../../componentStyles/Toasts';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
+import { TextFieldReversal } from '../muiComponents/textFieldReversal';
 
 const getInputSchema = (approved: boolean) => {
   if (!approved) {
@@ -26,11 +27,18 @@ const getInputSchema = (approved: boolean) => {
   });
 };
 
-export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversalDisabled, approved, value }: ConfirmEventProps) {
+export default function ConfirmEventDialog({ isOpen, setOpen, trip, disabled, approved }: ConfirmEventProps) {
+  const [value, setValue] = useState<number>(trip.valorTotal);
+
   let schema = getInputSchema(approved);
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   });
+  const [textReversalDisabled, setTextReversalDisabled] = useState<boolean>(true);
+
+  const handleCheckReversalDisabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTextReversalDisabled(event.target.checked);
+  };
 
   const approveMutation = useMutation(
     async (approveTripBody: approveTripBody) => {
@@ -54,7 +62,7 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversal
 
     const approveTripBody = {
       id: trip.id,
-      fullValue: textReversalDisabled,
+      fullValue: disabled,
       value,
       description: data.observacao
     }
@@ -68,7 +76,7 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversal
       const axiosResponse = axiosError.response as AxiosResponse<ErrorMessage>
       ErrorToast(axiosResponse.data.message)
     }
-  }, [approveMutation, handleClose, textReversalDisabled, trip, value])
+  }, [approveMutation, handleClose, disabled, trip, value])
 
   const handleReprove = useCallback(async (data: any) => {
     if (!trip) {
@@ -105,7 +113,20 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, textReversal
         />
       </DialogContent>
       <DialogActions>
-        {approved ? <GreenButton onClick={handleSubmit(handleApprove)}>Aprovar</GreenButton> : <RedButton onClick={handleSubmit(handleReprove)}>Reprovar</RedButton>}
+        {approved ? 
+        <>
+        <div className='flex justify-between  w-full'>
+        <Stack direction={'row'}>
+        <Checkbox checked={textReversalDisabled} onChange={handleCheckReversalDisabledChange} />
+        <TextFieldReversal value={trip.valorTotal} disabled={textReversalDisabled} setValue={setValue} />
+        </Stack>
+        <Stack direction={'row'} spacing={1}>
+        <GreenButton onClick={handleSubmit(handleApprove)}>Aprovar</GreenButton>
+        </Stack>
+        </div>
+        </> 
+        : 
+        <RedButton onClick={handleSubmit(handleReprove)}>Reprovar</RedButton>}
       </DialogActions>
     </Dialog>
   );

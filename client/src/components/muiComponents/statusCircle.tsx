@@ -1,6 +1,6 @@
 import CircleIcon from '@mui/icons-material/Circle';
 import { StatusCircleProps } from '../../types';
-import { blue, green, yellow, red } from '@mui/material/colors';
+import { blue, green, yellow, red, amber, lightGreen } from '@mui/material/colors';
 import { IconButton, Tooltip } from '@mui/material';
 import { statusEnum } from '../../enumeration';
 
@@ -36,8 +36,8 @@ export default function StatusCircle(props: StatusCircleProps) {
         [statusEnum.AGUARDANDO_INICIO]: blue,
         [statusEnum.EM_ANDAMENTO]: green,
         [statusEnum.AGUARDANDO_APROVACAO]: yellow,
-        [statusEnum.APROVADA]: green,
-        [statusEnum.APROVADA_PARCIAL]: yellow,
+        [statusEnum.APROVADA]: lightGreen,
+        [statusEnum.APROVADA_PARCIAL]: amber,
         [statusEnum.REPROVADA]: red,
     }
 

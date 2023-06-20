@@ -20,6 +20,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { formatCurrency, formatDate } from '../../utils/format';
 import apiClient from '../../services/api';
 import { useMutation } from 'react-query';
+import StatusCircle from './statusCircle';
+import { statusEnum } from '../../enumeration';
 
 export default function TripCard(props: TripCardProps) {
   const { trip, loading } = props
@@ -77,7 +79,6 @@ interface ContentCardProps {
 
 const ContentCard = (props: ContentCardProps) => {
   const { handleApprove, handleCheckReversalDisabledChange, approved, handleReprove, trip, isOpen, setOpen, textReversalDisabled } = props
-  const [value, setValue] = useState<number>(0);
 
   return (
     <Card className='w-full h-72'>
@@ -103,19 +104,20 @@ const ContentCard = (props: ContentCardProps) => {
         </TableContainer>
       </CardContent>
       <CardActions disableSpacing className='flex flex-row justify-between align-center w-full'>
+        <Stack direction={'row'} spacing={2}>
         {trip.status === "AGUARDANDO_APROVACAO" &&
           <>
-            <Stack direction={'row'} spacing={2}>
               <RedButton onClick={handleReprove}>Reprovar</RedButton>
               <GreenButton onClick={handleApprove}>Aprovar</GreenButton>
-              <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} trip={trip} textReversalDisabled={textReversalDisabled} approved={approved} value={value} />
-            </Stack>
-            <Stack direction={'row'} spacing={2}>
-              <Checkbox checked={textReversalDisabled} onChange={handleCheckReversalDisabledChange} />
-              <TextFieldReversal value={trip.valorTotal} disabled={textReversalDisabled} setValue={setValue} />
-            </Stack>
+              <ConfirmEventDialog isOpen={isOpen} setOpen={setOpen} trip={trip} disabled={textReversalDisabled} approved={approved} />
           </>
         }
+            </Stack>
+            <Stack direction={'row'}>
+              <div className='flex items-center justify-end h-[30px]'>
+            <StatusCircle status={statusEnum[trip.status as keyof typeof statusEnum]}/>
+              </div>
+            </Stack>
       </CardActions>
     </Card>
   )

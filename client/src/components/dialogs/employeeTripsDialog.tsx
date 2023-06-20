@@ -50,7 +50,6 @@ export default function EmployeeTripsDialog({ id }: EmployeeTripsDialogProps) {
     const ret = await apiClient.get(`comprovante/viagem/${id}`, header)
     setReceipts(ret.data)
   }
-
   return (
     <div>
       <IconButton onClick={handleClickOpen}>

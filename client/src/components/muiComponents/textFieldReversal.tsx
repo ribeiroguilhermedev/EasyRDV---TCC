@@ -1,4 +1,3 @@
-import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
 import { InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
@@ -17,7 +16,6 @@ export const TextFieldReversal = ({ value, disabled, setValue }: TextFieldRevers
             setCurrentValue(null)
             return
         }
-
         setValue(floatValue)
         setCurrentValue(floatValue)
     }

@@ -73,9 +73,8 @@ export interface ConfirmEventProps {
   isOpen: boolean;
   setOpen: Function;
   trip: Trip;
-  textReversalDisabled: boolean;
+  disabled: boolean;
   approved: boolean;
-  value: number;
 }
 
 export interface EmployeeCardProps {
