@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Paper, Card, CardHeader, CardContent, CardActions } from '@mui/material';
 import { useState } from 'react';
 import { formatCurrency, formatDate } from '../../utils/format';
-import { statusEnum } from '../../enumeration';
+import { isAguardandoAprovacao, statusEnum } from '../../enumeration';
 import { StatusCircle } from '.';
 import { ConfirmEventDialog } from '../dialogs';
 import { RedButton, GreenButton } from '../../componentStyles/Buttons';
@@ -66,7 +66,8 @@ function ContentCard({ trip }: ContentCardProps): JSX.Element {
       </CardContent>
       <CardActions disableSpacing className='flex flex-row justify-between align-center w-full'>
         <Stack direction={'row'} spacing={2}>
-          {trip.status === statusEnum.AGUARDANDO_APROVACAO &&
+          {
+            isAguardandoAprovacao(trip.status) &&
             <>
               <RedButton onClick={handleReprove}>Reprovar</RedButton>
               <GreenButton onClick={handleApprove}>Aprovar</GreenButton>

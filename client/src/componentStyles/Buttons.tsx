@@ -1,5 +1,6 @@
 import { styled } from '@mui/system';
 import Button from '@mui/material/Button';
+import { mainColor } from '../enumeration';
 
 export const HeaderButton = styled(Button)({
   color: '#f44336',
@@ -44,6 +45,31 @@ export const GreenButton = styled(Button)({
   '&:hover': {
     backgroundColor: '#1d2429',
     border: '1px solid #4caf50',
+    textDecoration: 'none'
+  },
+});
+
+export const LoginButton = styled(Button)({
+  color: '#fff',
+  textTransform: 'none',
+  height: '40px',
+  backgroundColor: '#145a87',
+  '&:hover': {
+    backgroundColor: mainColor,
+    textDecoration: 'none'
+  },
+});
+
+export const ScheduleGhostButton = styled(Button)({
+  color: '#fff',
+  textTransform: 'none',
+  height: '40px',
+  width:'150px',
+  backgroundColor: mainColor,
+  border: '1px solid #fff',
+  '&:hover': {
+    backgroundColor: '#fff',
+    color: mainColor,
     textDecoration: 'none'
   },
 });

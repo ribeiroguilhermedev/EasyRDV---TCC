@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast';
 
-
 export function ErrorToast(msg: string) {
     return toast.error(msg, {
         position: 'top-right'

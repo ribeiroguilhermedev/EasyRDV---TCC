@@ -56,7 +56,6 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, approved }: 
 
     try {
       const res = await approveMutation.mutateAsync(approveTripBody)
-      console.log(res);
       
       SuccessToast()
       handleClose()

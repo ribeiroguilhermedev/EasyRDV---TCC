@@ -17,9 +17,6 @@ export default function StatusCircle(props: StatusCircleProps): JSX.Element {
         [statusEnum.REPROVADA]: materialColors.red[500],
     }
 
-    console.log(colors);
-
-
     const titles: any = {
         [statusEnum.AGUARDANDO_INICIO]: 'A iniciar',
         [statusEnum.EM_ANDAMENTO]: 'Em andamento',
