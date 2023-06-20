@@ -1,10 +1,11 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.request.*;
-import br.com.app.controller.dto.request.atualiza.AtualizaFlagUsuarioRequestDto;
-import br.com.app.controller.dto.request.atualiza.AtualizaUsuarioSenhaRequestDto;
-import br.com.app.controller.dto.request.atualiza.AtualizacaoUsuarioRequestDto;
-import br.com.app.controller.dto.response.UsuarioResponseDto;
+import br.com.app.controller.dto.request.Usuario.UsuarioEmailRequestDto;
+import br.com.app.controller.dto.request.Usuario.UsuarioRequestDto;
+import br.com.app.controller.dto.request.Usuario.AtualizaFlagAtivoUsuarioRequestDto;
+import br.com.app.controller.dto.request.Usuario.AtualizaUsuarioSenhaRequestDto;
+import br.com.app.controller.dto.request.Usuario.AtualizaUsuarioRequestDto;
+import br.com.app.controller.dto.response.Usuario.UsuarioResponseDto;
 import br.com.app.exception.ResourceNotFoundException;
 import br.com.app.messages.EmailMessage;
 import br.com.app.modelo.Enumeration.Role;
@@ -85,7 +86,7 @@ public class UsuarioController {
 
     @PutMapping("/atualiza/{id}")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> updateUserData(@PathVariable Long id, @RequestBody AtualizacaoUsuarioRequestDto form) {
+    public ResponseEntity<UsuarioResponseDto> updateUserData(@PathVariable Long id, @RequestBody AtualizaUsuarioRequestDto form) {
         Usuario user = getUserById(id);
         user = form.atualizar(user, userRepository);
         return ResponseEntity.ok(new UsuarioResponseDto(user));
@@ -93,7 +94,7 @@ public class UsuarioController {
 
     @PutMapping("/atualiza/flag/{id}")
     @Transactional
-    public ResponseEntity<UsuarioResponseDto> updateActiveFlag(@PathVariable Long id, @RequestBody AtualizaFlagUsuarioRequestDto form) {
+    public ResponseEntity<UsuarioResponseDto> updateActiveFlag(@PathVariable Long id, @RequestBody AtualizaFlagAtivoUsuarioRequestDto form) {
         Usuario user = getUserById(id);
         user = form.update(user, userRepository);
         return ResponseEntity.ok(new UsuarioResponseDto(user));

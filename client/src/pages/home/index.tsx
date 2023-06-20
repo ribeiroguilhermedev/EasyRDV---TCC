@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Header from "../../components/header/header";
-import EmployeeControl from "../../components/modules/employeeControl";
 import Paper from "@mui/material/Paper";
+import { EmployeeControl } from "../../components/modules";
 
 const Home = () => {
   const [employeeControlOpen, setEmployeeControlOpen] = useState(true)

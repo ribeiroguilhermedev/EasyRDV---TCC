@@ -1,8 +1,8 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.request.AnexoRequestDto;
-import br.com.app.controller.dto.request.atualiza.AtualizaAnexoRequestDto;
-import br.com.app.controller.dto.response.AnexoResponseDto;
+import br.com.app.controller.dto.request.Anexo.AnexoRequestDto;
+import br.com.app.controller.dto.request.Anexo.AtualizaAnexoRequestDto;
+import br.com.app.controller.dto.response.Anexo.AnexoResponseDto;
 import br.com.app.modelo.Anexo;
 import br.com.app.repository.AnexoRepository;
 import org.springframework.beans.factory.annotation.Autowired;

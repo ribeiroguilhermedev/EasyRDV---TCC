@@ -3,7 +3,7 @@ package br.com.app.controller;
 import br.com.app.config.security.TokenService;
 import br.com.app.controller.dto.ErrorDto;
 import br.com.app.controller.dto.TokenDto;
-import br.com.app.controller.dto.request.LoginRequestDto;
+import br.com.app.controller.dto.request.Login.LoginRequestDto;
 import br.com.app.modelo.Usuario;
 import br.com.app.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

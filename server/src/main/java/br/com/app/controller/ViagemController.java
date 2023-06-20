@@ -1,10 +1,10 @@
 package br.com.app.controller;
 
 import br.com.app.Utils.Utils;
-import br.com.app.controller.dto.request.ViagemAprovacaoRequestDto;
-import br.com.app.controller.dto.request.ViagemReprovacaoRequestDto;
-import br.com.app.controller.dto.request.ViagemRequestDto;
-import br.com.app.controller.dto.response.ViagemResponseDto;
+import br.com.app.controller.dto.request.Viagem.ViagemAprovacaoRequestDto;
+import br.com.app.controller.dto.request.Viagem.ViagemReprovacaoRequestDto;
+import br.com.app.controller.dto.request.Viagem.ViagemRequestDto;
+import br.com.app.controller.dto.response.Viagem.ViagemResponseDto;
 import br.com.app.exception.ResourceWithErrorsException;
 import br.com.app.exception.ResourceNotFoundException;
 import br.com.app.modelo.Enumeration.ViagemStatus;

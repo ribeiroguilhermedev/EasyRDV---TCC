@@ -1,4 +1,5 @@
 import React from "react";
+import { statusEnum } from "../enumeration";
 
 export interface User {
   id: number;
@@ -23,7 +24,7 @@ export interface Trip {
   dataFim: Date;
   dataInicio: Date;
   descricao: string;
-  status: string;
+  status: statusEnum;
   uf: string;
   valorTotal: number;
   valorTotalReembolsado: number;
@@ -73,7 +74,6 @@ export interface ConfirmEventProps {
   isOpen: boolean;
   setOpen: Function;
   trip: Trip;
-  disabled: boolean;
   approved: boolean;
 }
 
@@ -143,7 +143,7 @@ export interface TripListProps {
 }
 
 export interface StatusCircleProps {
-  status?: number;
+  status?: statusEnum;
   hide?: boolean
 }
 

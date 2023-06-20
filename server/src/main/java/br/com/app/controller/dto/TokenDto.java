@@ -1,7 +1,6 @@
 package br.com.app.controller.dto;
 
-import br.com.app.controller.dto.response.UsuarioInfoResponseDto;
-import br.com.app.controller.dto.response.UsuarioResponseDto;
+import br.com.app.controller.dto.response.Usuario.UsuarioInfoResponseDto;
 import br.com.app.modelo.Usuario;
 
 public class TokenDto {

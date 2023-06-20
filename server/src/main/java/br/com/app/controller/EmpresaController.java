@@ -1,7 +1,7 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.request.EmpresaRequestDto;
-import br.com.app.controller.dto.response.EmpresaResponseDto;
+import br.com.app.controller.dto.request.Empresa.EmpresaRequestDto;
+import br.com.app.controller.dto.response.Empresa.EmpresaResponseDto;
 import br.com.app.modelo.Empresa;
 import br.com.app.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

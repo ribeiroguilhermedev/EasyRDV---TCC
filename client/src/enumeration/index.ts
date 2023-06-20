@@ -5,5 +5,4 @@ export enum statusEnum {
     APROVADA = 4,
     APROVADA_PARCIAL = 5,
     REPROVADA = 6,
-
 }

@@ -1,7 +1,7 @@
 package br.com.app.controller;
 
-import br.com.app.controller.dto.request.ComprovanteRequestDto;
-import br.com.app.controller.dto.response.ComprovanteResponseDto;
+import br.com.app.controller.dto.request.Comprovante.ComprovanteRequestDto;
+import br.com.app.controller.dto.response.Comprovante.ComprovanteResponseDto;
 import br.com.app.modelo.Comprovante;
 import br.com.app.modelo.Viagem;
 import br.com.app.repository.ComprovanteRepository;

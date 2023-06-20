@@ -1,24 +1,20 @@
-import React, {useState} from "react"
 import { useAuth } from "../../auth/authContext"
-import { useLocation } from 'react-router-dom';
-import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import CardTravelIcon from '@mui/icons-material/CardTravel';
+import { AppBar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
+import { Menu as MenuIcon, CardTravel as CardTravelIcon } from '@mui/icons-material';
 import { HeaderButton } from "../../componentStyles/Buttons";
 import { EmployeeProps } from "../../types";
+import { useState } from "react";
 
 
+export default function Header({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) {
+  const auth = useAuth();
 
-const Header = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) =>  {
-  const auth = useAuth()
-  const location = useLocation();
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   function openEmployeeControl() {
-    setEmployeeControlOpen(true)
-}
+    setEmployeeControlOpen(true);
+  }
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -37,7 +33,7 @@ const Header = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) 
 
   const logout = () => {
     setAnchorElUser(null);
-    auth.logout()
+    auth.logout();
   };
 
   function stringAvatar(name: string) {
@@ -46,12 +42,12 @@ const Header = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) 
     };
   }
 
-  const pages = [{nome: 'Funcionários', fClick: () => openEmployeeControl}];
-  const settings = [{ nome: 'Perfil', fClick: handleCloseUserMenu }, { nome: 'Logout', fClick: logout }]
+  const pages = [{ nome: 'Funcionários', fClick: () => openEmployeeControl }];
+  const settings = [{ nome: 'Perfil', fClick: handleCloseUserMenu }, { nome: 'Logout', fClick: logout }];
 
   return (
     <>
-      <AppBar style={{position: 'unset'}}>
+      <AppBar style={{ position: 'unset' }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <CardTravelIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -173,7 +169,5 @@ const Header = ({ employeeControlOpen, setEmployeeControlOpen }: EmployeeProps) 
         </Container>
       </AppBar>
     </>
-  )
+  );
 }
-
-export default Header

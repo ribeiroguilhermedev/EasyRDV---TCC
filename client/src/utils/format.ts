@@ -1,3 +1,7 @@
+import {isAxiosError, AxiosError, AxiosResponse } from 'axios';
+import { ErrorMessage } from '../types';
+import { ErrorToast } from '../componentStyles/Toasts';
+
 export function formatDate(date: Date | string) {
     if (typeof date === 'string') {
         date = new Date(date);
@@ -23,5 +27,16 @@ export function formatDate(date: Date | string) {
 export function formatCurrency(value: number): string {
     const formatted = value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     return formatted.replace('R$', '').trim();
+}
+
+export function toastAxiosError(error: any){
+    if (!isAxiosError(error)) {
+        ErrorToast("Houve um problema ao executar esta ação")
+        return
+    }
+    
+    const axiosError = error as AxiosError
+    const axiosResponse = axiosError.response as AxiosResponse<ErrorMessage>
+    ErrorToast(axiosResponse.data.message)
 }
 
