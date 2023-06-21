@@ -159,6 +159,14 @@ export const Paragraph = styled.p`
   margin: 20px 0 30px
 `;
 
+export const SubParagraph = styled.p`
+  font-size: 13px;
+  font-weight: 100;
+  line-height: 15px;
+  letter-spacing: 0.2px;
+  margin: -10px 0 20px
+`;
+
 export const Image = styled.img`
   object-fit: contain;
   width: 100%;
