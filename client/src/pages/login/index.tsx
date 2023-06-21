@@ -10,7 +10,7 @@ import { Avatar, Box, Button, Container, FilledInput, Stack, Checkbox, Typograph
 import { LoginButton, ScheduleGhostButton } from "../../componentStyles/Buttons";
 import Logo from '../../assets/LogoComTituloSemFundo_Branco.png'
 import PresentToAllIcon from '@mui/icons-material/PresentToAllOutlined';
-import {Email, Password} from '@mui/icons-material';
+import {Email, Password, Badge, Business, Link, WhatsApp} from '@mui/icons-material';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -93,11 +93,11 @@ const Login = () => {
                                 Agende uma demonstração
                             </InternalTypography>
                             <Stack spacing={2} className="w-full mt-7">
-                                <InternalFilledInput placeholder="E-mail" />
-                                <InternalFilledInput placeholder="Nome" />
-                                <InternalFilledInput placeholder="Nome da empresa" />
-                                <InternalFilledInput placeholder="Site da empresa" />
-                                <InternalFilledInput placeholder="WhatsApp" />
+                                <InternalFilledInput startAdornment={<Email className="mt-4 mr-2"/>} placeholder="E-mail" />
+                                <InternalFilledInput startAdornment={<Badge className="mt-4 mr-2"/>} placeholder="Nome" />
+                                <InternalFilledInput startAdornment={<Business className="mt-4 mr-2"/>} placeholder="Nome da empresa" />
+                                <InternalFilledInput startAdornment={<Link className="mt-4 mr-2"/>} placeholder="Site da empresa" />
+                                <InternalFilledInput startAdornment={<WhatsApp className="mt-4 mr-2"/>} placeholder="WhatsApp" />
                                 <FormControlLabel
                                     sx={{ color: theme.palette.secondary.main }}
                                     label="Quero receber novidades do EasyRDV"
