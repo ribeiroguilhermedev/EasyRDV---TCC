@@ -64,7 +64,7 @@ export default function Login(): JSX.Element {
     console.log(theme);
 
     let SignInContainerStyle: React.CSSProperties = {
-        backgroundColor: theme.palette.grey[300],
+        backgroundColor: theme.palette.grey[200],
         transition: 'all 0.4s ease-in-out',
         borderRight: `6px solid ${theme.palette.background.default}`
     };
@@ -74,7 +74,7 @@ export default function Login(): JSX.Element {
 
 
     let SignUpContainerStyle: React.CSSProperties = {
-        backgroundColor: theme.palette.grey[300],
+        backgroundColor: theme.palette.grey[200],
         transition: 'all 0.4s ease-in-out',
     };
 
@@ -104,9 +104,9 @@ export default function Login(): JSX.Element {
                                         <Checkbox sx={{
                                             color: theme.palette.secondary.main,  // altera a cor quando não selecionado
                                             '&.Mui-checked': {
-                                              color: theme.palette.primary.main,  // altera a cor quando selecionado (checked)
+                                                color: theme.palette.primary.main,  // altera a cor quando selecionado (checked)
                                             },
-                                          }} />
+                                        }} />
                                     }
                                 />
                                 <LoginButton>Agendar</LoginButton>
@@ -127,7 +127,7 @@ export default function Login(): JSX.Element {
                             <Stack spacing={2} className="w-full mt-7">
                                 <InternalFilledInput placeholder="E-mail" />
                                 <InternalFilledInput type="password" placeholder="Senha" />
-                                <Components.Anchor href='#'>Esqueceu sua senha?</Components.Anchor>
+                                <Components.Anchor style={{ color: theme.palette.secondary.main }}>Esqueceu sua senha?</Components.Anchor>
                                 <LoginButton>Entrar</LoginButton>
                             </Stack>
                         </Components.Form>
