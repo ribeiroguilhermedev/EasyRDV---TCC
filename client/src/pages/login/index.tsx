@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react"
+import { PropsWithChildren, useLayoutEffect, useState } from "react"
 import { useMutation } from 'react-query'
 import { useAuth } from "../../auth/authContext";
 import { AuthenticatedUser } from "../../types";
@@ -85,12 +85,12 @@ export default function Login(): JSX.Element {
                 <Components.SignUpContainer signinIn={signIn}>
                     <Container className="h-full" style={SignUpContainerStyle}>
                         <Components.Form>
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', color: '#fff' }}>
+                            <InternalAvatar>
                                 <PresentToAllIcon />
-                            </Avatar>
-                            <Typography className="text-primary-color" textAlign="center" variant="h5" fontWeight='bold'>
+                            </InternalAvatar>
+                            <InternalTypography>
                                 Agende uma demonstração
-                            </Typography>
+                            </InternalTypography>
                             <Stack spacing={2} className="w-full mt-7">
                                 <InternalFilledInput placeholder="E-mail" />
                                 <InternalFilledInput placeholder="Nome" />
@@ -102,9 +102,9 @@ export default function Login(): JSX.Element {
                                     label="Quero receber novidades do EasyRDV"
                                     control={
                                         <Checkbox sx={{
-                                            color: theme.palette.secondary.main,  // altera a cor quando não selecionado
+                                            color: theme.palette.secondary.main,
                                             '&.Mui-checked': {
-                                                color: theme.palette.primary.main,  // altera a cor quando selecionado (checked)
+                                                color: theme.palette.primary.main,
                                             },
                                         }} />
                                     }
@@ -118,12 +118,12 @@ export default function Login(): JSX.Element {
                 <Components.SignInContainer signinIn={signIn}>
                     <Container className="h-full" style={SignInContainerStyle}>
                         <Components.Form>
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', color: '#fff' }}>
+                            <InternalAvatar>
                                 <LockOutlinedIcon />
-                            </Avatar>
-                            <Typography className="text-primary-color" textAlign="center" variant="h5" fontWeight='bold'>
+                            </InternalAvatar>
+                            <InternalTypography>
                                 Já tem cadastro?
-                            </Typography>
+                            </InternalTypography>
                             <Stack spacing={2} className="w-full mt-7">
                                 <InternalFilledInput placeholder="E-mail" />
                                 <InternalFilledInput type="password" placeholder="Senha" />
@@ -177,6 +177,28 @@ export default function Login(): JSX.Element {
             fullWidth
             placeholder={placeholder}
             type={type} />;
+    }
+
+    function InternalTypography({ children }: PropsWithChildren) {
+        return (
+            <Typography
+                sx={{ color: theme.palette.secondary.main }}
+                className="text-primary-color"
+                textAlign="center"
+                variant="h5"
+                fontWeight='bold'
+            >
+                {children}
+            </Typography>
+        )
+    }
+
+    function InternalAvatar({ children }: PropsWithChildren) {
+        return (
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', color: '#fff' }}>
+                {children}
+            </Avatar>
+        )
     }
 
     return (
