@@ -103,7 +103,7 @@ function Loading(): JSX.Element {
 function ListItem(props: ListItemProps): JSX.Element {
     const { handleClickTrip, handleSelectId, list, selectedId } = props;
     return (
-        <List>
+        <List sx={{padding:0}}>
             {list && list.map((trip: Trip) => (
                 <div key={trip.id}>
                     <ListItemButton

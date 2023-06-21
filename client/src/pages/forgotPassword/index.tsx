@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
             <div className="hidden sm:block">
-                <img className="w-full h-full object-cover" src={businessTravel} alt="" />
+                <img className="w-full h-full object-cover"  />
             </div>
 
             <div className="bg-blue-post flex flex-col justify-center">

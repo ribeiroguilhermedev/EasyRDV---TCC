@@ -43,7 +43,7 @@ export default function ConfirmEventDialog({ isOpen, setOpen, trip, approved }: 
 
   const handleApprove = useCallback(async (data: any) => {
     if (!trip) {
-      ErrorToast('Erro ao executar ação');
+      ErrorToast('Erro ao executar ação')
       return
     }
 
