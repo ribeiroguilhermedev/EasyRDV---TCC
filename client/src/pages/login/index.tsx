@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import apiClient from "../../services/api";
 import * as Components from './components';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Avatar, Box, Button, Container, FilledInput, Stack, TextField, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, Button, Container, FilledInput, Stack, Checkbox, Typography, useTheme, FormControlLabel, FilledInputProps } from "@mui/material";
 import { LoginButton, ScheduleGhostButton } from "../../componentStyles/Buttons";
 import Logo from '../../assets/LogoComTituloSemFundo_Branco.png'
+import PresentToAllIcon from '@mui/icons-material/PresentToAllOutlined';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -64,24 +65,39 @@ const Login = () => {
 
     let SignInContainerStyle: React.CSSProperties = {
         backgroundColor: theme.palette.grey[300],
-        transition: 'all 0.6s ease-in-out',
+        transition: 'all 0.4s ease-in-out',
         borderRight: `6px solid ${theme.palette.background.default}`
     }
     if (!signIn) {
         SignInContainerStyle.transform = 'translateX(100%)'
     }
 
+
+    let SignUpContainerStyle: React.CSSProperties = {
+        backgroundColor: theme.palette.grey[300],
+        transition: 'all 0.4s ease-in-out',
+    }
+
+
     return (
         <div className="h-screen flex flex-col justify-center items-center" style={{ backgroundColor: theme.palette.background.default }}>
             <Components.Container>
                 <Components.SignUpContainer signinIn={signIn}>
-                    <Components.Form>
-                        <Components.Title>Create Account</Components.Title>
-                        <Components.Input type='text' placeholder='Name' />
-                        <Components.Input type='email' placeholder='Email' />
-                        <Components.Input type='password' placeholder='Password' />
-                        <Components.Button>Sign Up</Components.Button>
-                    </Components.Form>
+                    <Container className="h-full" style={SignUpContainerStyle}>
+                        <Components.Form>
+                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main', color: '#fff' }}>
+                                <PresentToAllIcon />
+                            </Avatar>
+                            <Typography className="text-primary-color" textAlign="center" variant="h5" fontWeight='bold'>
+                                Agende uma demonstração
+                            </Typography>
+                            <Stack spacing={2} className="w-full mt-7">
+                                <InternalFilledInput placeholder="E-mail" />
+                                <InternalFilledInput type="password" placeholder="Senha" /><FormControlLabel disabled control={<Checkbox />} label="Quero receber novidades do EasyRDV" />
+                                <LoginButton>Agendar</LoginButton>
+                            </Stack>
+                        </Components.Form>
+                    </Container>
                 </Components.SignUpContainer>
 
                 <Components.SignInContainer signinIn={signIn}>
@@ -90,10 +106,12 @@ const Login = () => {
                             <Avatar sx={{ m: 1, bgcolor: 'secondary.main', color: '#fff' }}>
                                 <LockOutlinedIcon />
                             </Avatar>
-                            <Typography className="text-primary-color" textAlign="center" variant="h5" fontWeight='bold'>Já tem cadastro?</Typography>
+                            <Typography className="text-primary-color" textAlign="center" variant="h5" fontWeight='bold'>
+                                Já tem cadastro?
+                            </Typography>
                             <Stack spacing={2} className="w-full mt-7">
-                                <FilledInput sx={{ color: theme => theme.palette.secondary.main }} color="secondary" fullWidth placeholder="E-mail" />
-                                <FilledInput sx={{ color: theme => theme.palette.secondary.main }} color="secondary" type="password" fullWidth placeholder="Senha" />
+                                <InternalFilledInput placeholder="E-mail" />
+                                <InternalFilledInput type="password" placeholder="Senha" />
                                 <Components.Anchor href='#'>Esqueceu sua senha?</Components.Anchor>
                                 <LoginButton>Entrar</LoginButton>
                             </Stack>
@@ -105,26 +123,30 @@ const Login = () => {
                     <Components.Overlay signinIn={signIn}>
 
                         <Components.LeftOverlayPanel signinIn={signIn}>
-                            <Components.Title>Welcome Back!</Components.Title>
+                            <Components.Image className='mb-7' src={Logo} />
+                            <Components.Title>Já possui cadastro conosco?</Components.Title>
                             <Components.Paragraph>
-                                To keep connected with us please login with your personal info
+                                Por favor, faça o login com sua conta pessoal <b>EasyRDV</b>
                             </Components.Paragraph>
-                            <Components.GhostButton onClick={() => toggle(true)}>
-                                Sign In
-                            </Components.GhostButton>
+                            <ScheduleGhostButton onClick={() => toggle(true)}>
+                                Login
+                            </ScheduleGhostButton>
                         </Components.LeftOverlayPanel>
 
                         <Components.RightOverlayPanel signinIn={signIn}>
                             <Components.Image className='mb-7' src={Logo} />
-                            <div className="flex flex-col items-center justify-center">
-                                <Components.Title>Quer conhecer o sistema EasyRDV?</Components.Title>
-                                <Components.Paragraph>
-                                    Preencha o formulário para agendar uma demonstração
-                                </Components.Paragraph>
-                                <ScheduleGhostButton onClick={() => toggle(false)}>
-                                    Agendar
-                                </ScheduleGhostButton>
-                            </div>
+                            <Components.Title >Ainda não conhece o sistema EasyRDV?</Components.Title>
+                            <Components.Paragraph>
+                                Quer <b>modernizar</b> a forma como sua empresa lida com o reembolso de despesas de viagem?
+                                Agende uma demonstração com nosso time!
+                            </Components.Paragraph>
+                            <Components.SubParagraph>
+                                Nosso sistema permite que você gerencie todas as despesas de viagem com facilidade,
+                                economizando tempo e reduzindo o esforço.
+                            </Components.SubParagraph>
+                            <ScheduleGhostButton onClick={() => toggle(false)}>
+                                Agendar
+                            </ScheduleGhostButton>
                         </Components.RightOverlayPanel>
 
                     </Components.Overlay>
@@ -132,6 +154,15 @@ const Login = () => {
             </Components.Container>
         </div>
     )
+
+    function InternalFilledInput({ placeholder, type }: FilledInputProps) {
+        return <FilledInput
+            sx={{ color: theme => theme.palette.secondary.main }}
+            color="secondary"
+            fullWidth
+            placeholder={placeholder}
+            type={type} />
+    }
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
