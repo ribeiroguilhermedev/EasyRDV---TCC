@@ -11,7 +11,7 @@ import { LoginButton, ScheduleGhostButton } from "../../componentStyles/Buttons"
 import Logo from '../../assets/LogoComTituloSemFundo_Branco.png'
 import PresentToAllIcon from '@mui/icons-material/PresentToAllOutlined';
 
-const Login = () => {
+export default function Login(): JSX.Element {
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -20,7 +20,7 @@ const Login = () => {
     const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(null);
 
     const mutation = useMutation(
-        async (auth: { email: String, senha: String }) => {
+        async (auth: { email: String; senha: String; }) => {
             return await apiClient.post('/auth', auth)
                 .then(response => {
                     var user: AuthenticatedUser = {
@@ -38,20 +38,20 @@ const Login = () => {
                         data_criacao: response.data?.data_criacao,
                         flag_ativo: response.data?.flag_ativo,
                         foto: response.data?.foto,
-                    }
-                    setCurrentUser(user)
+                    };
+                    setCurrentUser(user);
                     login(user);
                 })
                 .catch(error => {
-                    console.error(error)
-                    alert('E-mail ou senha incorretos')
-                })
+                    console.error(error);
+                    alert('E-mail ou senha incorretos');
+                });
         }
     );
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        await mutation.mutateAsync({ email: email, senha: password })
+        await mutation.mutateAsync({ email: email, senha: password });
     };
 
     useLayoutEffect(() => {
@@ -67,16 +67,16 @@ const Login = () => {
         backgroundColor: theme.palette.grey[300],
         transition: 'all 0.4s ease-in-out',
         borderRight: `6px solid ${theme.palette.background.default}`
-    }
+    };
     if (!signIn) {
-        SignInContainerStyle.transform = 'translateX(100%)'
+        SignInContainerStyle.transform = 'translateX(100%)';
     }
 
 
     let SignUpContainerStyle: React.CSSProperties = {
         backgroundColor: theme.palette.grey[300],
         transition: 'all 0.4s ease-in-out',
-    }
+    };
 
 
     return (
@@ -93,7 +93,22 @@ const Login = () => {
                             </Typography>
                             <Stack spacing={2} className="w-full mt-7">
                                 <InternalFilledInput placeholder="E-mail" />
-                                <InternalFilledInput type="password" placeholder="Senha" /><FormControlLabel disabled control={<Checkbox />} label="Quero receber novidades do EasyRDV" />
+                                <InternalFilledInput placeholder="Nome" />
+                                <InternalFilledInput placeholder="Nome da empresa" />
+                                <InternalFilledInput placeholder="Site da empresa" />
+                                <InternalFilledInput placeholder="WhatsApp" />
+                                <FormControlLabel
+                                    sx={{ color: theme.palette.secondary.main }}
+                                    label="Quero receber novidades do EasyRDV"
+                                    control={
+                                        <Checkbox sx={{
+                                            color: theme.palette.secondary.main,  // altera a cor quando não selecionado
+                                            '&.Mui-checked': {
+                                              color: theme.palette.primary.main,  // altera a cor quando selecionado (checked)
+                                            },
+                                          }} />
+                                    }
+                                />
                                 <LoginButton>Agendar</LoginButton>
                             </Stack>
                         </Components.Form>
@@ -122,7 +137,7 @@ const Login = () => {
                 <Components.OverlayContainer signinIn={signIn}>
                     <Components.Overlay signinIn={signIn}>
 
-                        <Components.LeftOverlayPanel signinIn={signIn}>
+                        <Components.LeftOverlayPanel signinIn={signIn} style={{ borderRight: `6px solid ${theme.palette.background.default}` }}>
                             <Components.Image className='mb-7' src={Logo} />
                             <Components.Title>Já possui cadastro conosco?</Components.Title>
                             <Components.Paragraph>
@@ -135,7 +150,7 @@ const Login = () => {
 
                         <Components.RightOverlayPanel signinIn={signIn}>
                             <Components.Image className='mb-7' src={Logo} />
-                            <Components.Title >Ainda não conhece o sistema EasyRDV?</Components.Title>
+                            <Components.Title>Ainda não conhece o sistema EasyRDV?</Components.Title>
                             <Components.Paragraph>
                                 Quer <b>modernizar</b> a forma como sua empresa lida com o reembolso de despesas de viagem?
                                 Agende uma demonstração com nosso time!
@@ -153,7 +168,7 @@ const Login = () => {
                 </Components.OverlayContainer>
             </Components.Container>
         </div>
-    )
+    );
 
     function InternalFilledInput({ placeholder, type }: FilledInputProps) {
         return <FilledInput
@@ -161,13 +176,13 @@ const Login = () => {
             color="secondary"
             fullWidth
             placeholder={placeholder}
-            type={type} />
+            type={type} />;
     }
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
             <div className="hidden sm:block">
-                <img className="w-full h-full object-cover" src={businessTravel} alt="" />
+                <img className="w-full h-full object-cover" />
             </div>
 
             <div className="bg-blue-post flex flex-col justify-center">
@@ -190,7 +205,5 @@ const Login = () => {
                 </form>
             </div>
         </div>
-    )
+    );
 }
-
-export default Login
