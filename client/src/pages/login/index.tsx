@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import apiClient from "../../services/api";
 import * as Components from './components';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Avatar, Box, Button, Container, FilledInput, Stack, Checkbox, Typography, useTheme, FormControlLabel, FilledInputProps } from "@mui/material";
+import { Avatar, Box, Button, Container, FilledInput, Stack, Checkbox, Typography, useTheme, FormControlLabel, FilledInputProps, InputAdornment } from "@mui/material";
 import { LoginButton, ScheduleGhostButton } from "../../componentStyles/Buttons";
 import Logo from '../../assets/LogoComTituloSemFundo_Branco.png'
 import PresentToAllIcon from '@mui/icons-material/PresentToAllOutlined';
+import {Email, Password} from '@mui/icons-material';
 
-export default function Login(): JSX.Element {
+const Login = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -20,7 +21,7 @@ export default function Login(): JSX.Element {
     const [currentUser, setCurrentUser] = useState<AuthenticatedUser | null>(null);
 
     const mutation = useMutation(
-        async (auth: { email: String; senha: String; }) => {
+        async (auth: { email: String, senha: String }) => {
             return await apiClient.post('/auth', auth)
                 .then(response => {
                     var user: AuthenticatedUser = {
@@ -38,20 +39,20 @@ export default function Login(): JSX.Element {
                         data_criacao: response.data?.data_criacao,
                         flag_ativo: response.data?.flag_ativo,
                         foto: response.data?.foto,
-                    };
-                    setCurrentUser(user);
+                    }
+                    setCurrentUser(user)
                     login(user);
                 })
                 .catch(error => {
-                    console.error(error);
-                    alert('E-mail ou senha incorretos');
-                });
+                    console.error(error)
+                    alert('E-mail ou senha incorretos')
+                })
         }
     );
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        await mutation.mutateAsync({ email: email, senha: password });
+        await mutation.mutateAsync({ email: email, senha: password })
     };
 
     useLayoutEffect(() => {
@@ -67,16 +68,16 @@ export default function Login(): JSX.Element {
         backgroundColor: theme.palette.grey[200],
         transition: 'all 0.4s ease-in-out',
         borderRight: `6px solid ${theme.palette.background.default}`
-    };
+    }
     if (!signIn) {
-        SignInContainerStyle.transform = 'translateX(100%)';
+        SignInContainerStyle.transform = 'translateX(100%)'
     }
 
 
     let SignUpContainerStyle: React.CSSProperties = {
         backgroundColor: theme.palette.grey[200],
         transition: 'all 0.4s ease-in-out',
-    };
+    }
 
 
     return (
@@ -125,9 +126,9 @@ export default function Login(): JSX.Element {
                                 Já tem cadastro?
                             </InternalTypography>
                             <Stack spacing={2} className="w-full mt-7">
-                                <InternalFilledInput placeholder="E-mail" />
-                                <InternalFilledInput type="password" placeholder="Senha" />
-                                <Components.Anchor style={{ color: theme.palette.secondary.main }}>Esqueceu sua senha?</Components.Anchor>
+                                <InternalFilledInput startAdornment={<Email className="mt-4 mr-2"/>} placeholder="E-mail" />
+                                <InternalFilledInput startAdornment={<Password className="mt-4 mr-2"/>} type="password" placeholder="Senha" />
+                                <Components.Anchor href='#'>Esqueceu sua senha?</Components.Anchor>
                                 <LoginButton>Entrar</LoginButton>
                             </Stack>
                         </Components.Form>
@@ -137,7 +138,7 @@ export default function Login(): JSX.Element {
                 <Components.OverlayContainer signinIn={signIn}>
                     <Components.Overlay signinIn={signIn}>
 
-                        <Components.LeftOverlayPanel signinIn={signIn} style={{ borderRight: `6px solid ${theme.palette.background.default}` }}>
+                        <Components.LeftOverlayPanel signinIn={signIn}>
                             <Components.Image className='mb-7' src={Logo} />
                             <Components.Title>Já possui cadastro conosco?</Components.Title>
                             <Components.Paragraph>
@@ -150,7 +151,7 @@ export default function Login(): JSX.Element {
 
                         <Components.RightOverlayPanel signinIn={signIn}>
                             <Components.Image className='mb-7' src={Logo} />
-                            <Components.Title>Ainda não conhece o sistema EasyRDV?</Components.Title>
+                            <Components.Title >Ainda não conhece o sistema EasyRDV?</Components.Title>
                             <Components.Paragraph>
                                 Quer <b>modernizar</b> a forma como sua empresa lida com o reembolso de despesas de viagem?
                                 Agende uma demonstração com nosso time!
@@ -168,15 +169,16 @@ export default function Login(): JSX.Element {
                 </Components.OverlayContainer>
             </Components.Container>
         </div>
-    );
+    )
 
-    function InternalFilledInput({ placeholder, type }: FilledInputProps) {
+    function InternalFilledInput({ placeholder, type, startAdornment }: FilledInputProps) {
         return <FilledInput
             sx={{ color: theme => theme.palette.secondary.main }}
             color="secondary"
             fullWidth
+            startAdornment={startAdornment}
             placeholder={placeholder}
-            type={type} />;
+            type={type} />
     }
 
     function InternalTypography({ children }: PropsWithChildren) {
@@ -204,7 +206,7 @@ export default function Login(): JSX.Element {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full overflow-hidden">
             <div className="hidden sm:block">
-                <img className="w-full h-full object-cover" />
+                <img className="w-full h-full object-cover" src={businessTravel} alt="" />
             </div>
 
             <div className="bg-blue-post flex flex-col justify-center">
@@ -227,5 +229,7 @@ export default function Login(): JSX.Element {
                 </form>
             </div>
         </div>
-    );
+    )
 }
+
+export default Login
